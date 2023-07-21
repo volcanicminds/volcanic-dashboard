@@ -1,0 +1,19 @@
+{
+  "form.submit": "Confirm",
+  "form.send": "Send",
+  "auth.expired": "Reset expired password",
+  "auth.forgot": "Reset forgot passworda",
+  "auth.no_code_in_uri": "Missing reset code",
+  "menu.dashboard": "Dashboard",
+  "menu.notifications": "Notifications",
+  "menu.settings": "Settings",
+  "noMatch.content": "The page you searched does not exist.",
+  "route.dashboard": "Dashboard",
+  "route.notifications": "Notifications",
+  "route.settings": "Settings",
+  "navigation.theme_switch_tooltip": "Light or dark theme",
+  "navigation.account_menu_tooltip": "Account settings",
+  "navigation.account.profile": "Profile",
+  "navigation.account.settings": "Settings",
+  "navigation.account.logout": "Logout"
+}
