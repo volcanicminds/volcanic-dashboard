@@ -13,7 +13,6 @@ const Login = (_theme: Theme) => {
               flexDirection: "column-reverse",
               paddingBottom: 100,
               "& .MuiCard-root": {
-                borderBottomRightRadius: "30px",
                 paddingTop: 90,
                 paddingBottom: 90,
                 "&::before, &::after": {
