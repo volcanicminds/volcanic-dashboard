@@ -23,13 +23,11 @@ import {
   type NavigationLeaf,
   type NavigationNode,
 } from "@/configuration/types";
-import useApi from "@/hook/useApi";
 import { t } from "i18next";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
-import { LAST_PAGE_STORAGE_KEY, remove, save } from "@/utils/localStorage";
+import { LAST_PAGE_STORAGE_KEY, remove } from "@/utils/localStorage";
 import Button from "@/components/common/Button";
-import useToast from "@/hook/useToast";
 import { useAuth } from "@/components/AuthProvider";
 
 const theme = import.meta.env.VITE_DEFAULT_THEME;
@@ -173,10 +171,7 @@ export default function Sidebar({ editedNodes }: { editedNodes: string[] }) {
   const { isOpen, closeDrawer } = useDrawer();
   const location = useLocation();
   const navigate = useNavigate();
-  const { token, setToken } = useAuth();
-  const { logout, apply, suspend } = useApi();
-  const [isLoading, setIsLoading] = useState(false);
-  const { addNotification } = useToast();
+  const { setToken } = useAuth();
   const [confirmDialogSettings, setConfirmDialogSettings] = useState<{
     open: boolean;
     title: string;
@@ -190,77 +185,11 @@ export default function Sidebar({ editedNodes }: { editedNodes: string[] }) {
     return location.pathname.split("/").slice(1);
   }, [location]);
 
-  const resetAndNavigate = (resetLocalStorage: boolean = true) => {
+  const handleLogout = (resetLocalStorage: boolean = true) => {
     resetLocalStorage && remove(LAST_PAGE_STORAGE_KEY);
     setConfirmDialogSettings(null);
     setToken(null);
     navigate("/login");
-  };
-
-  //Suspend confirm
-  const confirmSuspendAndLogout = async () => {
-    save(LAST_PAGE_STORAGE_KEY, location.pathname);
-    const response = await suspend({ auth: token });
-
-    if (response.result === "error") {
-      console.warn(response.message);
-    }
-
-    resetAndNavigate(false);
-  };
-  //Suspend dialog
-  const handleSuspendAndLogout = async () => {
-    setConfirmDialogSettings({
-      open: true,
-      title: t("suspend"),
-      content: t("sidebar-contentSuspend"),
-      confirm: confirmSuspendAndLogout,
-    });
-  };
-
-  //Apply confirm
-  const confirmApplyAndLogout = async () => {
-    const response = await apply();
-    if (response.result === "error") {
-      setConfirmDialogSettings({
-        open: true,
-        title: t("sidebar-saveError"),
-        content: response.message,
-        confirm: resetAndNavigate,
-      });
-    } else {
-      remove(LAST_PAGE_STORAGE_KEY);
-      resetAndNavigate();
-    }
-  };
-  //Apply dialog
-  const handleApplyAndLogout = async () => {
-    setConfirmDialogSettings({
-      open: true,
-      title: t("sidebar-confirmApply"),
-      content: t("sidebar-contentApply"),
-      confirm: confirmApplyAndLogout,
-    });
-  };
-
-  //Quit confirm
-  const confirmLogout = async () => {
-    try {
-      setIsLoading(true);
-      const response = await logout({ auth: token });
-
-      if (response.result === "error") {
-        addNotification(response.message, { variant: "warning" });
-      }
-
-      resetAndNavigate();
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  //Quit dialog
-  const handleLogout = async () => {
-    confirmLogout();
   };
 
   useEffect(() => {
@@ -351,8 +280,6 @@ export default function Sidebar({ editedNodes }: { editedNodes: string[] }) {
           startIcon={<LogoutIcon />}
           variant="contained"
           color="secondary"
-          disabled={isLoading}
-          isLoading={isLoading}
         >
           {t("logout-btn")}
         </Button>
