@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <svg viewBox="77.8984 -333.1016  271.33491680000003 249.20320000000004" xmlns="http://www.w3.org/2000/svg" version="1.0" overflow="visible">
+  <defs>
+   <g id="ROUND_265">
+    <path d="M -0.1016 0 A 0.1016 0.1016 0 0  1 0.1016 0.0 A 0.1016 0.1016 0 0  1 -0.1016 0.0  z" stroke-width="0.2032"/>
+   </g>
+   <g id="ROUND_253">
+    <path d="M -0.15 0 A 0.15 0.15 0 0  1 0.15 0.0 A 0.15 0.15 0 0  1 -0.15 0.0  z" stroke-width="0.299998"/>
+   </g>
+   <g id="ROUND_1">
+    <path d="M -0.0625 0 A 0.0625 0.0625 0 0  1 0.0625 0.0 A 0.0625 0.0625 0 0  1 -0.0625 0.0  z" stroke-width="0.125"/>
+   </g>
+   <g id="ROUND_282">
+    <path d="M -0.663098 0 A 0.663098 0.663098 0 0  1 0.663098 0.0 A 0.663098 0.663098 0 0  1 -0.663098 0.0  z" stroke-width="1.326198"/>
+   </g>
+   <g id="ROUND_197">
+    <path d="M -0.15 0 A 0.15 0.15 0 0  1 0.15 0.0 A 0.15 0.15 0 0  1 -0.15 0.0  z" stroke-width="0.3"/>
+   </g>
+   <g id="ROUND_124">
+    <path d="M -0.587502 0 A 0.587502 0.587502 0 0  1 0.587502 0.0 A 0.587502 0.587502 0 0  1 -0.587502 0.0  z" stroke-width="1.175004"/>
+   </g>
+  </defs>
+  <g id="draft" transform="matrix(1 0 0 -1 0 0)" stroke-width="0.06506726460000002">
+   <g id="DOPPIO" color="rgb(0,0,0)" stroke="currentColor" fill="none" stroke-width="0.06506726460000002">
+    <text font-family="Verdana" font-size="10.685176" text-anchor="start" writing-mode="lr-tb" transform="matrix(1 0 0 -1 0 588.0)" x="114.0" y="294.0" fill="currentColor">
+     <tspan font-size="10.685176">Tamper</tspan>
+    </text>
+    <text font-family="Verdana" font-size="10.685176" text-anchor="start" writing-mode="lr-tb" transform="matrix(1 0 0 -1 0 180.0)" x="90.0" y="90.0" fill="currentColor">
+     <tspan font-size="10.685176">Px</tspan>
+    </text>
+    <text font-family="Verdana" font-size="10.685176" text-anchor="start" writing-mode="lr-tb" transform="matrix(1 0 0 -1 0 180.0)" x="306.0" y="90.0" fill="currentColor">
+     <tspan font-size="10.685176">+V</tspan>
+    </text>
+    <text font-family="Verdana" font-size="16.027764" text-anchor="start" writing-mode="lr-tb" transform="matrix(1 0 0 -1 0 348.0)" x="330.0" y="174.0" fill="currentColor">
+     <tspan font-size="16.027764">R1</tspan>
+    </text>
+    <text font-family="Verdana" font-size="10.685176" text-anchor="start" writing-mode="lr-tb" transform="matrix(1 0 0 -1 0 588.0)" x="267.0" y="294.0" fill="currentColor">
+     <tspan font-size="10.685176">Alarm</tspan>
+    </text>
+    <text font-family="Verdana" font-size="16.027764" text-anchor="start" writing-mode="lr-tb" transform="matrix(1 0 0 -1 0 378.0)" x="264.0" y="189.0" fill="currentColor">
+     <tspan font-size="16.027764">R2</tspan>
+    </text>
+    <use transform="translate(315 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(246 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_282"/>
+    <use transform="translate(315 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_282"/>
+    <use transform="translate(87 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(105 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(87 105)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(105 105)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(89.89342 111.223368)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(102.601266 115.193)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(89.425556 112.66707)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(102.125446 116.734754)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(78 84)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(78 129)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(78 129)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(333 129)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(96 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(96 171)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(96 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(96 201)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(78 279)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(78 240)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(210 240)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(141 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(117 288)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(210 240)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(333 240)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(333 333)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(78 333)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(78 279)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(87 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(87 105)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(105 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(105 105)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(306 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(324 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(306 105)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(324 105)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(308.89342 111.223368)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(321.601266 115.193)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(308.425556 112.66707)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(321.125446 116.734754)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(306 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(306 105)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(324 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(324 105)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(309 129)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(333 129)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(333 87)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_265"/>
+    <use transform="translate(87 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(105 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(87 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(105 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(89.89342 255.223368)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(102.601266 259.193)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(89.425556 256.66707)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(102.125446 260.734754)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(87 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(87 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(105 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(105 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(96 201)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(96 171)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(309 159)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(321 159)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(321 198)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(309 198)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(309 159)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(315 159)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(315 123)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(96 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(96 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(114 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(96 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(156 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(174 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(156 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(174 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(158.89342 255.223368)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(171.601266 259.193)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(158.425556 256.66707)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(171.125446 260.734754)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(156 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(156 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(174 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(174 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(147 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(165 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(165 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(300 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(315 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(315 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(306 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(324 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(306 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(324 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(308.89342 255.223368)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(321.601266 259.193)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(308.425556 256.66707)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(321.125446 260.734754)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(306 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(306 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(324 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(324 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(237 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(255 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(237 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(255 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(239.89342 255.223368)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(252.601266 259.193)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(239.425556 256.66707)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(252.125446 260.734754)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(237 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(237 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(255 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(255 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(294 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(264 288)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(246 267)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(246 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(261 285)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(315 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(315 198)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(300 213)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(300 225)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(261 225)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(261 213)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(300 213)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(165 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(165 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(234 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(222 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(261 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(246 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(246 249)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(300 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <use transform="translate(315 219)" stroke-width="0.06506726460000002" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ROUND_253"/>
+    <path d="M 87 123 L 105 123 " stroke-width="0.599998"/>
+    <path d="M 87 105 L 105 105 " stroke-width="0.599998"/>
+    <path d="M 89.291798 114 A 6.708202 6.708202 0 0  1 102.708202 114.0 A 6.708202 6.708202 0 0  1 89.291798 114.0  z" stroke-width="0.599998"/>
+    <path d="M 89.89342 111.223368 L 102.601266 115.193 " stroke-width="0.599998"/>
+    <path d="M 89.425556 112.66707 L 102.125446 116.734754 " stroke-width="0.599998"/>
+    <path d="M 78 84 L 78 129 " stroke-width="0.4064"/>
+    <path d="M 78 129 L 333 129 " stroke-width="0.4064"/>
+    <path d="M 96 123 L 96 171 " stroke-width="0.599998"/>
+    <path d="M 96 249 L 96 201 " stroke-width="0.599998"/>
+    <path d="M 78 279 L 78 240 " stroke-width="0.4064"/>
+    <path d="M 78 240 L 210 240 " stroke-width="0.4064"/>
+    <path d="M 114 285 A 3 3 0 0  1 120.0 285.0 A 3 3 0 0  1 114.0 285.0  z" stroke-width="0.599998"/>
+    <path d="M 141 285 A 3 3 0 0  1 147.0 285.0 A 3 3 0 0  1 141.0 285.0  z" stroke-width="0.599998"/>
+    <path d="M 141 285 L 117 288 " stroke-width="0.599998"/>
+    <path d="M 210 240 L 333 240 " stroke-width="0.4064"/>
+    <path d="M 333 240 L 333 333 " stroke-width="0.4064"/>
+    <path d="M 333 333 L 78 333 " stroke-width="0.4064"/>
+    <path d="M 78 333 L 78 279 " stroke-width="0.4064"/>
+    <path d="M 87 123 L 87 105 " stroke-width="0.599998"/>
+    <path d="M 105 123 L 105 105 " stroke-width="0.599998"/>
+    <path d="M 306 123 L 324 123 " stroke-width="0.599998"/>
+    <path d="M 306 105 L 324 105 " stroke-width="0.599998"/>
+    <path d="M 308.291798 114 A 6.708202000000028 6.708202000000028 0 0  1 321.708202 114.0 A 6.708202000000028 6.708202000000028 0 0  1 308.291798 114.0  z" stroke-width="0.599998"/>
+    <path d="M 308.89342 111.223368 L 321.601266 115.193 " stroke-width="0.599998"/>
+    <path d="M 308.425556 112.66707 L 321.125446 116.734754 " stroke-width="0.599998"/>
+    <path d="M 306 123 L 306 105 " stroke-width="0.599998"/>
+    <path d="M 324 123 L 324 105 " stroke-width="0.599998"/>
+    <path d="M 309 129 L 333 129 " stroke-width="0.4064"/>
+    <path d="M 333 129 L 333 87 " stroke-width="0.4064"/>
+    <path d="M 87 267 L 105 267 " stroke-width="0.599998"/>
+    <path d="M 87 249 L 105 249 " stroke-width="0.599998"/>
+    <path d="M 89.291798 258 A 6.708202 6.708202 0 0  1 102.708202 258.0 A 6.708202 6.708202 0 0  1 89.291798 258.0  z" stroke-width="0.599998"/>
+    <path d="M 89.89342 255.223368 L 102.601266 259.193 " stroke-width="0.599998"/>
+    <path d="M 89.425556 256.66707 L 102.125446 260.734754 " stroke-width="0.599998"/>
+    <path d="M 87 267 L 87 249 " stroke-width="0.599998"/>
+    <path d="M 105 267 L 105 249 " stroke-width="0.599998"/>
+    <path d="M 96 201 L 96 171 " stroke-width="0.599998"/>
+    <path d="M 309 159 L 321 159 " stroke-width="0.599998"/>
+    <path d="M 321 159 L 321 198 " stroke-width="0.599998"/>
+    <path d="M 321 198 L 309 198 " stroke-width="0.599998"/>
+    <path d="M 309 198 L 309 159 " stroke-width="0.599998"/>
+    <path d="M 315 159 L 315 123 " stroke-width="0.599998"/>
+    <path d="M 96 267 L 96 285 " stroke-width="0.599998"/>
+    <path d="M 114 285 L 96 285 " stroke-width="0.599998"/>
+    <path d="M 156 267 L 174 267 " stroke-width="0.599998"/>
+    <path d="M 156 249 L 174 249 " stroke-width="0.599998"/>
+    <path d="M 158.291798 258 A 6.708202 6.708202 0 0  1 171.708202 258.0 A 6.708202 6.708202 0 0  1 158.291798 258.0  z" stroke-width="0.599998"/>
+    <path d="M 158.89342 255.223368 L 171.601266 259.193 " stroke-width="0.599998"/>
+    <path d="M 158.425556 256.66707 L 171.125446 260.734754 " stroke-width="0.599998"/>
+    <path d="M 156 267 L 156 249 " stroke-width="0.599998"/>
+    <path d="M 174 267 L 174 249 " stroke-width="0.599998"/>
+    <path d="M 147 285 L 165 285 " stroke-width="0.599998"/>
+    <path d="M 165 285 L 165 267 " stroke-width="0.599998"/>
+    <path d="M 300 285 L 315 285 " stroke-width="0.599998"/>
+    <path d="M 315 285 L 315 267 " stroke-width="0.599998"/>
+    <path d="M 306 267 L 324 267 " stroke-width="0.599998"/>
+    <path d="M 306 249 L 324 249 " stroke-width="0.599998"/>
+    <path d="M 308.291798 258 A 6.708202000000028 6.708202000000028 0 0  1 321.708202 258.0 A 6.708202000000028 6.708202000000028 0 0  1 308.291798 258.0  z" stroke-width="0.599998"/>
+    <path d="M 308.89342 255.223368 L 321.601266 259.193 " stroke-width="0.599998"/>
+    <path d="M 308.425556 256.66707 L 321.125446 260.734754 " stroke-width="0.599998"/>
+    <path d="M 306 267 L 306 249 " stroke-width="0.599998"/>
+    <path d="M 324 267 L 324 249 " stroke-width="0.599998"/>
+    <path d="M 237 267 L 255 267 " stroke-width="0.599998"/>
+    <path d="M 237 249 L 255 249 " stroke-width="0.599998"/>
+    <path d="M 239.291798 258 A 6.708202 6.708202 0 0  1 252.708202 258.0 A 6.708202 6.708202 0 0  1 239.291798 258.0  z" stroke-width="0.599998"/>
+    <path d="M 239.89342 255.223368 L 252.601266 259.193 " stroke-width="0.599998"/>
+    <path d="M 239.425556 256.66707 L 252.125446 260.734754 " stroke-width="0.599998"/>
+    <path d="M 237 267 L 237 249 " stroke-width="0.599998"/>
+    <path d="M 255 267 L 255 249 " stroke-width="0.599998"/>
+    <path d="M 261 285 A 3 3 0 0  1 267.0 285.0 A 3 3 0 0  1 261.0 285.0  z" stroke-width="0.599998"/>
+    <path d="M 294 285 A 3 3 0 0  1 300.0 285.0 A 3 3 0 0  1 294.0 285.0  z" stroke-width="0.599998"/>
+    <path d="M 294 285 L 264 288 " stroke-width="0.599998"/>
+    <path d="M 246 267 L 246 285 " stroke-width="0.599998"/>
+    <path d="M 246 285 L 261 285 " stroke-width="0.599998"/>
+    <path d="M 315 249 L 315 198 " stroke-width="0.599998"/>
+    <path d="M 300 213 L 300 225 " stroke-width="0.599998"/>
+    <path d="M 300 225 L 261 225 " stroke-width="0.599998"/>
+    <path d="M 261 225 L 261 213 " stroke-width="0.599998"/>
+    <path d="M 261 213 L 300 213 " stroke-width="0.599998"/>
+    <path d="M 165 249 L 165 219 " stroke-width="0.599998"/>
+    <path d="M 165 219 L 234 219 " stroke-width="0.599998"/>
+    <path d="M 222 219 L 261 219 " stroke-width="0.599998"/>
+    <path d="M 246 219 L 246 249 " stroke-width="0.599998"/>
+    <path d="M 300 219 L 315 219 " stroke-width="0.599998"/>
+   </g>
+   <g id="TANDEM" color="rgb(0,0,0)" stroke="currentColor" fill="none" stroke-width="0.06506726460000002"/>
+   <g id="ID_0" color="rgb(0,0,0)" stroke="currentColor" fill="none" stroke-width="0.06506726460000002"/>
+   <g id="TRIPLO" color="rgb(0,0,0)" stroke="currentColor" fill="none" stroke-width="0.06506726460000002"/>
+   <g id="SINGOLO" color="rgb(0,0,0)" stroke="currentColor" fill="none" stroke-width="0.06506726460000002"/>
+  </g>
+ </svg>

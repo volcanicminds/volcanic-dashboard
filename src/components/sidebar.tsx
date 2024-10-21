@@ -1,188 +1,362 @@
-import { styled, Theme, CSSObject } from "@mui/material/styles";
 import {
   Box,
-  Drawer as MuiDrawer,
+  Collapse,
   List,
-  ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
+  Stack,
+  Typography,
 } from "@mui/material";
-import { Dashboard, Notifications, Settings } from "@mui/icons-material";
-import Image from "mui-image";
-import logo from "@/assets/logo.png";
-import { FormattedMessage } from "react-intl";
 import { DRAWER_WIDTH } from "@/utils/config";
-import { Link, useNavigate } from "react-router-dom";
-import { RootState } from "@/app/store";
-import { useDispatch, useSelector } from "react-redux";
-import { openDrawer } from "@/app/store/customizationSlice";
+import { useDrawer } from "@/hook/useDrawer";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  Location,
+  NavigateFunction,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import MUIIcon, { IconNames } from "@/components/common/MUIIcon";
+import { images, navigation } from "@/configuration";
+import {
+  type NavigationLeaf,
+  type NavigationNode,
+} from "@/configuration/types";
+import useApi from "@/hook/useApi";
+import { t } from "i18next";
+import LogoutIcon from "@mui/icons-material/Logout";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
+import { LAST_PAGE_STORAGE_KEY, remove, save } from "@/utils/localStorage";
+import Button from "@/components/common/Button";
+import useToast from "@/hook/useToast";
+import { useAuth } from "@/components/AuthProvider";
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
+const theme = import.meta.env.VITE_DEFAULT_THEME;
 
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: DRAWER_WIDTH,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
+function shouldBeOpen(pathname: string, parentPath: string) {
+  return pathname.startsWith(`/${parentPath}`);
+}
 
-const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
+const NavigationItem: React.FC<{
+  item: NavigationNode | NavigationLeaf;
+  parentPath: string;
+  pathnameArray: Array<string>;
+  editedNodes: string[];
+  location: Location<any>;
+  navigate: NavigateFunction;
+  iteration?: number;
+}> = ({
+  item,
+  parentPath = "/",
+  pathnameArray = [],
+  editedNodes = [],
+  iteration = 0,
+  location,
+  navigate,
+}) => {
+  const [open, setOpen] = useState(shouldBeOpen(location.pathname, parentPath));
+  const { closeDrawer } = useDrawer();
 
-const Drawer = styled(
-  MuiDrawer,
-  {}
-)(({ theme, open }) => ({
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
-}));
-
-export default function Sidebar() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const open = useSelector(
-    (state: RootState) => state.customization.isDrawerOpen
-  );
-
-  const handleDrawer = () => {
-    dispatch(openDrawer({ open: !open }));
+  const handleClick = () => {
+    if ("subItems" in item) {
+      // If the element is a NavigationNode with subitems, do nothing on click
+      return;
+    } else {
+      // If the element is a NavigationLeaf, navigate to the associated path
+      const leafPath = parentPath;
+      navigate(`/${leafPath}`);
+      closeDrawer();
+    }
   };
 
-  const upperMenuItems = [
-    {
-      icon: <Dashboard />,
-      navigateTo: "/",
-      label: (
-        <FormattedMessage
-          id={"menu.dashboard"}
-          description="The menu item to navigate to the dashboard"
-        />
-      ),
-    },
-  ];
+  const handleNodeClick = () => {
+    setOpen(!open);
+  };
 
-  const lowerMenuItems = [
-    {
-      icon: <Notifications />,
-      navigateTo: "/notifications",
-      label: (
-        <FormattedMessage
-          id={"menu.notifications"}
-          description="The menu item to navigate to the notifications page"
-        />
-      ),
-    },
-    {
-      icon: <Settings />,
-      navigateTo: "/settings",
-      label: (
-        <FormattedMessage
-          id={"menu.settings"}
-          description="The menu item to navigate to the settings page"
-        />
-      ),
-    },
-  ];
-  const drawer = (
+  const isEdited = useMemo(() => {
+    return editedNodes.includes(
+      `/${parentPath}`.replace(/\//g, encodeURIComponent("/"))
+    );
+  }, [editedNodes, parentPath]);
+
+  return "subItems" in item ? (
     <>
-      <DrawerHeader>
-        <Link to="/">
-          <Image
-            style={{ padding: "1em" }}
-            easing="none"
-            duration={0}
-            width={150}
-            src={logo}
-            fit="contain"
-          />
-        </Link>
-      </DrawerHeader>
-      <Box
-        sx={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
+      <ListItemButton
+        onClick={handleNodeClick}
+        className={`expandable ${open ? "expanded" : ""}`}
       >
-        <List>
-          {upperMenuItems.map((item, index) => (
-            <ListItem key={`SidebarItems${index}`} disablePadding>
-              <ListItemButton onClick={() => navigate(item.navigateTo)}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+        <ListItemText
+          disableTypography
+          sx={{ display: "flex", gap: 1 }}
+          primary={
+            item.icon && (
+              <MUIIcon iconName={item.icon as IconNames} size="medium" />
+            )
+          }
+          secondary={
+            <Typography className={isEdited ? "is-edited" : ""}>
+              {t(item.id)}
+            </Typography>
+          }
+        />
+        <Box
+          width={24}
+          height={24}
+          className={`expand ${open ? "expand-less" : "expand-more"}`}
+        />
+      </ListItemButton>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List
+          component="div"
+          sx={{
+            paddingLeft: 2,
+          }}
+        >
+          {item.subItems.map((subItem, index) => {
+            return (
+              <NavigationItem
+                key={`${subItem.path}-${index}`}
+                item={subItem}
+                parentPath={`${parentPath}/${subItem.path}`}
+                pathnameArray={pathnameArray}
+                iteration={iteration + 1}
+                editedNodes={editedNodes}
+                location={location}
+                navigate={navigate}
+              />
+            );
+          })}
         </List>
-        <List>
-          {lowerMenuItems.map((item, index) => (
-            <ListItem key={`SidebarItems${index}`} disablePadding>
-              <ListItemButton onClick={() => navigate(item.navigateTo)}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
+      </Collapse>
     </>
+  ) : (
+    <ListItemButton
+      selected={location.pathname === `/${parentPath}`}
+      onClick={handleClick}
+    >
+      <ListItemText
+        disableTypography
+        sx={{ display: "flex", gap: 1 }}
+        primary={
+          item.icon && (
+            <MUIIcon iconName={item.icon as IconNames} size="medium" />
+          )
+        }
+        secondary={
+          <Stack direction="row" alignItems="center" gap={1}>
+            <Typography className={isEdited ? "is-edited" : ""}>
+              {t(item.id)}
+            </Typography>
+            {isEdited && (
+              <Box
+                sx={{
+                  width: "7px",
+                  height: "7px",
+                  bgcolor: (theme) =>
+                    location.pathname === `/${parentPath}`
+                      ? theme.palette.common.white
+                      : theme.palette.primary.main,
+                  borderRadius: "50%",
+                  flex: "none",
+                }}
+              />
+            )}
+          </Stack>
+        }
+      />
+    </ListItemButton>
   );
+};
+
+export default function Sidebar({ editedNodes }: { editedNodes: string[] }) {
+  const { isOpen, closeDrawer } = useDrawer();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { token, setToken } = useAuth();
+  const { logout, apply, suspend } = useApi();
+  const [isLoading, setIsLoading] = useState(false);
+  const { addNotification } = useToast();
+  const [confirmDialogSettings, setConfirmDialogSettings] = useState<{
+    open: boolean;
+    title: string;
+    content: string;
+    confirm: () => void;
+  } | null>(null);
+
+  const currentThemeImages = useMemo(() => images, [theme, images]);
+
+  const currentPath = useMemo(() => {
+    return location.pathname.split("/").slice(1);
+  }, [location]);
+
+  const resetAndNavigate = (resetLocalStorage: boolean = true) => {
+    resetLocalStorage && remove(LAST_PAGE_STORAGE_KEY);
+    setConfirmDialogSettings(null);
+    setToken(null);
+    navigate("/login");
+  };
+
+  //Suspend confirm
+  const confirmSuspendAndLogout = async () => {
+    save(LAST_PAGE_STORAGE_KEY, location.pathname);
+    const response = await suspend({ auth: token });
+
+    if (response.result === "error") {
+      console.warn(response.message);
+    }
+
+    resetAndNavigate(false);
+  };
+  //Suspend dialog
+  const handleSuspendAndLogout = async () => {
+    setConfirmDialogSettings({
+      open: true,
+      title: t("suspend"),
+      content: t("sidebar-contentSuspend"),
+      confirm: confirmSuspendAndLogout,
+    });
+  };
+
+  //Apply confirm
+  const confirmApplyAndLogout = async () => {
+    const response = await apply();
+    if (response.result === "error") {
+      setConfirmDialogSettings({
+        open: true,
+        title: t("sidebar-saveError"),
+        content: response.message,
+        confirm: resetAndNavigate,
+      });
+    } else {
+      remove(LAST_PAGE_STORAGE_KEY);
+      resetAndNavigate();
+    }
+  };
+  //Apply dialog
+  const handleApplyAndLogout = async () => {
+    setConfirmDialogSettings({
+      open: true,
+      title: t("sidebar-confirmApply"),
+      content: t("sidebar-contentApply"),
+      confirm: confirmApplyAndLogout,
+    });
+  };
+
+  //Quit confirm
+  const confirmLogout = async () => {
+    try {
+      setIsLoading(true);
+      const response = await logout({ auth: token });
+
+      if (response.result === "error") {
+        addNotification(response.message, { variant: "warning" });
+      }
+
+      resetAndNavigate();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  //Quit dialog
+  const handleLogout = async () => {
+    confirmLogout();
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 599) {
+        closeDrawer();
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
-    <Box
-      component="nav"
-      sx={{
-        width: { sm: "auto" },
-        flexShrink: { sm: 0 },
-        display: { xs: "none", sm: "block" },
-      }}
+    <Stack
+      zIndex={2}
+      left={0}
+      top={0}
+      width={{ xs: isOpen ? "100%" : 0, sm: DRAWER_WIDTH }}
+      height="100vh"
+      bgcolor={(theme) => theme.palette.sidebarBg?.main}
+      position="fixed"
+      display={{ xs: isOpen ? "flex" : "none", sm: "flex" }}
+      className="sidebar"
+      overflow="hidden"
+      color={(theme) => theme.palette.sidebarText?.main}
     >
-      <Drawer
-        variant="temporary"
-        open={!open}
-        onClose={handleDrawer}
-        sx={{
-          display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: DRAWER_WIDTH,
-          },
-        }}
+      {/* Close button */}
+      <Stack
+        className="close-btn"
+        sx={{ display: { xs: "flex", sm: "none" } }}
+        px={3}
       >
-        {drawer}
-      </Drawer>
+        <Button
+          onClick={closeDrawer}
+          startIcon={<CloseIcon />}
+          sx={{ textTransform: "none", fontWeight: 700 }}
+        >
+          {t("sidebar-closeMenu")}
+        </Button>
+      </Stack>
 
-      <Drawer variant="permanent" open={open}>
-        {drawer}
-      </Drawer>
-    </Box>
+      <Stack flex={1} overflow="auto" className="menu">
+        {/* Logo */}
+        <Stack p={3} direction="row" justifyContent="center">
+          <Box
+            component="img"
+            src={
+              (currentThemeImages[`./themes/${theme}/images/logo.png`] as any)
+                ?.default
+            }
+            className="logo"
+            sx={{
+              objectFit: "contain",
+            }}
+            alt="Logo"
+          />
+        </Stack>
+
+        {/* Menu items */}
+        <List sx={{ mb: "auto", px: 3 }} className="menu-items">
+          {navigation.map((item, index) => (
+            <NavigationItem
+              key={index}
+              item={item}
+              parentPath={item.path}
+              pathnameArray={currentPath}
+              editedNodes={editedNodes}
+              location={location}
+              navigate={navigate}
+            />
+          ))}
+        </List>
+
+        <ConfirmDialog
+          open={!!confirmDialogSettings?.open}
+          title={confirmDialogSettings?.title}
+          content={confirmDialogSettings?.content}
+          onDiscard={() => setConfirmDialogSettings(null)}
+          onConfirm={confirmDialogSettings?.confirm || (() => {})}
+        />
+      </Stack>
+
+      <Stack spacing={1} px={3}>
+        <Button
+          onClick={handleLogout}
+          startIcon={<LogoutIcon />}
+          variant="contained"
+          color="secondary"
+          disabled={isLoading}
+          isLoading={isLoading}
+        >
+          {t("logout-btn")}
+        </Button>
+      </Stack>
+    </Stack>
   );
 }

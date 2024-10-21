@@ -1,99 +1,91 @@
-import { useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useIntl } from "react-intl";
-import Dashboard from "@/page/dashboard";
 import Login from "@/page/login";
-import ForgotPassword from "@/page/forgotpassword";
-import ResetPassword from "@/page/resetpassword";
-import Protected from "@/components/navigation/protectedroute";
-import MainLayout from "@/components/mainlayout";
-// import SimplifiedLayout from "@/components/simplifiedlayout";
 import PublicLayout from "@/components/publiclayout";
-import type { RootState } from "@/app/store";
+import { navigation, isNavigationNode } from "@/configuration";
+import { type NavigationNode } from "@/configuration/types";
+import Page from "@/page/page";
+import Protected from "./protectedroute";
+import Public from "./publicRoute";
+import MainLayout from "../mainlayout";
 import NoMatch from "@/page/404";
-import Notifications from "@/page/notifications";
-import Settings from "@/page/settings";
+import Waiting from "@/page/waiting";
 
-export default function Router() {
-  const token = useSelector((state: RootState) => state.auth.token);
-  const isLoggedIn = useMemo(() => !!token, [token]);
-  const intl = useIntl();
+export default function AppRouter() {
+  const renderNavigationNodeRoutes = (
+    node: NavigationNode,
+    parentPath: string = "/"
+  ): JSX.Element[] => {
+    const routes: JSX.Element[] = [];
+    node.subItems.forEach((item) => {
+      if ("subItems" in item) {
+        // NavigationNode type element
+        routes.push(
+          ...renderNavigationNodeRoutes(item, `/${parentPath}/${item.path}`)
+        );
+      } else {
+        // NavigationLeaf type element
+        routes.push(
+          <Route
+            key={`/${parentPath}/${item.path}`}
+            path={`/${parentPath}/${item.path}`}
+            element={
+              <Protected>
+                <MainLayout title={item.config.title}>
+                  <Page config={item.config} />
+                </MainLayout>
+              </Protected>
+            }
+          />
+        );
+      }
+    });
+    return routes;
+  };
 
   return (
     <Routes>
+      {navigation.map((item) =>
+        isNavigationNode(item) ? (
+          // NavigationNode type element
+          renderNavigationNodeRoutes(item, item.path)
+        ) : (
+          // NavigationLeaf type element
+          <Route
+            key={`/${item.path}`}
+            path={`/${item.path}`}
+            element={
+              <Protected>
+                <MainLayout title={item.config.title}>
+                  <Page config={item.config} />
+                </MainLayout>
+              </Protected>
+            }
+          />
+        )
+      )}
+
       <Route
-        path="/"
+        path="/waiting"
         element={
-          <Protected isLoggedIn={isLoggedIn}>
-            <MainLayout
-              title={intl.formatMessage({
-                id: "route.dashboard",
-                description: "Dashboard page title",
-              })}
-              children={[<Dashboard key="DashboardPage" />]}
-            />
-          </Protected>
+          <Public>
+            <PublicLayout>
+              <Waiting key="WaitingPage" />
+            </PublicLayout>
+          </Public>
         }
       />
-      <Route
-        path="/notifications"
-        element={
-          <Protected isLoggedIn={isLoggedIn}>
-            <MainLayout
-              title={intl.formatMessage({
-                id: "route.notifications",
-                description: "Notifications page title",
-              })}
-              children={[<Notifications key="NotificationsPage" />]}
-            />
-          </Protected>
-        }
-      />
-      <Route
-        path="settings"
-        element={
-          <Protected isLoggedIn={isLoggedIn}>
-            <MainLayout
-              title={intl.formatMessage({
-                id: "route.settings",
-                description: "Settings page title",
-              })}
-              children={[<Settings key="SettingsPage" />]}
-            />
-          </Protected>
-        }
-      />
+
       <Route
         path="/login"
-        element={<PublicLayout children={[<Login key="LoginPage" />]} />}
-      />
-      <Route
-        path="/forgotpassword"
         element={
-          <PublicLayout
-            children={[<ForgotPassword key="ForgotPasswordPage" />]}
-          />
+          <Public>
+            <PublicLayout>
+              <Login key="LoginPage" />
+            </PublicLayout>
+          </Public>
         }
       />
-      <Route
-        path="/expiredpassword"
-        element={
-          <PublicLayout
-            children={[
-              <ResetPassword key="ResetPasswordPage" expiredPassword={true} />,
-            ]}
-          />
-        }
-      />
-      <Route
-        path="/resetpassword"
-        element={
-          <PublicLayout
-            children={[<ResetPassword key="ResetPasswordPage" />]}
-          />
-        }
-      />
+
       <Route
         path="*"
         element={<PublicLayout children={[<NoMatch key="NoMatchPage" />]} />}

@@ -1,19 +1,7 @@
 {
-  "form.submit": "Conferma",
-  "form.send": "Invia",
-  "auth.expired": "Reset password scaduta",
-  "auth.forgot": "Reset password dimenticata",
-  "auth.no_code_in_uri": "Codice di reset mancante",
-  "menu.dashboard": "Dashboard",
-  "menu.notifications": "Notifiche",
-  "menu.settings": "Impostazioni",
-  "noMatch.content": "La pagina ricercata non esiste.",
-  "route.dashboard": "Dashboard",
-  "route.notifications": "Notifiche",
-  "route.settings": "Impostazioni",
-  "navigation.theme_switch_tooltip": "Tema chiaro o scuro",
-  "navigation.account_menu_tooltip": "Gestione account",
-  "navigation.account.profile": "Profilo",
-  "navigation.account.settings": "Impostazioni",
-  "navigation.account.logout": "Disconnetti"
+  "logout-btn": "Esci",
+  "login-welcome": "Benvenuto",
+  "login-back": "Indietro",
+  "login-password": "Password",
+  "login-submit": "Conferma"
 }

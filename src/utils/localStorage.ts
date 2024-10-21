@@ -2,15 +2,8 @@ type DataToStore = {
   [k: string]: string;
 };
 
-export const types = {
-  REFRESH_TOKEN: "refreshToken",
-  REFRESH_TOKEN_EXP: "refreshTokenExpiration",
-  AUTHENTICATION: "authentication",
-  AUTHENTICATION_EXP: "authenticationExpiration",
-  THEME: "theme",
-  USER: "user",
-  LOGIN_EMAIL: "loginEmail",
-};
+export const TOKEN_STORAGE_KEY = "authToken";
+export const LAST_PAGE_STORAGE_KEY = "lastPage";
 
 export function get(type: string) {
   const item = localStorage.getItem(type);

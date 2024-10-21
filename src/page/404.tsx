@@ -1,21 +1,20 @@
-import { Box, Typography } from "@mui/material";
-import { FormattedMessage } from "react-intl";
+import { Stack, Link, Typography } from "@mui/material";
+import { t } from "i18next";
 
 export default function NoMatch() {
   return (
-    <Box
-      sx={{
-        margin: "auto",
-        marginTop: "5rem",
-      }}
-    >
-      <Typography variant="h2">*404*</Typography>
-      <Typography color="error">
-        <FormattedMessage
-          id="noMatch.content"
-          description="Description of the 404 page"
-        />
-      </Typography>
-    </Box>
+    <Stack spacing={3}>
+      <Stack spacing={-1}>
+        <Typography variant="h3" fontWeight={100}>
+          {t("404-title")}
+        </Typography>
+        <Typography component={Link} href="/" variant="h3" fontWeight={700}>
+          {t("404-back")}
+        </Typography>
+      </Stack>
+      <Stack spacing={0}>
+        <Typography>{t("404-content")}</Typography>
+      </Stack>
+    </Stack>
   );
 }

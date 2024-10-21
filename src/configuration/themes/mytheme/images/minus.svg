@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Solid/minus</title>
+    <defs>
+        <path d="M11.59375,3.4015625 C11.9574219,3.4015625 12.25,3.10898438 12.25,2.7453125 L12.25,0.65625 C12.25,0.292578125 11.9574219,0 11.59375,0 L0.65625,0 C0.292578125,0 0,0.292578125 0,0.65625 L0,2.7453125 C0,3.10898438 0.292578125,3.4015625 0.65625,3.4015625 L11.59375,3.4015625 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Menu/Accordion/Urmet/Aperto" transform="translate(-190, -2)">
+            <g id="Solid/minus" transform="translate(190.875, 7.3047)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#434343" fill-rule="nonzero" xlink:href="#path-1"></use>
+                <g id="Color" mask="url(#mask-2)" fill="#434343">
+                    <g transform="translate(-0.875, -5.3047)" id="Purple">
+                        <rect x="0" y="0" width="14" height="14"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

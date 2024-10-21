@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Solid/plus</title>
+    <defs>
+        <path d="M12.25,7.16953125 L12.25,5.08046875 C12.25,4.71679688 11.9574219,4.42421875 11.59375,4.42421875 L7.82578125,4.42421875 L7.82578125,0.65625 C7.82578125,0.292578125 7.53320312,0 7.16953125,0 L5.08046875,0 C4.71679688,0 4.42421875,0.292578125 4.42421875,0.65625 L4.42421875,4.42421875 L0.65625,4.42421875 C0.292578125,4.42421875 0,4.71679688 0,5.08046875 L0,7.16953125 C0,7.53320312 0.292578125,7.82578125 0.65625,7.82578125 L4.42421875,7.82578125 L4.42421875,11.59375 C4.42421875,11.9574219 4.71679688,12.25 5.08046875,12.25 L7.16953125,12.25 C7.53320312,12.25 7.82578125,11.9574219 7.82578125,11.59375 L7.82578125,7.82578125 L11.59375,7.82578125 C11.9574219,7.82578125 12.25,7.53320312 12.25,7.16953125 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Menu/Accordion/Urmet/Chiuso" transform="translate(-190, -2)">
+            <g id="Solid/plus" transform="translate(190.875, 2.875)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#434343" fill-rule="nonzero" xlink:href="#path-1"></use>
+                <g id="Color" mask="url(#mask-2)" fill="#434343">
+                    <g transform="translate(-0.875, -0.875)" id="Purple">
+                        <rect x="0" y="0" width="14" height="14"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
