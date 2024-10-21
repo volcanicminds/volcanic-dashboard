@@ -2,13 +2,13 @@ import { createTheme, PaletteMode } from "@mui/material";
 
 declare module "@mui/material/styles" {
   interface Palette {
-    tableButtons: Palette["primary"];
-    bodyText: Palette["primary"];
+    // tableButtons: Palette["primary"];
+    // bodyText: Palette["primary"];
     loginModalBg: Palette["primary"];
     loginText: Palette["primary"];
-    hamburgerIcon: Palette["primary"];
-    sidebarBg: Palette["primary"];
-    sidebarText: Palette["primary"];
+    // hamburgerIcon: Palette["primary"];
+    // sidebarBg: Palette["primary"];
+    // sidebarText: Palette["primary"];
   }
 
   interface PaletteOptions {

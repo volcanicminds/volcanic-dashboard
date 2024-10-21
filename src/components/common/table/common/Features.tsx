@@ -1,5 +1,4 @@
 import Button from "@/components/common/Button";
-import RestoreIcon from "@mui/icons-material/Restore";
 import { TableFeatures as TableFeaturesType } from "@/types";
 import { Add, FileDownload, Refresh } from "@mui/icons-material";
 import { Box, CircularProgress } from "@mui/material";
