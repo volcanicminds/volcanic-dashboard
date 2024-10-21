@@ -2,6 +2,7 @@
   "logout-btn": "Logout",
   "login-welcome": "Welcome",
   "login-back": "Back",
+  "login-email": "Email",
   "login-password": "Password",
   "login-submit": "Login"
 }

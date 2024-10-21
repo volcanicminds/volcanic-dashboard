@@ -23,7 +23,7 @@ import { DELAY_TO_LOGOUT } from "@/utils/constants";
 
 interface CloudUpdateProps {
   title: string;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
   dataFields: DataField[];
   forceReload: () => void;
   setToken: (user: any) => void;
@@ -31,7 +31,7 @@ interface CloudUpdateProps {
 
 export default function CloudUpdate({
   title,
-  customizableEndpoint,
+  configurableEndpoint,
   dataFields: fields = [],
   forceReload,
   setToken,
@@ -65,7 +65,7 @@ export default function CloudUpdate({
         return;
       }
 
-      const response = await customizableEndpoint("get-pkg-updates");
+      const response = await configurableEndpoint("get-pkg-updates");
 
       if (response?.result == "error") {
         setIsLoading(false);
@@ -129,7 +129,7 @@ export default function CloudUpdate({
   const handleSoftwareUpgrade = async () => {
     try {
       setIsLoading(true);
-      const response = await customizableEndpoint("upgrade-packages");
+      const response = await configurableEndpoint("upgrade-packages");
 
       if (response?.result == "error") {
         setIsLoading(false);

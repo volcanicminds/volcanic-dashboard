@@ -14,7 +14,7 @@ export function getFormattedValue({
   commonData = {},
   row,
   tableIdField,
-  customizableEndpoint,
+  configurableEndpoint,
   addNotification,
   refreshTable,
 }: {
@@ -23,7 +23,7 @@ export function getFormattedValue({
   column: ConfigColumn;
   commonData: any;
   tableIdField: string;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
   addNotification: (message: string, options?: any) => any;
   refreshTable: () => void;
 }) {
@@ -77,7 +77,7 @@ export function getFormattedValue({
       )?.translationId;
 
       normalizedRenderedCellValue = t(translationId || "");
-    } else if (c.formatter.type === "sectors") {
+    } else if (c.formatter.type === "bulletNumbers") {
       normalizedRenderedCellValue = (
         <Grid container spacing={1}>
           {(cellValue || "").split("").map((sector: any, index: number) => {
@@ -92,6 +92,14 @@ export function getFormattedValue({
             ) : null;
           })}
         </Grid>
+      );
+    } else if (c.formatter.type === "image") {
+      normalizedRenderedCellValue = (
+        <img
+          src={cellValue || "https://placehold.co/50x50"}
+          alt="img"
+          style={{ width: 50, height: 50 }}
+        />
       );
     } else if (c.formatter.type === "scenarios") {
       let scenario = null as any;
@@ -109,7 +117,7 @@ export function getFormattedValue({
           get: (object: any, path: string) => _.get(object, path),
           t,
           tableIdField,
-          customizableEndpoint,
+          configurableEndpoint,
           addNotification,
           refreshTable,
         }
@@ -145,10 +153,10 @@ export function getPrintFormatterByType(formatter: ColumnCellFormatter):
         }
         return t("no");
       };
-    case "sectors":
+    case "bulletNumbers":
       return (cell: any) => {
-        const sectorsArray = (cell || "").split("");
-        return sectorsArray
+        const bulletNumbersArray = (cell || "").split("");
+        return bulletNumbersArray
           .map((sector: any, index: number) => {
             return sector === "1" ? index + 1 : null;
           })

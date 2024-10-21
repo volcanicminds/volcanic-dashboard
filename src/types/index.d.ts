@@ -94,7 +94,8 @@ export type ColumnCellFormatter = {
     | "date"
     | "number"
     | "boolean"
-    | "sectors"
+    | "bulletNumbers"
+    | "image"
     | "scenarios"
     | "context"
     | "translationLabel"
@@ -114,7 +115,7 @@ export type ColumnCellFormatter = {
       get: (object: any, path: string) => any;
       commonData: any;
       tableIdField: string;
-      customizableEndpoint: (path: string, args?: any) => Promise<any>;
+      configurableEndpoint: (path: string, args?: any) => Promise<any>;
       addNotification: (message: string, options?: any) => any;
       refreshTable: () => void;
     }
@@ -200,7 +201,7 @@ export type BindingFunctionArgs = {
   field: string;
   value: string;
   setFormValue: any;
-  customizableEndpoint: (
+  configurableEndpoint: (
     path: string,
     args: any,
     options?: any

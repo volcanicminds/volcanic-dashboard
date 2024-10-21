@@ -289,7 +289,7 @@ Below there is the structure of the component configuration schema, described as
     filterSelectOptions?: string[] | { label: string; value: string }[]; //The list of the filter options to show (es: used by the Events page)
     formatter?: {
       type: "text" | "date" | "number" | "boolean" | "fromList"
-      | "sectors" | "context" | "translationLabel" | "custom"; //The formatter type, use "custom" to enable the "renderFunction" option
+      | "bulletNumbers" | "context" | "translationLabel" | "custom"; //The formatter type, use "custom" to enable the "renderFunction" option
       list?: SelectOption[] //To be used with type "fromList"
       rootLabel?: string; //To be used with type "translationLabel"
       context?: string; //Tobe used with type "context"
@@ -306,7 +306,7 @@ Below there is the structure of the component configuration schema, described as
           get: (object: any, path: string) => any;
           commonData: any;
           tableIdField: string;
-          customizableEndpoint: (path: string, args?: any) => Promise<any>;
+          configurableEndpoint: (path: string, args?: any) => Promise<any>;
           addNotification: (message: string, options?: any) => any;
           refreshTable: () => void;
         }
@@ -394,7 +394,7 @@ type EnablingFieldType =
 type FormInputRemapper = { //The remapper object to remap the value coming to the input or after the values has been changed
   in: FormInputRemapperFunction | FormInputRemapperObjectWithTranslate; //It can be a static map or a function
   out: FormInputRemapperFunction | FormInputRemapperObject; //It can be a static map or a function
-  encodeUri?: boolean; //To ask the customizableEndpoint inside the file ApiWrapper to not encode the Uri
+  encodeUri?: boolean; //To ask the configurableEndpoint inside the file ApiWrapper to not encode the Uri
 };
 type FormInputRemapperFunction = (
   cell: any,
@@ -421,7 +421,7 @@ type BindingFunctionArgs = { //The function arguments for the binding function i
   field: string;
   value: string;
   setFormValue: any;
-  customizableEndpoint: (
+  configurableEndpoint: (
     path: string,
     args: any,
     options?: any
@@ -489,15 +489,7 @@ You can configure these input types, the input component files can be found in t
 - select: the rendered component is the Select component, the dataType field is not necessary
 - multiselect: the rendered component is the Select component, the dataType field must be valued as "array"
 - label: the rendered component is the Label component, which is just a static text
-- eventsIn: the rendered component is the EventsIn component, the dataType field is not necessary
-- sectors: the rendered component is the Sectors component
-- contacts: the rendered component is the Contacts component
-- set-computer-time: the rendered component is the SetComputerTime component
-- set-factory-codes: the rendered component is the SetFactoryCodes component
-- konnex-configure: the rendered component is the KonnexConfigure component
-- konnex-presence-test: the rendered component is the KonnexPresenceTest component
-- set-pin-codes: the rendered component is the SetPinCodes component
-- test-touch: the rendered component is the TestTouch component
+- bulletNumbers: the rendered component is the Bullet Number component
 
 ## Theme Configuration
 

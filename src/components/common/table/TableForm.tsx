@@ -26,7 +26,7 @@ export interface TableFormDialogProps {
   refresh?: () => void;
   commonData: any;
   dispatch: Dispatch<AppActions>;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
   location: Location<any>;
   footer?: FormFooter;
 }
@@ -48,7 +48,7 @@ export default function TableFormDialog({
   refresh,
   commonData,
   dispatch,
-  customizableEndpoint,
+  configurableEndpoint,
   location,
   footer,
 }: TableFormDialogProps) {
@@ -83,7 +83,7 @@ export default function TableFormDialog({
           deleteLabel={deleteLabel}
           commonData={commonData}
           dispatch={dispatch}
-          customizableEndpoint={customizableEndpoint}
+          configurableEndpoint={configurableEndpoint}
           location={location}
           footer={footer}
         />

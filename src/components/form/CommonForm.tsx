@@ -33,7 +33,6 @@ import {
 import Switch from "@/components/common/form/inputs/Switch";
 import Select from "@/components/common/form/inputs/Select";
 import BasicInput from "@/components/common/form/inputs/BasicInput";
-import SetComputerTime from "@/components/common/form/inputs/SetComputerTime";
 import {
   PageContext,
   PageContextInterface,
@@ -46,10 +45,8 @@ import dayjs from "dayjs";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import Label from "@/components/common/form/inputs/Label";
 import { ThemesContext } from "@/themes";
-import EventsIn from "@/components/common/form/inputs/EventsIn";
-import Sectors from "@/components/common/form/inputs/BulletNumbers";
+import BulletNumbers from "@/components/common/form/inputs/BulletNumbers";
 import { STATUS_FIELD } from "@/components/ApiWrapper";
-import Contacts from "@/components/common/form/inputs/Contacts";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import {
   DataField,
@@ -65,15 +62,9 @@ import {
 import { AppActions } from "../mainlayout";
 import { Location } from "react-router-dom";
 import FormFooter from "../common/form/FormFooter";
-import TestTouch from "@/components/common/form/inputs/TestTouch";
 import DateTimePicker from "@/components/common/form/inputs/DateTimePicker";
 import DatePicker from "@/components/common/form/inputs/DatePicker";
 import TimePicker from "@/components/common/form/inputs/TimePicker";
-import SetPinCodes from "@/components/common/form/inputs/SetPinCodes";
-import KonnexConfigure from "@/components/common/form/inputs/KonnexConfigure";
-import KonnexPresenceTest from "@/components/common/form/inputs/KonnexPresenceTest";
-import CameraTest from "@/components/common/form/inputs/CameraTest";
-import CameraConfigure from "@/components/common/form/inputs/CameraConfigure";
 
 const DEFAULT_INPUT_TYPE = "text";
 interface FormProps {
@@ -100,7 +91,7 @@ interface TableFormProps {
 }
 interface CommonProps {
   dispatch: Dispatch<AppActions>;
-  customizableEndpoint: (
+  configurableEndpoint: (
     path: string,
     args?: any,
     options?: any
@@ -178,9 +169,7 @@ export default function Form({
   confirmLabel,
   deleteLabel,
   commonData,
-  dispatch,
-  customizableEndpoint,
-  location,
+  configurableEndpoint,
   footer,
 }: FormProps & TableFormProps & CommonProps) {
   const [confirmDialog, setConfirmDialog] = useState<{
@@ -607,7 +596,7 @@ export default function Form({
     const shouldEncodeUri = getShouldEncodeUri(inputConfig);
 
     if (typeof inputConfig?.binding === "string") {
-      const response = await customizableEndpoint(
+      const response = await configurableEndpoint(
         "edit",
         {
           type: inputConfig.binding,
@@ -635,7 +624,7 @@ export default function Form({
           field,
           value,
           setFormValue: setValue,
-          customizableEndpoint,
+          configurableEndpoint,
         });
       } catch (e: any) {
         addNotification(e, { variant: "error" });
@@ -687,14 +676,14 @@ export default function Form({
                   field,
                   value,
                   setFormValue: setValue,
-                  customizableEndpoint,
+                  configurableEndpoint,
                 });
               } catch (e: any) {
                 addNotification(e, { variant: "error" });
                 throw new Error(e);
               }
             } else {
-              response = await customizableEndpoint(
+              response = await configurableEndpoint(
                 "edit",
                 {
                   type: tableName,
@@ -1128,131 +1117,14 @@ export default function Form({
                                   label={t(`${item.label}`)}
                                 />
                               );
-                            case "camera-configure":
+                            case "bulletNumbers":
                               return (
-                                <CameraConfigure
-                                  values={values}
-                                  label={t(`${item.label}`)}
-                                  addNotification={addNotification}
-                                />
-                              );
-                            case "camera-test":
-                              return (
-                                <CameraTest
-                                  values={values}
-                                  label={t(`${item.label}`)}
-                                  commonData={commonData}
-                                  customizableEndpoint={customizableEndpoint}
-                                  addNotification={addNotification}
-                                />
-                              );
-                            case "eventsIn":
-                              return (
-                                <EventsIn
-                                  ip={
-                                    contextData[COMMON_DATA_FIELD]?.hpIpaddr ||
-                                    ""
-                                  }
-                                  data={fieldsData}
-                                  values={values}
+                                <BulletNumbers
                                   value={value}
                                   label={t(`${item.label}`)}
                                   onChange={(newValue: string) =>
                                     handleChange(field.name, newValue)
                                   }
-                                />
-                              );
-                            case "sectors":
-                              return (
-                                <Sectors
-                                  value={value}
-                                  label={t(`${item.label}`)}
-                                  onChange={(newValue: string) =>
-                                    handleChange(field.name, newValue)
-                                  }
-                                />
-                              );
-                            case "contacts":
-                              const contactsOptions: SelectOption[] =
-                                getOptions(values, item, contextData);
-
-                              return (
-                                <Contacts
-                                  options={contactsOptions}
-                                  value={value}
-                                  label={t(`${item.label}`)}
-                                  onChange={(newValue: string) =>
-                                    handleChange(field.name, newValue)
-                                  }
-                                />
-                              );
-                            case "set-computer-time":
-                              return (
-                                <SetComputerTime
-                                  disabled={isDisabled}
-                                  label={t(`${item.label}`)}
-                                  onChange={(newValue: string) =>
-                                    handleChange(field.name, newValue)
-                                  }
-                                />
-                              );
-                            case "konnex-configure":
-                              return (
-                                <KonnexConfigure
-                                  value={value}
-                                  disabled={isDisabled}
-                                  label={t(`${item.label}`)}
-                                  addNotification={addNotification}
-                                  sx={{
-                                    width: {
-                                      sx: "100%",
-                                      md: "50%",
-                                    },
-                                  }}
-                                />
-                              );
-                            case "konnex-presence-test":
-                              return (
-                                <KonnexPresenceTest
-                                  value={value}
-                                  disabled={isDisabled}
-                                  label={t(`${item.label}`)}
-                                  addNotification={addNotification}
-                                  customizableEndpoint={customizableEndpoint}
-                                  sx={{
-                                    width: {
-                                      sx: "100%",
-                                      md: "50%",
-                                    },
-                                  }}
-                                />
-                              );
-                            case "set-pin-codes":
-                              return (
-                                <SetPinCodes
-                                  disabled={isDisabled}
-                                  label={t(`${item.label}`)}
-                                  addNotification={addNotification}
-                                  onChange={() => {
-                                    addNotification(
-                                      t("factoryCodeSet-success"),
-                                      { variant: "success" }
-                                    );
-                                  }}
-                                  customizableEndpoint={customizableEndpoint}
-                                />
-                              );
-                            case "test-touch":
-                              return (
-                                <TestTouch
-                                  disabled={isDisabled}
-                                  label={t(`${item.label}`)}
-                                  values={values}
-                                  commonData={{
-                                    ...fieldsData,
-                                    ...contextData[COMMON_DATA_FIELD],
-                                  }}
-                                  customizableEndpoint={customizableEndpoint}
                                 />
                               );
                             default:

@@ -8,32 +8,30 @@ const inputs = {
       componentType: "table",
       componentName: "BasicTable",
       title: "tables-title",
-      tableName: "disney-characters",
+      tableName: "reqres-users",
       data: [
         {
           type: "remote",
-          dataFields: [{ alias: "disney-characters", data: "data" }],
+          dataFields: [{ alias: "reqres-users", data: "data" }],
           config: {
-            url: "character",
+            url: "users",
           },
         },
       ],
       columns: [
         {
-          field: "name",
+          field: "first_name",
           headerName: "table-name",
         },
         {
-          field: "films",
-          headerName: "table-films",
+          field: "last_name",
+          headerName: "table-last-name",
+        },
+        {
+          field: "avatar",
+          headerName: "table-avatar",
           formatter: {
-            type: "custom",
-            renderFunction: (cell: any = []) => {
-              return cell.join(", ");
-            },
-            renderForPrint: (cell: any = []) => {
-              return cell.join(", ");
-            },
+            type: "image",
           },
         },
       ],
@@ -51,7 +49,7 @@ const inputs = {
           inputs: [
             {
               type: "input",
-              field: "name",
+              field: "first_name",
               label: "name-label",
               validation: {
                 maxLength: 32,
@@ -59,12 +57,16 @@ const inputs = {
             },
             {
               type: "input",
-              field: "films",
-              label: "films-label",
-              remapper: {
-                in: (value: string[] = []) => (value || []).join(", "),
-                out: (value: string = "") => (value || "").split(", "),
+              field: "last_name",
+              label: "last-name-label",
+              validation: {
+                maxLength: 32,
               },
+            },
+            {
+              type: "input",
+              field: "avatar",
+              label: "avatar-label",
             },
           ],
         },

@@ -27,13 +27,13 @@ const FIRMWARE_ID = "10551296";
 
 export default function UpdateFromFile({
   title,
-  customizableEndpoint,
-  customizableEndpointPost,
+  configurableEndpoint,
+  configurableEndpointPost,
   setToken,
 }: {
   title: string;
-  customizableEndpoint: (url: string, args?: any) => Promise<any>;
-  customizableEndpointPost: (
+  configurableEndpoint: (url: string, args?: any) => Promise<any>;
+  configurableEndpointPost: (
     url: string,
     data?: any,
     config?: any
@@ -58,7 +58,7 @@ export default function UpdateFromFile({
   async function pollUpgradeFirmware() {
     try {
       if (fileFirmware) {
-        const response = await customizableEndpoint("firmware-upgrade-poll", {
+        const response = await configurableEndpoint("firmware-upgrade-poll", {
           op: "poll",
           dtrow: FIRMWARE_ID,
           filename: fileFirmware.name,
@@ -106,7 +106,7 @@ export default function UpdateFromFile({
       }
 
       try {
-        const response = await customizableEndpointPost(
+        const response = await configurableEndpointPost(
           `firmware-upgrade?op=start&dtrow=${FIRMWARE_ID}&filename=${fileFirmware.name}`,
           fileFirmware,
           {
@@ -181,7 +181,7 @@ export default function UpdateFromFile({
         return;
       }
       try {
-        const response = await customizableEndpointPost(
+        const response = await configurableEndpointPost(
           `software-upgrade?op=start&filename=${file.name}`,
           file,
           {

@@ -12,8 +12,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
-    customizableEndpoint: async (_url: string, _data?: any) => {},
-    customizableEndpointPost: async (
+    configurableEndpoint: async (_url: string, _data?: any) => {},
+    configurableEndpointPost: async (
       _url: string,
       _data?: any,
       _config?: any

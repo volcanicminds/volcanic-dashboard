@@ -17,8 +17,8 @@ export const Basic: Story = {
     tableName: "Scheduler",
     forceComponentReload: () => {},
     forceComponentReloadByName: () => {},
-    customizableEndpoint: async (_args: any) => {},
-    customizableEndpointPost: async (
+    configurableEndpoint: async (_args: any) => {},
+    configurableEndpointPost: async (
       _url: string,
       _data?: any,
       _config?: any

@@ -7,59 +7,45 @@ const home = {
     {
       componentType: "form",
       componentName: "CommonForm",
-      title: "home-character-title",
-      formWriteToContext: false,
-      formId: "factsForm",
+      title: "home-user-title",
       data: [
         {
           type: "remote",
           dataFields: [
             {
-              alias: "name",
-              data: "data.name",
+              alias: "first_name",
+              data: "data.first_name",
             },
             {
-              alias: "films",
-              data: "data.films",
+              alias: "last_name",
+              data: "data.last_name",
             },
           ],
           config: {
-            url: "character/308",
+            url: "users/2",
           },
         },
       ],
       inputs: [
         {
           type: "input",
-          field: "name",
-          source: "name",
-          label: "name-label",
-          binding: "disney-characters",
+          field: "first_name",
+          source: "first_name",
+          label: "first_name-label",
+          binding: "reqres-users",
           validation: {
             maxLength: 32,
           },
         },
         {
-          type: "multiselect",
-          dataType: "array",
-          field: "films",
-          label: "films-label",
-          source: "films",
-          options: [
-            {
-              value: "Tangled",
-              label: "Tangled",
-            },
-            {
-              value: "Tangled: Before Ever After",
-              label: "Tangled: Before Ever After",
-            },
-            {
-              value: "another",
-              label: "another",
-            },
-          ],
-          binding: "disney-characters",
+          type: "input",
+          field: "last_name",
+          source: "last_name",
+          label: "last_name-label",
+          binding: "reqres-users",
+          validation: {
+            maxLength: 32,
+          },
         },
       ],
     },

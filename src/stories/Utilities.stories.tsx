@@ -8,8 +8,8 @@ const meta = {
   component: Utilities,
   tags: ["basic", "component", "input"],
   args: {
-    customizableEndpoint: fn(),
-    customizableEndpointPost: fn(),
+    configurableEndpoint: fn(),
+    configurableEndpointPost: fn(),
     logout: fn(),
   },
 } satisfies Meta<typeof Utilities>;

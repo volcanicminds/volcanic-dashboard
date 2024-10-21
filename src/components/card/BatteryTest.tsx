@@ -11,12 +11,12 @@ const SERIAL_NUM = import.meta.env.VITE_SERIAL_NUMBER || "10551296";
 
 interface BatteryTestProps {
   title: string;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
 }
 
 export default function BatteryTest({
   title,
-  customizableEndpoint,
+  configurableEndpoint,
 }: BatteryTestProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [shouldPoll, setShouldPoll] = useState(false);
@@ -33,7 +33,7 @@ export default function BatteryTest({
 
   async function executeBatteryTestData() {
     try {
-      const batteryTestResponse = await customizableEndpoint("battery-test", {
+      const batteryTestResponse = await configurableEndpoint("battery-test", {
         op: "poll",
         id: SERIAL_NUM,
       });
@@ -65,7 +65,7 @@ export default function BatteryTest({
     setIsLoading(true);
     setResult(undefined);
 
-    const batteryTestResponse = await customizableEndpoint("battery-test", {
+    const batteryTestResponse = await configurableEndpoint("battery-test", {
       op: "start",
       id: SERIAL_NUM,
     });

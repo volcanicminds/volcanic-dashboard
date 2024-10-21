@@ -27,8 +27,8 @@ interface SearchOperatorsProps {
   commonData?: any;
   tableIdField?: string;
   dispatch: Dispatch<AppActions>;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
-  customizableEndpointPost: (
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpointPost: (
     url: string,
     data?: any,
     config?: any
@@ -51,8 +51,8 @@ interface SearchOperatorsProps {
 export default function SearchOperators({
   title,
   dataFields: fields = [],
-  customizableEndpoint,
-  customizableEndpointPost,
+  configurableEndpoint,
+  configurableEndpointPost,
   forceReload,
   id,
   commonData,
@@ -87,7 +87,7 @@ export default function SearchOperators({
   async function executeSearchOperators() {
     try {
       const searchOperatorsResponse =
-        await customizableEndpoint("search-operators");
+        await configurableEndpoint("search-operators");
 
       if (searchOperatorsResponse?.result === "error") {
         handleError(searchOperatorsResponse.message);
@@ -140,7 +140,7 @@ export default function SearchOperators({
 
     setResult(undefined);
 
-    const searchOperatorsResponse = await customizableEndpoint(
+    const searchOperatorsResponse = await configurableEndpoint(
       "search-operators?start"
     );
     if (searchOperatorsResponse?.result === "error") {
@@ -231,8 +231,8 @@ export default function SearchOperators({
           tableIdField={tableIdField}
           tableName={tableName}
           dispatch={dispatch}
-          customizableEndpoint={customizableEndpoint}
-          customizableEndpointPost={customizableEndpointPost}
+          configurableEndpoint={configurableEndpoint}
+          configurableEndpointPost={configurableEndpointPost}
           forceReload={forceReload}
           forceComponentReload={forceComponentReload}
           forceComponentReloadByName={forceComponentReloadByName}

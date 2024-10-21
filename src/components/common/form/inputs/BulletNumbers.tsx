@@ -3,13 +3,17 @@ import { t } from "i18next";
 import { useMemo } from "react";
 import Button from "@/components/common/Button";
 
-interface SectorsProps {
+interface BulletNumbersProps {
   value: string;
   label: string;
   onChange: (args: any) => void;
 }
 
-export default function Sectors({ value = "", label, onChange }: SectorsProps) {
+export default function BulletNumbers({
+  value = "",
+  label,
+  onChange,
+}: BulletNumbersProps) {
   const length = useMemo(() => {
     return value.length;
   }, [value]);
@@ -26,7 +30,7 @@ export default function Sectors({ value = "", label, onChange }: SectorsProps) {
       <Stack direction="row" flexWrap="wrap" justifyContent="center">
         {value.split("").map((v, i) => (
           <Stack
-            key={`sectors-chip-${i}-${Math.random()}`}
+            key={`bulletNumbers-chip-${i}-${Math.random()}`}
             bgcolor={(theme) =>
               v === "1" ? theme.palette.primary.main : "rgb(205 205 205 / 50%)"
             }

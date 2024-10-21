@@ -1,23 +1,47 @@
 import { Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/common/Button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useApi from "@/hook/useApi";
-import ACTIONS from "@/utils/actions";
 import useToast from "@/hook/useToast";
 import { t } from "i18next";
 import { get, LAST_PAGE_STORAGE_KEY } from "@/utils/localStorage";
-import { PIN_LENGTH } from "@/utils/constants";
-import PinCode from "@/components/common/PinCode";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useAuth } from "@/components/AuthProvider";
+import BasicInput from "@/components/common/form/inputs/BasicInput";
+
+interface IFormInputs {
+  email: string;
+  password: string;
+}
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
 export default function Login() {
   const navigate = useNavigate();
-  const [pin, setPin] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { setToken } = useAuth();
-  const { login, logout } = useApi();
+  const { login } = useApi();
   const { addNotification } = useToast();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInputs>({
+    resolver: yupResolver(schema),
+  });
 
   function setTokenAndNavigate(token: string) {
     setToken(token);
@@ -25,12 +49,12 @@ export default function Login() {
     navigate(lastPage || "/");
   }
 
-  const onSubmit = async () => {
+  const onSubmit = async (record: IFormInputs) => {
     setIsLoading(true);
     try {
-      const firstLoginResponse = await login(pin);
+      const firstLoginResponse = await login(record.email, record.password);
 
-      setTokenAndNavigate(firstLoginResponse.result);
+      setTokenAndNavigate(firstLoginResponse.token);
     } catch (e: any) {
       addNotification(e.message, { variant: "error" });
     } finally {
@@ -38,19 +62,13 @@ export default function Login() {
     }
   };
 
-  useEffect(() => {
-    const inputs = document.querySelectorAll<HTMLInputElement>(".pin-input");
-    pin.split("").forEach((char, index) => {
-      if (inputs[index]) {
-        inputs[index].value = char;
-      }
-    });
-  }, [pin]);
+  //email: eve.holt@reqres.in
+  //password: cityslicka
 
-  const isPinValid = pin.length <= PIN_LENGTH && /^\d{4,6}$/.test(pin);
+  console.log("errors", errors);
 
   return (
-    <Stack spacing={5}>
+    <Stack spacing={5} component="form" onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={-1} className="welcome-title">
         <Typography variant="h3" fontWeight={100} sx={{ opacity: 0.68 }}>
           {t("login-welcome")}
@@ -59,19 +77,26 @@ export default function Login() {
           {t("login-back")}
         </Typography>
       </Stack>
-      <Stack spacing={0.5}>
-        <Typography>{t("login-password")}</Typography>
-        <PinCode
-          name="login"
-          onChange={(_name, pin) => setPin(pin)}
-          isLoading={isLoading}
-          onSubmit={onSubmit}
+      <Stack spacing={2}>
+        <BasicInput
+          label={t("login-email")}
+          variant="standard"
+          {...register("email")}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+        />
+        <BasicInput
+          label={t("login-password")}
+          type="password"
+          {...register("password")}
+          error={!!errors.password}
+          helperText={errors.password?.message}
         />
       </Stack>
       <Button
+        type="submit"
         variant="contained"
-        onClick={onSubmit}
-        disabled={!isPinValid || isLoading}
+        disabled={!!errors.email || !!errors.password || isLoading}
         isLoading={isLoading}
       >
         {t("login-submit")}

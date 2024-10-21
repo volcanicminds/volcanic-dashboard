@@ -43,8 +43,8 @@ function ComponentGenerator({ component }: { component: Component }) {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const {
-    customizableEndpoint,
-    customizableEndpointPost,
+    configurableEndpoint,
+    configurableEndpointPost,
     reload,
     reloadComponent,
     reloadComponentByName,
@@ -61,7 +61,7 @@ function ComponentGenerator({ component }: { component: Component }) {
   const dispatch = useContext(AppDispatchContext);
 
   async function getRemoteData(data: Data) {
-    const response = await customizableEndpoint(
+    const response = await configurableEndpoint(
       data.config?.url,
       data.config?.params
     );
@@ -295,8 +295,8 @@ function ComponentGenerator({ component }: { component: Component }) {
               commonData={(contextData || {})[COMMON_DATA_FIELD]}
               id={id}
               dispatch={dispatch}
-              customizableEndpoint={customizableEndpoint}
-              customizableEndpointPost={customizableEndpointPost}
+              configurableEndpoint={configurableEndpoint}
+              configurableEndpointPost={configurableEndpointPost}
               forceComponentReload={forceComponentReload}
               forceComponentReloadByName={forceComponentReloadByName}
               forceReload={forceReload}

@@ -87,8 +87,8 @@ interface BasicTableProps {
     columnFilters?: MRT_ColumnFiltersState;
   };
   dispatch: Dispatch<AppActions>;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
-  customizableEndpointPost: (
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpointPost: (
     url: string,
     data?: any,
     config?: any
@@ -130,7 +130,7 @@ const BasicTable = (props: BasicTableProps) => {
     tableName,
     dispatch,
     state,
-    customizableEndpoint,
+    configurableEndpoint,
     forceComponentReload,
     forceComponentReloadByName,
     location,
@@ -291,7 +291,7 @@ const BasicTable = (props: BasicTableProps) => {
             column: c,
             commonData,
             tableIdField,
-            customizableEndpoint,
+            configurableEndpoint,
             addNotification,
             refreshTable: () => forceComponentReload(id),
           });
@@ -328,7 +328,7 @@ const BasicTable = (props: BasicTableProps) => {
           payload: true,
         });
       setIsLoading("delete");
-      return customizableEndpoint("remove", {
+      return configurableEndpoint("remove", {
         type: tableType,
         [DELETE_FIELD]: rowIdToDelete,
       })
@@ -352,7 +352,7 @@ const BasicTable = (props: BasicTableProps) => {
     const tableType = (propsData || [])[0]?.config?.params?.type;
     if (tableType) {
       setIsLoading("add");
-      return customizableEndpoint("add", {
+      return configurableEndpoint("add", {
         type: tableType,
       })
         .then((response: any) => {
@@ -659,7 +659,7 @@ const BasicTable = (props: BasicTableProps) => {
         formDataToEdit={formDataToEdit}
         commonData={commonData}
         dispatch={dispatch}
-        customizableEndpoint={customizableEndpoint}
+        configurableEndpoint={configurableEndpoint}
         location={location}
         footer={tableFeatures?.form?.footer}
       />

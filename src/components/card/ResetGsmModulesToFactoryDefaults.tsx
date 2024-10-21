@@ -14,12 +14,12 @@ import useToast from "@/hook/useToast";
 
 export default function ResetGsmModulesToFactoryDefaults({
   title,
-  customizableEndpoint,
+  configurableEndpoint,
   dataFields: fields = [],
   forceReload,
 }: {
   title: string;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
   dataFields: DataField[];
   forceReload: () => void;
 }) {
@@ -45,21 +45,21 @@ export default function ResetGsmModulesToFactoryDefaults({
       const responses = await Promise.all([
         //GPRS
         gprsId != null &&
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "gprs",
             name: "gprs_phone_code",
             value: "*99***1#",
             DT_RowId: gprsId,
           }),
         gprsId != null &&
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "gprs",
             name: "gprs_user",
             value: "",
             DT_RowId: gprsId,
           }),
         gprsId != null &&
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "gprs",
             name: "gprs_password",
             value: "",
@@ -67,14 +67,14 @@ export default function ResetGsmModulesToFactoryDefaults({
           }),
         //MODEM
         modemId != null &&
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "gsm_test_interval",
             value: "60",
             DT_RowId: modemId,
           }),
         modemId != null &&
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "gsm_test_retries",
             value: "5",
@@ -82,7 +82,7 @@ export default function ResetGsmModulesToFactoryDefaults({
           }),
         //PHONE
         phoneId != null &&
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "phone",
             name: "jamming_alarm",
             value: "0",

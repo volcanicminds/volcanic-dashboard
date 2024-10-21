@@ -51,6 +51,7 @@ interface BasicInputProps {
   type?: HTMLInputTypeAttribute;
   value?: any;
   variant?: "filled" | "outlined" | "standard";
+  helperText?: ReactNode;
 }
 
 export default function BasicInput({

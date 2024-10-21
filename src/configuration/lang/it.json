@@ -3,10 +3,12 @@
   "tables": "Tabelle",
   "tables-title": "Tabelle",
   "table-name": "Nome",
-  "table-films": "Film",
+  "table-last-name": "Cognome",
   "home": "Home",
   "home-title": "Home",
-  "home-character-title": "Personaggio",
+  "home-user-title": "Personaggio",
   "name-label": "Nome",
-  "films-label": "Film"
+  "last-name-label": "Cognome",
+  "table-avatar": "Avatar",
+  "avatar-label": "Avatar"
 }

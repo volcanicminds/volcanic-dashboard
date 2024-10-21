@@ -3,7 +3,7 @@ import { FC, ReactNode, useCallback, useState } from "react";
 import useClient from "@/hook/useClient";
 import { t } from "i18next";
 import { AxiosError } from "axios";
-import { buildQueryStringWithPrefix, getBackendError } from "@/utils/strings";
+import { buildQueryStringWithPrefix } from "@/utils/strings";
 import { AXIOS_TIMOUT_ERROR } from "@/utils/constants";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -34,134 +34,21 @@ export const ApiProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setReloadComponentByName({ name });
   }, []);
 
-  const login = async (password: string) => {
-    const params = new URLSearchParams();
-    params.append("password", password);
-
-    return {
-      result: "123",
-    };
-
-    //TODO: to develop
-    // return await client
-    //   .get("login", { params })
-    //   .then((res: any) => {
-    //     return res.data;
-    //   })
-    //   .catch((err: any) => {
-    //     //
-    //     return res.data;
-
-    //   });
-  };
-
-  const logout = async ({
-    auth,
-    password,
-  }: {
-    auth?: string;
-    password?: string;
-  }) => {
-    const params = new URLSearchParams();
-
-    if (auth) {
-      params.append("auth", auth);
-    } else if (password) {
-      params.append("password", password);
-    }
-
+  const login = async (email: string, password: string) => {
     return await client
-      .get("logout", { params })
+      .post("login", { email, password })
       .then((res: any) => {
-        const status = res.status;
-        switch (status) {
-          case 200:
-            return res.data;
-          default:
-            return {
-              result: "error",
-              message: `Logout error: ${status}`,
-            };
-        }
+        return res.data;
       })
       .catch((err: any) => {
-        if (err.code === AXIOS_TIMOUT_ERROR) {
-          return {
-            result: "error",
-            message: t("error-timeout"),
-          };
-        }
         return {
           result: "error",
-          message: `Logout error: ${err.message}`,
+          message: err.message,
         };
       });
   };
 
-  const apply = async () => {
-    return await client
-      .get("commit")
-      .then((res: any) => {
-        const status = res.status;
-        switch (status) {
-          case 200:
-            return res.data;
-          default:
-            return {
-              result: "error",
-              message: t("commitFailed"),
-            };
-        }
-      })
-      .catch((err: any) => {
-        if (err.code === AXIOS_TIMOUT_ERROR) {
-          return {
-            result: "error",
-            message: t("error-timeout"),
-          };
-        }
-        return {
-          result: "error",
-          message: getBackendError(err, "commitFailed"),
-        };
-      });
-  };
-
-  const suspend = async ({ auth }: { auth: string }) => {
-    const paramsKeepAlive = new URLSearchParams();
-    paramsKeepAlive.append("auth", auth);
-    paramsKeepAlive.append("renewTime", "1000");
-    paramsKeepAlive.append("force", "1");
-    await client
-      .get("cfgSessionKeepAlive", { params: paramsKeepAlive })
-      .catch((err: any) => {
-        if (err.code === AXIOS_TIMOUT_ERROR) {
-          return {
-            result: "error",
-            message: t("error-timeout"),
-          };
-        }
-        return {
-          result: "error",
-          message: `Keep alive error: ${err.message}`,
-        };
-      });
-
-    return await client.get("suspendSession").catch((err: any) => {
-      if (err.code === AXIOS_TIMOUT_ERROR) {
-        return {
-          result: "error",
-          message: t("error-timeout"),
-        };
-      }
-      return {
-        result: "error",
-        message: `Suspend error: ${err.message}`,
-      };
-    });
-  };
-
-  const customizableEndpoint = async (
+  const configurableEndpoint = async (
     path: string,
     args: any = {},
     {
@@ -214,7 +101,7 @@ export const ApiProvider: FC<{ children: ReactNode }> = ({ children }) => {
       });
   };
 
-  const customizableEndpointPost = async (
+  const configurableEndpointPost = async (
     path: string,
     body: any = {},
     options?: {
@@ -262,11 +149,8 @@ export const ApiProvider: FC<{ children: ReactNode }> = ({ children }) => {
         forceComponentReload,
         forceComponentReloadByName,
         login,
-        logout,
-        apply,
-        suspend,
-        customizableEndpoint,
-        customizableEndpointPost,
+        configurableEndpoint,
+        configurableEndpointPost,
         reload,
         reloadComponent,
         reloadComponentByName,

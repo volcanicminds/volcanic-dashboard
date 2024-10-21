@@ -2,6 +2,7 @@
   "logout-btn": "Esci",
   "login-welcome": "Benvenuto",
   "login-back": "Indietro",
+  "login-email": "Email",
   "login-password": "Password",
   "login-submit": "Conferma"
 }

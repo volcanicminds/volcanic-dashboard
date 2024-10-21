@@ -50,7 +50,7 @@ function PageWrapper({
   config: PageConfiguration;
   children: ReactNode;
 }) {
-  const { reload, customizableEndpoint } = useApi();
+  const { reload, configurableEndpoint } = useApi();
   const { canPoll } = useContext(AppContext);
   const { addNotification } = useToast();
   const [contextData, setContextData] = useState<PageDataContextType>({});
@@ -63,7 +63,7 @@ function PageWrapper({
   );
 
   async function getRemoteData(data: PageData) {
-    const response = await customizableEndpoint(
+    const response = await configurableEndpoint(
       data.config?.url,
       data.config?.params
     );

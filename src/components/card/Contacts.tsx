@@ -25,8 +25,8 @@ interface ContactsProps {
   dataFields: any[];
   tableIdField?: string;
   dispatch: Dispatch<AppActions>;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
-  customizableEndpointPost: (
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpointPost: (
     url: string,
     data?: any,
     config?: any
@@ -48,8 +48,8 @@ interface ContactsProps {
 
 export default function Contacts({
   title,
-  customizableEndpoint,
-  customizableEndpointPost,
+  configurableEndpoint,
+  configurableEndpointPost,
   forceReload,
   id,
   commonData,
@@ -85,7 +85,7 @@ export default function Contacts({
   const executeContactsData = useCallback(
     async function executeContactsData() {
       try {
-        const contactTextResponse = await customizableEndpoint("test-call", {
+        const contactTextResponse = await configurableEndpoint("test-call", {
           cntId: isLoadingContactId,
         });
         if (contactTextResponse?.result == "error") {
@@ -116,7 +116,7 @@ export default function Contacts({
 
   async function startTest(contactId: string) {
     setIsLoading(true);
-    const contactTextResponse = await customizableEndpoint("test-call?start", {
+    const contactTextResponse = await configurableEndpoint("test-call?start", {
       cntId: contactId,
     });
     if (contactTextResponse?.result === "error") {
@@ -261,8 +261,8 @@ export default function Contacts({
             tableIdField={tableIdField}
             tableName={tableName}
             dispatch={dispatch}
-            customizableEndpoint={customizableEndpoint}
-            customizableEndpointPost={customizableEndpointPost}
+            configurableEndpoint={configurableEndpoint}
+            configurableEndpointPost={configurableEndpointPost}
             forceReload={forceReload}
             forceComponentReload={forceComponentReload}
             forceComponentReloadByName={forceComponentReloadByName}

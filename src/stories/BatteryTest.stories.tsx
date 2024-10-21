@@ -13,6 +13,6 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   args: {
     title: "Titolo card",
-    customizableEndpoint: () => Promise.resolve({}),
+    configurableEndpoint: () => Promise.resolve({}),
   },
 };

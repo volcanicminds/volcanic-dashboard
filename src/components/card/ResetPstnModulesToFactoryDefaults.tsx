@@ -14,12 +14,12 @@ import useToast from "@/hook/useToast";
 
 export default function ResetPstnModulesToFactoryDefaults({
   title,
-  customizableEndpoint,
+  configurableEndpoint,
   dataFields: fields = [],
   forceReload,
 }: {
   title: string;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
   dataFields: DataField[];
   forceReload: () => void;
 }) {
@@ -41,61 +41,61 @@ export default function ResetPstnModulesToFactoryDefaults({
       const modemId = fields.find((f) => f.alias === "modemId")?.data || "";
       if (modemId != null) {
         const responses = await Promise.all([
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_test_interval",
             value: "60",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_test_retries",
             value: "5",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_test_mode",
             value: "0",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_dtmf_pause_period",
             value: "100",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_dtmf_tone_period",
             value: "100",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_dtmfcid_pause_period",
             value: "55",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_dtmfcid_tone_period",
             value: "55",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_dtmfcid_delay",
             value: "250",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_line_timeout",
             value: "5",
             DT_RowId: modemId,
           }),
-          customizableEndpoint("edit", {
+          configurableEndpoint("edit", {
             type: "modem",
             name: "pstn_ring_timeout",
             value: "5",

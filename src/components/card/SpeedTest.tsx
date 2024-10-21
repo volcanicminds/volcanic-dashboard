@@ -11,7 +11,7 @@ import { STATUS_FIELD } from "../ApiWrapper";
 
 interface SpeedTestProps {
   title: string;
-  customizableEndpoint: (path: string, args?: any) => Promise<any>;
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
   //Created for storybook
   defaultUpload?: string;
   defaultDownload?: string;
@@ -19,7 +19,7 @@ interface SpeedTestProps {
 
 export default function SpeedTest({
   title,
-  customizableEndpoint,
+  configurableEndpoint,
   defaultUpload = "...",
   defaultDownload = "...",
 }: SpeedTestProps) {
@@ -32,7 +32,7 @@ export default function SpeedTest({
 
   async function executeSpeedTestData() {
     try {
-      const speetTestResponse = await customizableEndpoint("speed-test");
+      const speetTestResponse = await configurableEndpoint("speed-test");
 
       if (speetTestResponse?.result == "error") {
         setIsLoading(false);
