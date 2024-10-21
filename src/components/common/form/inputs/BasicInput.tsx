@@ -7,6 +7,7 @@ import {
   InputLabel,
   OutlinedInput,
   TextField,
+  Typography,
 } from "@mui/material";
 import { HTMLInputTypeAttribute, ReactNode, useMemo, useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
@@ -96,6 +97,12 @@ export default function BasicInput({
           </InputAdornment>
         }
       />
+      <Typography
+        variant="caption"
+        sx={{ color: (theme) => theme.palette.error.main, mt: 0.75 }}
+      >
+        {props.helperText}
+      </Typography>
     </FormControl>
   ) : (
     <TextField InputProps={InputProps} {...props} />

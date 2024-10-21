@@ -5,14 +5,6 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import Loader from "@/components/Loader";
 import { init } from "@/configuration";
 import { FALLBACK_LANGUAGE } from "@/utils/constants";
-import Button from "@/components/common/Button";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
-import { t } from "i18next";
 import Italian from "@/lang/it.json";
 import English from "@/lang/en.json";
 
@@ -22,7 +14,8 @@ type TranslationType = {
 
 export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
   const [is18nInitialized, setIs18nInitialized] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [isTranslationsInitialized, setIsTranslationsInitialized] =
+    useState(false);
   const [isLoadingGeneral, setIsLoadingGeneral] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<string | undefined>(
     i18next.language
@@ -67,7 +60,7 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
         true
       );
 
-      config &&
+      if (config) {
         i18next.addResourceBundle(
           language,
           "translation",
@@ -75,6 +68,8 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
           true,
           true
         );
+        setIsTranslationsInitialized(true);
+      }
     }
   }, [core, config, i18next.language, is18nInitialized, currentLanguage]);
 
@@ -91,34 +86,10 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, []);
 
-  const handleCloseDialog = () => {
-    setOpen(false);
-  };
-
-  const isLanguageInitialized = useMemo(() => {
-    return is18nInitialized && core && config;
-  }, [is18nInitialized, core, config]);
-
   return (
     <>
-      {(!is18nInitialized || isLoadingGeneral) && <Loader page />}
-      {isLanguageInitialized && children}
-      {!isLanguageInitialized && children}
-      <Dialog onClose={handleCloseDialog} open={open}>
-        <DialogTitle
-          sx={{
-            fontSize: "1.2rem",
-          }}
-        >
-          {t("warning")}
-        </DialogTitle>
-        <DialogContent>{t("prg-active-warning")}</DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleCloseDialog}>
-            {t("ok")}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {(!isTranslationsInitialized || isLoadingGeneral) && <Loader page />}
+      {isTranslationsInitialized && !isLoadingGeneral && children}
     </>
   );
 };

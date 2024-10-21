@@ -38,6 +38,7 @@ export default function Login() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
@@ -62,10 +63,12 @@ export default function Login() {
     }
   };
 
+  const handleChange = (name: "email" | "password", value: any) => {
+    setValue(name, value, { shouldDirty: true });
+  };
+
   //email: eve.holt@reqres.in
   //password: cityslicka
-
-  console.log("errors", errors);
 
   return (
     <Stack spacing={5} component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -84,6 +87,7 @@ export default function Login() {
           {...register("email")}
           error={!!errors.email}
           helperText={errors.email?.message}
+          onChange={(event) => handleChange("email", event.target.value)}
         />
         <BasicInput
           label={t("login-password")}
@@ -91,6 +95,7 @@ export default function Login() {
           {...register("password")}
           error={!!errors.password}
           helperText={errors.password?.message}
+          onChange={(event) => handleChange("password", event.target.value)}
         />
       </Stack>
       <Button

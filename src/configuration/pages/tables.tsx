@@ -43,7 +43,11 @@ const inputs = {
           title: [
             {
               type: "field", // or translationId
-              value: "name",
+              value: "first_name",
+            },
+            {
+              type: "field", // or translationId
+              value: "last_name",
             },
           ],
           inputs: [
