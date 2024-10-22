@@ -49,6 +49,31 @@ const home = {
         },
       ],
     },
+    {
+      componentType: "card",
+      componentName: "Alerts",
+      title: "alerts-title",
+      data: [
+        {
+          type: "static",
+          dataFields: [
+            {
+              alias: "Events",
+              data: [
+                {
+                  ok: true,
+                  text: "event ok",
+                },
+                {
+                  ok: false,
+                  text: "event not ok",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   ] as Component[],
 };
 

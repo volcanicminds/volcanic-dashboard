@@ -10,5 +10,8 @@
   "name-label": "Name",
   "last-name-label": "Last name",
   "table-avatar": "Avatar",
-  "avatar-label": "Avatar"
+  "avatar-label": "Avatar",
+  "alerts-title": "Alerts",
+  "all-ok": "All ok",
+  "faults": "Faults"
 }
