@@ -61,7 +61,7 @@ import {
 } from "@/types";
 import { AppActions } from "@/components/layout/mainlayout";
 import { Location } from "react-router-dom";
-import FormFooter from "../common/form/FormFooter";
+import FormFooter from "@/components/common/form/FormFooter";
 import DateTimePicker from "@/components/common/form/inputs/DateTimePicker";
 import DatePicker from "@/components/common/form/inputs/DatePicker";
 import TimePicker from "@/components/common/form/inputs/TimePicker";

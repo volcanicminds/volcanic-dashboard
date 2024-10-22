@@ -1,7 +1,7 @@
 import { createTheme, Theme } from "@mui/material/styles";
-import componentsCustomization from "../themes/components";
-import baseThemes from "../themes/themeIndex";
-import typographies from "../themes/typographies";
+import componentsCustomization from "@/configuration/themes/components";
+import baseThemes from "@/configuration/themes/themeIndex";
+import typographies from "@/configuration/themes/typographies";
 import { i18n } from "i18next";
 import { enUS, itIT } from "@mui/material/locale";
 

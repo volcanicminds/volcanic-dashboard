@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import Sidebar from "@/components/sidebar";
-import Header from "./header/header";
+import Header from "@/components/header/header";
 import {
   Context,
   createContext,
@@ -12,7 +12,7 @@ import {
 import { t } from "i18next";
 import { DrawerProvider } from "@/hook/useDrawer";
 import { DRAWER_WIDTH } from "@/utils/config";
-import FullScreenLoaderWrapper from "./FullScreenLoaderWrapper";
+import FullScreenLoaderWrapper from "@/components/FullScreenLoaderWrapper";
 
 export interface MainLayoutProps {
   children: ReactNode;

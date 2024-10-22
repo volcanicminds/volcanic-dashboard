@@ -25,7 +25,7 @@ import {
   extractData,
   isPolling,
 } from "@/utils/data";
-import { useAuth } from "./AuthProvider";
+import { useAuth } from "@/components/AuthProvider";
 
 function ComponentGenerator({ component }: { component: Component }) {
   const ComponentModule = useMemo(() => {

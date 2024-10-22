@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import SimpleCard from "../common/SimpleCard";
+import SimpleCard from "@/components/common/SimpleCard";
 import { useMemo } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import EngineeringIcon from "@mui/icons-material/Engineering";

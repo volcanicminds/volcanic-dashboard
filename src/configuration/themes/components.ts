@@ -3,7 +3,7 @@ import { merge } from "lodash";
 
 // project import
 import { Theme } from "@mui/material";
-import componentsList from "../themes/componentsIndex";
+import componentsList from "@/configuration/themes/componentsIndex";
 
 const defaultComponent = {
   default: (_theme: Theme) => {},

@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import SimpleCard from "../common/SimpleCard";
+import SimpleCard from "@/components/common/SimpleCard";
 import { Grid, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { DataField } from "@/types";

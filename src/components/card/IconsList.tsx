@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import SimpleCard from "../common/SimpleCard";
+import SimpleCard from "@/components/common/SimpleCard";
 import { Box, Tooltip } from "@mui/material";
 import { Fragment, useMemo } from "react";
 import { normalizedFieldsOrder } from "@/utils/data";

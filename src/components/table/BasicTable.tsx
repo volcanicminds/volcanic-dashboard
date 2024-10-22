@@ -54,7 +54,7 @@ import {
   ColumnHidden,
   TableTimestamp,
 } from "@/types";
-import TableFeatures from "../common/table/common/Features";
+import TableFeatures from "@/components/common/table/common/Features";
 import {
   getFormattedValue,
   getPrintFormatterByType,

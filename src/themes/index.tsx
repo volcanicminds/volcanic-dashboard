@@ -12,7 +12,7 @@ import { deepmerge } from "@mui/utils";
 import i18next from "i18next";
 import { enUS, itIT } from "@mui/material/locale";
 import { DEFAULT_THEME_NAME } from "@/utils/constants";
-import { initTheme } from "../configuration";
+import { initTheme } from "@/configuration";
 
 type ThemeType = { name: string; theme: Theme };
 

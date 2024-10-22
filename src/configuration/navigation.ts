@@ -1,6 +1,6 @@
-import homePage from "./pages/home";
-import tablePage from "./pages/tables";
-import { NavigationLeaf, NavigationNode } from "./types";
+import homePage from "@/configuration/pages/home";
+import tablePage from "@/configuration/pages/tables";
+import { NavigationLeaf, NavigationNode } from "@/configuration/types";
 
 export const isNavigationNode = (
   item: NavigationNode | NavigationLeaf

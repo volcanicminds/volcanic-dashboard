@@ -1,5 +1,5 @@
-import Italian from "./lang/it.json";
-import English from "./lang/en.json";
+import Italian from "@/configuration/lang/it.json";
+import English from "@/configuration/lang/en.json";
 
 export default function init() {
   return {

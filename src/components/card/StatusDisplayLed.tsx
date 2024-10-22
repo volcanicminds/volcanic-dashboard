@@ -7,7 +7,7 @@ import { DEFAULT_ND } from "@/utils/constants";
 import { getWhichRuleFullfilled } from "@/utils/rules";
 import DataGroup from "@/components/common/DataGroup";
 import { DataField, ComponentFooter } from "@/types";
-import Footer from "../common/Footer";
+import Footer from "@/components/common/Footer";
 
 interface StatusDisplayLedProps {
   title: string;

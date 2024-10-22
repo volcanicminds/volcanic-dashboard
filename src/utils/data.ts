@@ -7,7 +7,7 @@ import {
   Rule,
 } from "@/types";
 import _ from "lodash";
-import { COMMON_DATA_FIELD, DEFAULT_ND } from "./constants";
+import { COMMON_DATA_FIELD, DEFAULT_ND } from "@/utils/constants";
 import { PageDataContextType } from "@/page/page";
 
 export function getStaticData(dataItems: PageData[] | Data[], key: string) {
