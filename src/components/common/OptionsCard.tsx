@@ -1,38 +1,31 @@
-import StarIcon from "@mui/icons-material/Star";
 import { t } from "i18next";
 import { Box, Chip, Stack, Typography } from "@mui/material";
 
-interface LicenceCardProps {
-  hasAssessment: boolean;
-  option: {
-    code: string;
-    name: string;
-    subtitle: string;
-    sections: {
-      title: string;
-      chips: string[];
-    }[];
-  };
+export type Option = {
+  code: string;
+  name: string;
+  subtitle: string;
   numericValue: number;
   isPrice: boolean;
-  suggested: boolean;
+  sections: {
+    title: string;
+    chips: string[];
+  }[];
+};
+
+export interface OptionsCardProps {
+  option: Option;
   selected: boolean;
-  disabled: boolean;
   setSelectedOption: (selected: string) => void;
   mode: "filled" | "transparent";
 }
 
-export default function LicenceCard({
-  hasAssessment,
+export default function OptionsCard({
   option,
-  numericValue,
-  isPrice,
-  suggested,
   selected,
-  disabled,
   setSelectedOption,
   mode,
-}: LicenceCardProps) {
+}: OptionsCardProps) {
   return (
     <Stack
       flex="0 0 350px"
@@ -47,11 +40,14 @@ export default function LicenceCard({
         borderColor: selected
           ? (theme) => theme.palette.primary.main
           : "transparent",
-        opacity: disabled ? 0.5 : 1,
-        cursor: disabled ? "not-allowed" : "pointer",
+        cursor: "pointer",
         boxShadow: selected ? "none" : "0 0 10px rgb(0 0 0 / 10%)",
       }}
       onClick={() => {
+        if (selected) {
+          setSelectedOption("");
+          return;
+        }
         setSelectedOption(option.code);
       }}
       position="relative"
@@ -87,18 +83,12 @@ export default function LicenceCard({
         py={0.5}
         sx={{ borderTopLeftRadius: "4px", borderBottomRightRadius: "3px" }}
       >
-        {!hasAssessment && (
-          <Typography fontWeight={700} fontSize={20}>
-            {numericValue} {isPrice ? "€" : ""}{" "}
-            <Typography
-              variant="caption"
-              fontSize={12}
-              textTransform="uppercase"
-            >
-              / {t("general.year")}
-            </Typography>
+        <Typography fontWeight={700} fontSize={20}>
+          {option.numericValue} {option.isPrice ? "€" : ""}{" "}
+          <Typography variant="caption" fontSize={12} textTransform="uppercase">
+            / {t("general.year")}
           </Typography>
-        )}
+        </Typography>
       </Box>
 
       <Typography
@@ -117,25 +107,6 @@ export default function LicenceCard({
       >
         {option.subtitle}
       </Typography>
-
-      {suggested ? (
-        <Chip
-          sx={{
-            mt: 3,
-            bgcolor: "#FF8200",
-            color: "#ffffff",
-            height: "23px",
-            borderRadius: "7px",
-            py: 1.7,
-            fontWeight: "700",
-            textTransform: "uppercase",
-          }}
-          icon={<StarIcon sx={{ color: "#ffffff !important" }} />}
-          label={t("option.suggested")}
-        />
-      ) : (
-        <></>
-      )}
 
       {option.sections.map((section, index) => {
         return (

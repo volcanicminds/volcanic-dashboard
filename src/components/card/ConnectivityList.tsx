@@ -23,7 +23,6 @@ export default function ConnectivityList({
     () => normalizedFieldsOrder(fields, fieldsOrder),
     [fields, fieldsOrder]
   );
-  console.log("normalizedFieldsOrderList", normalizedFieldsOrderList);
 
   return (
     <SimpleCard title={t(title)} fullWidth>
@@ -34,15 +33,11 @@ export default function ConnectivityList({
               fields.find((field) => field.alias === fieldId) ||
               ({} as DataField);
 
-            console.log("field", field);
-
             const ruleFullfilled = getWhichRuleFullfilled(
               field.rules,
               field.alias,
               fields
             );
-
-            console.log("ruleFullfilled", ruleFullfilled);
 
             const item =
               ruleFullfilled && ruleFullfilled.icon ? (

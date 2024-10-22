@@ -2,7 +2,7 @@ import { Component } from "@/types";
 
 const home = {
   title: "home-title",
-  layout: "Grid",
+  layout: "Stack",
   components: [
     {
       componentType: "form",
@@ -263,6 +263,49 @@ const home = {
                       data: "cloud",
                       operator: "equal",
                       value: false,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      componentType: "card",
+      componentName: "OptionsCards",
+      title: "options-card-title",
+      data: [
+        {
+          type: "static",
+          dataFields: [
+            {
+              alias: "options",
+              data: [
+                {
+                  code: "test",
+                  name: "test",
+                  subtitle: "test",
+                  numericValue: 123,
+                  isPrice: false,
+                  sections: [
+                    {
+                      title: "section",
+                      chips: ["chip1", "chip2"],
+                    },
+                  ],
+                },
+                {
+                  code: "test2",
+                  name: "test2",
+                  subtitle: "test2",
+                  numericValue: 321,
+                  isPrice: false,
+                  sections: [
+                    {
+                      title: "section",
+                      chips: ["chip1", "chip2"],
                     },
                   ],
                 },
