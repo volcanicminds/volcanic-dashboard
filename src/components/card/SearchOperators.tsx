@@ -15,7 +15,7 @@ import {
   TableFeatures,
 } from "@/types";
 import BasicTable from "../table/BasicTable";
-import { AppActions } from "../mainlayout";
+import { AppActions } from "@/components/layout/mainlayout";
 import { Location } from "react-router-dom";
 import { MRT_ColumnFiltersState } from "material-react-table";
 import { isWorkingOnline } from "@/utils/data";

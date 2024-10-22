@@ -18,7 +18,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { checkRule } from "@/utils/rules";
 import { PageContext, PageContextInterface } from "@/page/page";
 import { COMMON_DATA_FIELD, CONTEXT_FIELD } from "@/utils/constants";
-import { AppDispatchContext } from "./mainlayout";
+import { AppDispatchContext } from "@/components/layout/mainlayout";
 import { Component, Data, DataField } from "@/types";
 import {
   deduplicateComponentDataFields,

@@ -5,7 +5,7 @@ import Button from "../common/Button";
 import { POLLING_INTERVAL } from "@/utils/constants";
 import { useInterval } from "usehooks-ts";
 import useToast from "@/hook/useToast";
-import { AppActions } from "../mainlayout";
+import { AppActions } from "@/components/layout/mainlayout";
 import { Location } from "react-router-dom";
 import BasicTable from "../table/BasicTable";
 import {

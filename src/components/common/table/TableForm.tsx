@@ -6,7 +6,7 @@ import CommonForm from "@/components/form/CommonForm";
 import { Dispatch, useMemo } from "react";
 import { DEFAULT_ND } from "@/utils/constants";
 import { FormFooter, TableFormInputs } from "@/types";
-import { AppActions } from "@/components/mainlayout";
+import { AppActions } from "@/components/layout/mainlayout";
 import { Location } from "react-router-dom";
 
 export interface TableFormDialogProps {

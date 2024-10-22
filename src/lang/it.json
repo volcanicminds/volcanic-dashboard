@@ -4,5 +4,11 @@
   "login-back": "Indietro",
   "login-email": "Email",
   "login-password": "Password",
-  "login-submit": "Conferma"
+  "login-submit": "Conferma",
+  "all": "Tutti",
+  "general.year": "Anno",
+  "option.selected": "Selezionato",
+  "option.suggested": "Suggerito",
+  "general.exit": "Uscita",
+  "multistep.stepLabel": "Passo {step}"
 }

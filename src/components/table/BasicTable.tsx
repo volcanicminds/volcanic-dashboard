@@ -60,7 +60,7 @@ import {
   getPrintFormatterByType,
   sortingFnPrimitives,
 } from "@/components/common/table/common/utils";
-import { AppActions } from "@/components/mainlayout";
+import { AppActions } from "@/components/layout/mainlayout";
 import Footer from "@/components/common/Footer";
 import { DEFAULT_THEME_NAME } from "@/utils/constants";
 

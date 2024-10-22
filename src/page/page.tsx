@@ -30,7 +30,7 @@ import {
   isPolling,
 } from "@/utils/data";
 import { STATUS_FIELD } from "@/components/ApiWrapper";
-import { AppContext } from "@/components/mainlayout";
+import { AppContext } from "@/components/layout/mainlayout";
 
 export type PageDataContextType = { [key: string]: any };
 export interface PageContextInterface {

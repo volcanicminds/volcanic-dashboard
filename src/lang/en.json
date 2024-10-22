@@ -4,5 +4,11 @@
   "login-back": "Back",
   "login-email": "Email",
   "login-password": "Password",
-  "login-submit": "Login"
+  "login-submit": "Login",
+  "all": "All",
+  "general.year": "Year",
+  "option.selected": "Selected",
+  "option.suggested": "Suggested",
+  "general.exit": "Exit",
+  "multistep.stepLabel": "Step {step}"
 }

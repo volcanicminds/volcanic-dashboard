@@ -59,7 +59,7 @@ import {
   TableFormInput,
   TableFormInputs,
 } from "@/types";
-import { AppActions } from "../mainlayout";
+import { AppActions } from "@/components/layout/mainlayout";
 import { Location } from "react-router-dom";
 import FormFooter from "../common/form/FormFooter";
 import DateTimePicker from "@/components/common/form/inputs/DateTimePicker";

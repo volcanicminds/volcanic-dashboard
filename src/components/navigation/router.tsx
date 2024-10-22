@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "@/page/login";
-import PublicLayout from "@/components/publiclayout";
+import PublicLayout from "@/components/layout/publiclayout";
 import { navigation, isNavigationNode } from "@/configuration";
 import { type NavigationNode } from "@/configuration/types";
 import Page from "@/page/page";
-import Protected from "./protectedroute";
-import Public from "./publicRoute";
-import MainLayout from "../mainlayout";
+import Protected from "@/components/navigation/protectedroute";
+import Public from "@/components/navigation/publicRoute";
+import MainLayout from "@/components/layout/mainlayout";
 import NoMatch from "@/page/404";
 import Waiting from "@/page/waiting";
 
