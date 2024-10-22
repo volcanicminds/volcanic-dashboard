@@ -2,6 +2,8 @@ import { Condition, DataField, Rule } from "@/types";
 
 export function checkRule(condition: Condition, fields: DataField[]) {
   const data = fields.find((field) => field.alias === condition.data)?.data;
+  console.log("data", data);
+  console.log("condition", condition);
   switch (condition.operator) {
     case "greater":
       if (typeof data === "number") {
