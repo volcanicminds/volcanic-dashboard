@@ -18,9 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorBoundaryMessage from "@/components/ErrorBoundaryMessage";
 import Loader from "@/components/Loader";
-import { DATA_COLUMMS_PROP_NAME } from "@/layouts/Columns";
 import { Box } from "@mui/material";
-import { COMMON_DATA_FIELD } from "@/utils/constants";
+import { COMMON_DATA_FIELD, DATA_COLUMMS_PROP_NAME } from "@/utils/constants";
 import { Component, PageConfiguration, PageData } from "@/types";
 import {
   deduplicatePageDataFields,
@@ -256,7 +255,7 @@ export default function Page({ config }: { config: PageConfiguration }) {
           </Box>
         );
       }),
-    [components]
+    [components, config.title]
   );
 
   return <PageWrapper config={config}>{generatedComponents}</PageWrapper>;

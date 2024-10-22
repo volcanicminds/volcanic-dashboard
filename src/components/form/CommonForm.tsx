@@ -103,10 +103,10 @@ function getDefaultValueByType(dataType: HTMLInputTypeAttribute) {
   return dataType === "checkbox"
     ? false
     : dataType === "number"
-      ? 0
-      : dataType === "array"
-        ? []
-        : "";
+    ? 0
+    : dataType === "array"
+    ? []
+    : "";
 }
 
 function getOptions(
@@ -131,7 +131,7 @@ function getOptions(
 
 function isPhone(value: string) {
   for (let i = 0; i < value.length; i++) {
-    let ch = value[i];
+    const ch = value[i];
     if (ch >= "0" && ch <= "9") continue;
     if (ch == "+") continue;
     return false;
@@ -142,7 +142,7 @@ function isPhone(value: string) {
 
 function isHexadecimal(value: string) {
   for (let i = 0; i < value.length; i++) {
-    let ch = value[i];
+    const ch = value[i];
     if (ch >= "0" && ch <= "9") continue;
     if (ch >= "A" && ch <= "F") continue;
     if (ch >= "a" && ch <= "f") continue;
@@ -232,8 +232,8 @@ export default function Form({
     return fieldsData[source] != null
       ? fieldsData[source]
       : item.defaultValue != null
-        ? item.defaultValue
-        : defaultValueByType;
+      ? item.defaultValue
+      : defaultValueByType;
   };
 
   const getRemappedValues = (item: TableFormInput | FormInput, value: any) => {
@@ -244,9 +244,9 @@ export default function Form({
             get: (object: any, path: string) => _.get(object, path),
             commonData,
           })
-        : !!item.remapper.in.translate
-          ? t(String(remapValue(item.remapper.in, value)))
-          : remapValue(item.remapper.in, value)
+        : item.remapper.in.translate
+        ? t(String(remapValue(item.remapper.in, value)))
+        : remapValue(item.remapper.in, value)
       : value;
   };
 
@@ -298,10 +298,10 @@ export default function Form({
             item.dataType === "checkbox"
               ? yup.boolean()
               : item.dataType === "number"
-                ? yup.number()
-                : item.dataType === "array"
-                  ? yup.array()
-                  : yup.string();
+              ? yup.number()
+              : item.dataType === "array"
+              ? yup.array()
+              : yup.string();
 
           acc[item.field] = acc[item.field].test(
             "is-required",
@@ -784,7 +784,7 @@ export default function Form({
       if (submit === "blur" && inputConfig && field) {
         const value = normalizeValue(record[field], inputConfig);
 
-        let shoudlRequireConfirmation = checkRequiredConfirmation(
+        const shoudlRequireConfirmation = checkRequiredConfirmation(
           value,
           inputConfig
         );
@@ -836,7 +836,7 @@ export default function Form({
       const inputConfig = getInputConfigByFieldName(name);
       const normalizedValue = normalizeValue(value, inputConfig);
 
-      let shoudlRequireConfirmation = checkRequiredConfirmation(
+      const shoudlRequireConfirmation = checkRequiredConfirmation(
         normalizedValue,
         inputConfig
       );
@@ -903,8 +903,8 @@ export default function Form({
       <ConfirmDialog
         open={!!confirmDialog?.open}
         content={confirmDialog?.content}
-        onDiscard={confirmDialog?.discard || (() => {})}
-        onConfirm={confirmDialog?.confirm || (() => {})}
+        onDiscard={confirmDialog?.discard || (() => null)}
+        onConfirm={confirmDialog?.confirm || (() => null)}
       />
       <Container>
         <form
@@ -1128,7 +1128,7 @@ export default function Form({
                                 />
                               );
                             default:
-                              const startAdornment = !!item.features
+                              const startAdornment = item.features
                                 ?.withAudioIcon ? (
                                 <InputAdornment position="start">
                                   <MusicNoteIcon />

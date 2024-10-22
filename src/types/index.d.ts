@@ -352,7 +352,7 @@ export type FormFooter = {
         width: number;
       };
       conditions?: Condition[];
-    },
+    }
   ];
 };
 
@@ -387,6 +387,7 @@ export interface Component {
   componentName: string;
   formWriteToContext?: boolean; //For the form, data from the form will be stored in the page context
   "data-column"?: number;
+  stepId?: number;
   title: string;
   data?: Data[];
   //It's a list of aliases

@@ -1,3 +1,4 @@
+import { DATA_COLUMMS_PROP_NAME } from "@/utils/constants";
 import { Stack } from "@mui/material";
 import React, { useMemo } from "react";
 
@@ -5,7 +6,6 @@ const DEFAULT_COLUMN_NUMBER = 2;
 const DEFAULT_COLUMN_WEIGHT = 1;
 const DEFAULT_COLUMN_SPACE = 2;
 const DEFAULT_ROW_SPACE = 2;
-export const DATA_COLUMMS_PROP_NAME = "data-column";
 
 interface ColumnsComponentProps {
   columnNumber?: number;

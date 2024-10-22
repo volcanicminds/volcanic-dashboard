@@ -1,5 +1,6 @@
 import homePage from "@/configuration/pages/home";
 import tablePage from "@/configuration/pages/tables";
+import multistepPage from "@/configuration/pages/multistep";
 import { NavigationLeaf, NavigationNode } from "@/configuration/types";
 
 export const isNavigationNode = (
@@ -30,6 +31,11 @@ const navigation: Array<NavigationNode | NavigationLeaf> = [
         id: "table",
         path: "table",
         config: tablePage,
+      },
+      {
+        id: "multisptep",
+        path: "/multistep/:step",
+        config: multistepPage,
       },
     ],
   },

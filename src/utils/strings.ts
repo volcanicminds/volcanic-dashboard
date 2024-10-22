@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { t } from "i18next";
+import crypto from "crypto";
 
 export function interpretIcon(
   icon: string,
@@ -54,9 +55,9 @@ export function checkValue(value: string | number | boolean) {
 
 export function getBackendError(error: any, defaultErrorCode: string) {
   if (error.responseText != null && error.responseText !== "") {
-    let json = JSON.parse(error.responseText || "");
+    const json = JSON.parse(error.responseText || "");
     if (json !== undefined) {
-      let err = json["result"];
+      const err = json["result"];
       return err;
     }
   }
@@ -100,10 +101,9 @@ export function sha1(str: string) {
   //   example 1: sha1('Kevin van Zonneveld')
   //   returns 1: '54916d2e62f65b3afa6e192e6a601cdbe5cb5897'
 
-  var hash;
+  let hash;
   try {
-    var crypto = require("crypto");
-    var sha1sum = crypto.createHash("sha1");
+    const sha1sum = crypto.createHash("sha1");
     sha1sum.update(str);
     hash = sha1sum.digest("hex");
   } catch (e) {
@@ -114,15 +114,15 @@ export function sha1(str: string) {
     return hash;
   }
 
-  var _rotLeft = function (n: any, s: any) {
-    var t4 = (n << s) | (n >>> (32 - s));
+  const _rotLeft = function (n: any, s: any) {
+    const t4 = (n << s) | (n >>> (32 - s));
     return t4;
   };
 
-  var _cvtHex = function (val: any) {
-    var str = "";
-    var i;
-    var v;
+  const _cvtHex = function (val: any) {
+    let str = "";
+    let i;
+    let v;
 
     for (i = 7; i >= 0; i--) {
       v = (val >>> (i * 4)) & 0x0f;
@@ -131,22 +131,22 @@ export function sha1(str: string) {
     return str;
   };
 
-  var blockstart;
-  var i, j;
-  var W = new Array(80);
-  var H0 = 0x67452301;
-  var H1 = 0xefcdab89;
-  var H2 = 0x98badcfe;
-  var H3 = 0x10325476;
-  var H4 = 0xc3d2e1f0;
-  var A, B, C, D, E;
-  var temp;
+  let blockstart;
+  let i, j;
+  const W = new Array(80);
+  let H0 = 0x67452301;
+  let H1 = 0xefcdab89;
+  let H2 = 0x98badcfe;
+  let H3 = 0x10325476;
+  let H4 = 0xc3d2e1f0;
+  let A, B, C, D, E;
+  let temp;
 
   // utf8_encode
   str = unescape(encodeURIComponent(str));
-  var strLen = str.length;
+  const strLen = str.length;
 
-  var wordArray = [];
+  const wordArray = [];
   for (i = 0; i < strLen - 3; i += 4) {
     j =
       (str.charCodeAt(i) << 24) |

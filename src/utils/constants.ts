@@ -1,4 +1,5 @@
 export const DEFAULT_ND = "N/D";
+export const DATA_COLUMMS_PROP_NAME = "data-column";
 export const KEEP_ALIVE_TIMER = 5 * 60 * 1000; // 5 minutes
 export const KEEP_ALIVE_API_TIMER = 2 * 60 * 1000; // 2 minutes
 export const COUNTDOWN_TIMER = 66 * 1000; // 1 minute and 6 seconds
