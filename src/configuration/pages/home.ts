@@ -173,6 +173,105 @@ const home = {
         },
       ],
     },
+    {
+      componentType: "card",
+      componentName: "IconsList",
+      title: "icons-list-title",
+      data: [
+        {
+          type: "static",
+          dataFields: [
+            {
+              alias: "ethernet",
+              data: true,
+              label: "ethernet-label",
+              rules: [
+                {
+                  icon: "Cable",
+                  conditions: [
+                    {
+                      data: "ethernet",
+                      operator: "equal",
+                      value: true,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              alias: "wifi",
+              data: true,
+              label: "wifi",
+              rules: [
+                {
+                  icon: "Wifi",
+                  conditions: [
+                    {
+                      data: "wifi",
+                      operator: "equal",
+                      value: true,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              alias: "IS4G",
+              data: true,
+              label: "4g",
+              rules: [
+                {
+                  icon: "FourGMobiledata",
+                  conditions: [
+                    {
+                      data: "IS4G",
+                      operator: "equal",
+                      value: true,
+                    },
+                  ],
+                },
+                {
+                  icon: "EMobiledata",
+                  conditions: [
+                    {
+                      data: "IS4G",
+                      operator: "equal",
+                      value: false,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              alias: "cloud",
+              data: false,
+              rules: [
+                {
+                  icon: "CloudQueue",
+                  conditions: [
+                    {
+                      data: "cloud",
+                      operator: "equal",
+                      value: true,
+                    },
+                  ],
+                },
+                {
+                  icon: "CloudOff",
+                  conditions: [
+                    {
+                      data: "cloud",
+                      operator: "equal",
+                      value: false,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   ] as Component[],
 };
 
