@@ -1,13 +1,14 @@
 import { DataField } from "@/types";
+import { t } from "i18next";
 import { Stack, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 import OptionsCard, { Option } from "@/components/common/OptionsCard";
+import SimpleCard from "@/components/common/SimpleCard";
 
 interface OptionsCardsProps {
   title: string;
   dataFields: DataField[];
-  fieldsOrder: string[];
 }
 
 export default function OptionsCards({
@@ -22,8 +23,7 @@ export default function OptionsCards({
   );
 
   return (
-    <Stack spacing={2} sx={{ width: "100%" }}>
-      <Typography variant="h5">{title}</Typography>
+    <SimpleCard title={t(title)} fullWidth>
       <ScrollContainer className="scroll-container-licences">
         <Stack spacing={2} py={5} direction="row" className="scroll-content">
           {options.map((option) => {
@@ -39,6 +39,6 @@ export default function OptionsCards({
           })}
         </Stack>
       </ScrollContainer>
-    </Stack>
+    </SimpleCard>
   );
 }

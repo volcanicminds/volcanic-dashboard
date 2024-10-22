@@ -1,28 +1,36 @@
-import { Stack, Typography, Box, Skeleton } from "@mui/material";
+import { Stack, Typography, Box } from "@mui/material";
 import { t } from "i18next";
 import LinearProgressWithLabel from "@/components/common/LinearProgressWithLabel";
+import { DataField } from "@/types";
+import { useMemo } from "react";
+import SimpleCard from "@/components/common/SimpleCard";
 
 interface ProgressBarsInterface {
-  isLoading: boolean;
-  values: {
-    label?: string;
-    translationId?: string;
-    value: number;
-  }[];
+  title: string;
+  dataFields: DataField[];
 }
 
-export default function ProgressBars(props: ProgressBarsInterface) {
-  const { isLoading, values } = props;
+type ProgressBar = {
+  value: number;
+  label: string;
+};
+
+export default function ProgressBars({
+  title,
+  dataFields: fields = [],
+}: ProgressBarsInterface) {
+  const values = useMemo(
+    () => fields.map((field) => field.data as ProgressBar).flat(),
+    [fields]
+  );
+
   return (
-    <Stack direction="column">
-      {!isLoading &&
-        values.map((valueItem, index) => {
+    <SimpleCard title={t(title)} fullWidth>
+      <Stack direction="column" sx={{ width: "100%" }}>
+        {values.map((valueItem, index) => {
           const value = valueItem.value;
-          const label = valueItem.label
-            ? valueItem.label
-            : valueItem.translationId
-            ? t(valueItem.translationId)
-            : "";
+          const label = t(valueItem.label);
+
           return (
             <Stack
               key={`progress-bars-${index}`}
@@ -39,16 +47,7 @@ export default function ProgressBars(props: ProgressBarsInterface) {
             </Stack>
           );
         })}
-      {isLoading &&
-        [...Array(6)].map((_, index) => {
-          return (
-            <Skeleton
-              key={`partner-${index}`}
-              variant="text"
-              sx={{ fontSize: "1rem", width: "100%" }}
-            />
-          );
-        })}
-    </Stack>
+      </Stack>
+    </SimpleCard>
   );
 }

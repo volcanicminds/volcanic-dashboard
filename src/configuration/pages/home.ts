@@ -315,6 +315,35 @@ const home = {
         },
       ],
     },
+    {
+      componentType: "card",
+      componentName: "ProgressBars",
+      title: "progress-bars-card-title",
+      data: [
+        {
+          type: "static",
+          dataFields: [
+            {
+              alias: "options",
+              data: [
+                {
+                  value: 33,
+                  label: "value 1",
+                },
+                {
+                  value: 25,
+                  label: "value 2",
+                },
+                {
+                  value: 42,
+                  label: "value 2",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   ] as Component[],
 };
 
