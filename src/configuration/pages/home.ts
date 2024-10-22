@@ -344,6 +344,77 @@ const home = {
         },
       ],
     },
+    {
+      componentType: "card",
+      componentName: "StatusDisplay",
+      title: "status-display-card-title",
+      data: [
+        {
+          type: "static",
+          dataFields: [
+            {
+              data: true,
+              alias: "Ethernet",
+              label: "ethernet-status",
+              rules: [
+                {
+                  result: "ko",
+                  resultLabel: "not-connected",
+                  conditions: [
+                    {
+                      data: "Ethernet",
+                      operator: "equal",
+                      value: false,
+                    },
+                  ],
+                },
+                {
+                  result: "ok",
+                  resultLabel: "connected",
+                  conditions: [
+                    {
+                      data: "Ethernet",
+                      operator: "equal",
+                      value: true,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              data: true,
+              alias: "Wifi",
+              label: "wifi-status",
+              rules: [
+                {
+                  result: "ko",
+                  resultLabel: "not-connected",
+                  conditions: [
+                    {
+                      data: "Wifi",
+                      operator: "equal",
+                      value: false,
+                    },
+                  ],
+                },
+                {
+                  result: "ok",
+                  resultLabel: "connected",
+                  conditions: [
+                    {
+                      data: "Wifi",
+                      operator: "equal",
+                      value: true,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      fieldsOrder: ["Wifi", "Ethernet"],
+    },
   ] as Component[],
 };
 

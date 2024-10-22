@@ -17,5 +17,9 @@
   "connectivity-list-title": "Lista di connettività",
   "icons-list-title": "Lista di icone",
   "options-card-title": "Titolo della carta delle opzioni",
-  "progress-bars-card-title": "Titolo della carta delle barre di avanzamento"
+  "progress-bars-card-title": "Titolo della carta delle barre di avanzamento",
+  "status-display-card-title": "Titolo della carta dello stato",
+  "ethernet-status": "Stato di Ethernet",
+  "not-connected": "Non connesso",
+  "wifi-status": "Stato del WiFi"
 }

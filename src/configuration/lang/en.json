@@ -17,5 +17,9 @@
   "connectivity-list-title": "Connectivity list",
   "icons-list-title": "Icons list",
   "options-card-title": "Options card title",
-  "progress-bars-card-title": "Progress bars card title"
+  "progress-bars-card-title": "Progress bars card title",
+  "status-display-card-title": "Status card title",
+  "ethernet-status": "Ethernet status",
+  "not-connected": "Not connected",
+  "wifi-status": "WiFi status"
 }
