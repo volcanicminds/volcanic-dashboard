@@ -21,5 +21,10 @@
   "status-display-card-title": "Titolo della carta dello stato",
   "ethernet-status": "Stato di Ethernet",
   "not-connected": "Non connesso",
-  "wifi-status": "Stato del WiFi"
+  "wifi-status": "Stato del WiFi",
+  "cases-title": "Casi",
+  "case1-label": "Caso 1",
+  "case2-label": "Caso 2",
+  "case3-label": "Caso 3",
+  "case4-label": "Caso 4"
 }

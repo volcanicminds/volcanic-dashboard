@@ -21,5 +21,10 @@
   "status-display-card-title": "Status card title",
   "ethernet-status": "Ethernet status",
   "not-connected": "Not connected",
-  "wifi-status": "WiFi status"
+  "wifi-status": "WiFi status",
+  "cases-title": "Cases",
+  "case1-label": "Case 1",
+  "case2-label": "Case 2",
+  "case3-label": "Case 3",
+  "case4-label": "Case 4"
 }

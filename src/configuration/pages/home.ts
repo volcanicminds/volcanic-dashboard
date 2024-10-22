@@ -1,5 +1,64 @@
 import { Component } from "@/types";
 
+const green = "#06b201";
+const purple = "#8401fe";
+const white = "#ffffff";
+const gray = "#7f7f7e";
+const lightBlue = "#2793dd";
+
+const rules = (field: string) => [
+  {
+    result: green,
+    conditions: [
+      {
+        data: field,
+        operator: "equal",
+        value: "OPEN",
+      },
+    ],
+  },
+  {
+    result: lightBlue,
+    conditions: [
+      {
+        data: field,
+        operator: "equal",
+        value: "EXCLUDED",
+      },
+    ],
+  },
+  {
+    result: purple,
+    conditions: [
+      {
+        data: field,
+        operator: "equal",
+        value: "INHIBITED",
+      },
+    ],
+  },
+  {
+    result: white,
+    conditions: [
+      {
+        data: field,
+        operator: "equal",
+        value: "CLOSE",
+      },
+    ],
+  },
+  {
+    result: gray,
+    conditions: [
+      {
+        data: field,
+        operator: "notIn",
+        value: ["OPEN", "EXCLUDED", "INHIBITED", "CLOSE"],
+      },
+    ],
+  },
+];
+
 const home = {
   title: "home-title",
   layout: "Stack",
@@ -414,6 +473,43 @@ const home = {
         },
       ],
       fieldsOrder: ["Wifi", "Ethernet"],
+    },
+    {
+      componentType: "card",
+      componentName: "StatusDisplayLed",
+      title: "cases-title",
+      data: [
+        {
+          type: "static",
+          dataFields: [
+            {
+              data: "OPEN",
+              alias: "case1",
+              label: "case1-label",
+              rules,
+            },
+            {
+              data: "EXCLUDED",
+              alias: "case2",
+              label: "case2-label",
+              rules,
+            },
+            {
+              data: "INHIBITED",
+              alias: "case3",
+              label: "case3-label",
+              rules,
+            },
+            {
+              data: "CLOSE",
+              alias: "case4",
+              label: "case4-label",
+              rules,
+            },
+          ],
+        },
+      ],
+      fieldsOrder: ["TamperInput", "dip1sw", "SabInput", "usbextTamperStatus"],
     },
   ] as Component[],
 };
