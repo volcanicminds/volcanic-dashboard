@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Loader({
   page,
@@ -17,6 +17,7 @@ export default function Loader({
   page?: boolean;
   skeleton?: boolean;
   justifyContent?: string;
+  source?: string;
 }) {
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -27,30 +28,34 @@ export default function Loader({
     return () => clearTimeout(timer); // Clean up on component unmount
   }, []);
 
-  const LoaderComponent = skeleton ? (
-    <Card sx={{ width: "100%" }}>
-      <CardContent>
-        <Typography variant="h5">
-          <Skeleton width={200} height={60} />
-        </Typography>
-        <Box sx={{ marginTop: 2 }}>
-          <Typography variant="body1">
-            <Skeleton width={300} height={40} />
-          </Typography>
-          <Typography variant="body1">
-            <Skeleton width={300} height={40} />
-          </Typography>
-          <Typography variant="body1">
-            <Skeleton width={300} height={40} />
-          </Typography>
-          <Typography variant="body1">
-            <Skeleton width={300} height={40} />
-          </Typography>
-        </Box>
-      </CardContent>
-    </Card>
-  ) : (
-    <CircularProgress />
+  const LoaderComponent = useMemo(
+    () =>
+      skeleton ? (
+        <Card sx={{ width: "100%" }}>
+          <CardContent>
+            <Typography variant="h5">
+              <Skeleton width={200} height={60} />
+            </Typography>
+            <Box sx={{ marginTop: 2 }}>
+              <Typography variant="body1">
+                <Skeleton width={300} height={40} />
+              </Typography>
+              <Typography variant="body1">
+                <Skeleton width={300} height={40} />
+              </Typography>
+              <Typography variant="body1">
+                <Skeleton width={300} height={40} />
+              </Typography>
+              <Typography variant="body1">
+                <Skeleton width={300} height={40} />
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+      ) : (
+        <CircularProgress />
+      ),
+    [skeleton]
   );
 
   return (

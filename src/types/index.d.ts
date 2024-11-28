@@ -75,7 +75,7 @@ export type Rule = {
   conditions: Condition[];
   icon?: string;
   additionalIcon?: string;
-  result?: "ok" | "ko" | string;
+  result?: "ok" | "ko" | "warning" | string;
   resultLabel?: string;
   tooltip?: string;
 };
@@ -94,8 +94,7 @@ export type ColumnCellFormatter = {
     | "date"
     | "number"
     | "boolean"
-    | "bulletNumbers"
-    | "image"
+    | "sectors"
     | "scenarios"
     | "context"
     | "translationLabel"
@@ -134,6 +133,7 @@ export type ColumnCellFormatter = {
 export type ConfigColumn = {
   field: string;
   headerName?: string;
+  enableHiding?: boolean;
   hidden?: ColumnHidden;
   hiddenFromPrint?: ColumnHidden;
   width?: number;
@@ -236,6 +236,18 @@ export type EnablingFieldType =
       inputs: FormInputs | TableFormInputs,
       config: EnablingFieldTypeConfig
     ) => boolean);
+export type InputOnBlurCollateral = (
+  field: string,
+  value: any,
+  tools: {
+    values: any;
+    t: (key: string) => string;
+    addNotification: (message: string, options?: any) => any;
+    configurableEndpoint: (path: string, args?: any) => Promise<any>;
+    refresh: () => void;
+    forceReload: () => void;
+  }
+) => void;
 export type FormInput = {
   type: string;
   dataType?: any & "array";
@@ -249,6 +261,7 @@ export type FormInput = {
     severity: "error" | "warning" | "info" | "success";
     message: string;
   };
+  inputOnBlurCollateral?: InputOnBlurCollateral;
   requiredConfirmation?: boolean | ((value: Primitive, values: any) => boolean);
   requiredConfirmationContentId?: string;
   binding: string | ((arg: BindingFunctionArgs) => void);
@@ -356,24 +369,73 @@ export type FormFooter = {
   ];
 };
 
+export type TableFormValidation = (
+  values: any,
+  tools: {
+    t: (key: string) => string;
+    commonData: any;
+  }
+) => string | boolean;
+
 export type TableForm = {
   title: {
     type: "field" | "translationId";
     value: string;
   }[];
   inputs: TableFormInputs;
+  validation?: TableFormValidation;
   footer?: FormFooter;
+};
+
+export type TableCopyPasteFieldRemapper = (value: any) => string;
+export type TableCopyPasteRemapperFunction = (value: any) =>
+  | Primitive
+  | {
+      [key: string]: Primitive;
+    };
+export type TableCopyPasteBindingFunction = (arg: {
+  data: any;
+  value: any;
+  configurableEndpoint: (path: string, args?: any) => Promise<any>;
+}) => void;
+
+export type TableCopyPasteField = {
+  field: string;
+  label: string;
+  selected?: boolean;
+  readOnly?: boolean;
+  disabled?: boolean;
+  remapper?: {
+    field?: TableCopyPasteFieldRemapper;
+    value?: TableCopyPasteRemapperFunction;
+  };
+  binding?: TableCopyPasteBindingFunction;
 };
 export type TableFeatures = {
   actions?: {
     positionActionsColumn?: "first" | "last";
     withDelete?: boolean;
+    withLocate?: boolean;
+    withStopLocate?: boolean;
+    withSearch?: boolean;
+    withReset?: boolean;
+    withReplace?: boolean;
+    withUpdateVoiceMessages?: boolean;
+    withTouchScreenFirmwareUpdate?: boolean;
+    withLearnKeys?: boolean;
+    withBatteryTest?: boolean;
+    withResetCodes?: boolean;
+    withCopyPaste?: boolean;
     custom?: (args: any) => any;
   };
+  //By default the DT_RowId (or the default row id) is ignored during the copy
+  copyPasteFields?: TableCopyPasteField[];
   add?: boolean;
   form?: TableForm;
   exportCsv?: boolean;
   exportPdf?: boolean;
+  resetMemory?: boolean;
+  firmwareUpdate?: boolean;
   refresh?: boolean;
   refreshComponentOnSave?: string;
 };
@@ -382,20 +444,29 @@ export type TableTimestamp = {
   format: "DD/MM/YYYY HH:mm:ss";
   delay?: number;
 };
+export type FormOnBlurCollateral = (
+  field: string,
+  value: any,
+  tools: {
+    configurableEndpoint: (path: string, args?: any) => Promise<any>;
+    refresh: () => void;
+    forceReload: () => void;
+  }
+) => void;
 export interface Component {
   componentType: string;
   componentName: string;
   formWriteToContext?: boolean; //For the form, data from the form will be stored in the page context
+  formOnBlurCollateral?: FormOnBlurCollateral;
   "data-column"?: number;
-  stepId?: number;
   title: string;
   data?: Data[];
-  //It's a list of aliases
-  fieldsOrder?: string[];
+  fieldsOrder?: string[]; //It's a list of aliases
   qrCodeFieldId?: string;
   firmwareFieldId?: string;
   firmwareFieldToAttach?: string;
   visible?: Condition[];
+  disabled?: Condition[]; //only for the form and the table
   features?: TableFeatures;
   footer?: ComponentFooter | FormFooter;
   config?: DefaultConfig;
@@ -405,4 +476,5 @@ export interface Component {
   inputs?: FormInputs;
   tableIdField?: string;
   tableName?: string;
+  isHideable?: boolean;
 }

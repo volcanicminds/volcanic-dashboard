@@ -3,6 +3,7 @@ import {
   Suspense,
   lazy,
   memo,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -19,7 +20,7 @@ import { checkRule } from "@/utils/rules";
 import { PageContext, PageContextInterface } from "@/page/page";
 import { COMMON_DATA_FIELD, CONTEXT_FIELD } from "@/utils/constants";
 import { AppDispatchContext } from "@/components/layout/mainlayout";
-import { Component, Data, DataField } from "@/types";
+import { Component, Condition, Data, DataField } from "@/types";
 import {
   deduplicateComponentDataFields,
   extractData,
@@ -38,7 +39,7 @@ function ComponentGenerator({ component }: { component: Component }) {
       );
     }
     return null;
-  }, [component.componentType]);
+  }, [component.componentName, component.componentType]);
   const [dataFields, setDataFields] = useState<DataField[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
@@ -59,6 +60,7 @@ function ComponentGenerator({ component }: { component: Component }) {
   const { data: contextData } = useContext<PageContextInterface>(PageContext);
 
   const dispatch = useContext(AppDispatchContext);
+  const { dispatch: dispatchPage } = useContext(PageContext);
 
   async function getRemoteData(data: Data) {
     const response = await configurableEndpoint(
@@ -93,10 +95,7 @@ function ComponentGenerator({ component }: { component: Component }) {
     });
   }
 
-  async function getParallelRemoteData(
-    dataItems: Data[],
-    startLoader: boolean = true
-  ) {
+  async function getParallelRemoteData(dataItems: Data[], startLoader = true) {
     startLoader && setIsLoading(true);
     return await Promise.allSettled(
       dataItems.filter((data) => data.type === "remote").map(getRemoteData)
@@ -215,6 +214,7 @@ function ComponentGenerator({ component }: { component: Component }) {
     return () => {
       cleanup();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [component.data, reload]);
   //Static use effect
   useEffect(() => {
@@ -223,6 +223,7 @@ function ComponentGenerator({ component }: { component: Component }) {
     if (!component.data) {
       setDataFields([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [component.data, reload]);
   //Context use effect
   useEffect(() => {
@@ -231,11 +232,12 @@ function ComponentGenerator({ component }: { component: Component }) {
     if (!component.data) {
       setDataFields([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [component.data, contextData, reload]);
 
   const id = useMemo(() => {
     return String(component.componentName + Math.random());
-  }, []);
+  }, [component.componentName]);
 
   useEffect(() => {
     if (reloadComponent?.id === id) {
@@ -243,7 +245,8 @@ function ComponentGenerator({ component }: { component: Component }) {
 
       getParallelRemoteData(dataItems, false);
     }
-  }, [reloadComponent]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [component.data, id, reloadComponent]);
 
   useEffect(() => {
     if (reloadComponentByName?.name === component.componentName) {
@@ -251,50 +254,64 @@ function ComponentGenerator({ component }: { component: Component }) {
 
       getParallelRemoteData(dataItems, false);
     }
-  }, [reloadComponentByName]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [component.componentName, component.data, reloadComponentByName]);
+
+  const evaluateProperty = useCallback(
+    (property: string, defaultValue: boolean) => {
+      if ((component as any)[property] == null) {
+        return defaultValue;
+      }
+      if (!Array.isArray((component as any)[property])) {
+        console.warn(
+          `Component ${property} property should be an array of conditions`
+        );
+        return defaultValue;
+      }
+
+      let valuesToCheck = {} as any;
+      dataFields.forEach((field) => {
+        valuesToCheck[field.alias] = field.data;
+      });
+      valuesToCheck = { ...valuesToCheck, [CONTEXT_FIELD]: contextData };
+
+      return (component as any)[property].every((condition: Condition) => {
+        const hasPassed = checkRule(condition, [
+          {
+            alias: condition.data,
+            data: _.get(valuesToCheck, condition.data),
+          },
+        ]);
+
+        return hasPassed;
+      });
+    },
+    [dataFields, contextData, component]
+  );
 
   const isVisible = useMemo(() => {
-    if (component.visible == null) {
-      return true;
-    }
-    if (!Array.isArray(component.visible)) {
-      console.warn(
-        "Component visible property should be an array of conditions"
-      );
-      return true;
-    }
-
-    let valuesToCheck = {} as any;
-    dataFields.forEach((field) => {
-      valuesToCheck[field.alias] = field.data;
-    });
-    valuesToCheck = { ...valuesToCheck, [CONTEXT_FIELD]: contextData };
-
-    return component.visible.every((condition) => {
-      const hasPassed = checkRule(condition, [
-        {
-          alias: condition.data,
-          data: _.get(valuesToCheck, condition.data),
-        },
-      ]);
-
-      return hasPassed;
-    });
+    return evaluateProperty("visible", true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataFields, contextData, component.visible]);
+
+  const isDisabled = useMemo(() => {
+    return evaluateProperty("disabled", false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataFields, contextData, component.disabled]);
 
   return (
     <ErrorBoundary fallback={<ErrorBoundaryMessage />}>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader source="contentGenerator1" />}>
         {ComponentModule && isVisible ? (
           isLoading ? (
-            <Loader skeleton justifyContent="left" />
+            <Loader skeleton justifyContent="left" source="contentGenerator2" />
           ) : (
             <ComponentModule
-              isLoading={isLoading}
               dataFields={dataFields}
               commonData={(contextData || {})[COMMON_DATA_FIELD]}
               id={id}
               dispatch={dispatch}
+              dispatchPage={dispatchPage}
               configurableEndpoint={configurableEndpoint}
               configurableEndpointPost={configurableEndpointPost}
               forceComponentReload={forceComponentReload}
@@ -305,6 +322,7 @@ function ComponentGenerator({ component }: { component: Component }) {
               logout={logout}
               navigate={navigate}
               setToken={setToken}
+              isDisabled={isDisabled}
               {...component}
             />
           )
@@ -314,4 +332,5 @@ function ComponentGenerator({ component }: { component: Component }) {
   );
 }
 
-export default memo(ComponentGenerator);
+const MemoizedComponentGenerator = memo(ComponentGenerator);
+export default MemoizedComponentGenerator;

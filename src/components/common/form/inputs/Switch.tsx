@@ -1,5 +1,6 @@
 import { Theme } from "@emotion/react";
 import {
+  Box,
   FormControlLabel,
   Switch as MUISwitch,
   Stack,
@@ -7,6 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import { ChangeEvent } from "react";
+import CopyAllIcon from "@mui/icons-material/CopyAll";
+import Button from "../../Button";
 
 interface SwitchProps {
   color?: "primary" | "secondary" | "error" | "info" | "success" | "warning";
@@ -19,6 +22,8 @@ interface SwitchProps {
   defaultValue?: boolean;
   sx?: SxProps<Theme>;
   sublabels?: string[];
+  clipBoardTexts?: string[];
+  subLabelCopyFn?: (text: string) => void;
 }
 
 export default function Switch({
@@ -32,6 +37,8 @@ export default function Switch({
   defaultValue,
   sx,
   sublabels,
+  clipBoardTexts,
+  subLabelCopyFn,
 }: SwitchProps) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.checked;
@@ -39,27 +46,53 @@ export default function Switch({
   };
 
   return (
-    <FormControlLabel
-      disabled={disabled}
-      sx={sx}
-      control={
-        <MUISwitch
-          id={id}
-          required={required}
-          checked={defaultValue || value}
-          onChange={handleChange}
-          inputProps={{ "aria-label": "controlled" }}
-          color={color}
-        />
-      }
-      label={
-        <Stack>
-          {label}
-          {sublabels?.map((sublabel, index) => (
-            <Typography key={index}>{sublabel}</Typography>
-          ))}
-        </Stack>
-      }
-    />
+    <Box>
+      <FormControlLabel
+        disabled={disabled}
+        sx={sx}
+        control={
+          <MUISwitch
+            id={id}
+            required={required}
+            checked={defaultValue || value}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+            color={color}
+          />
+        }
+        label={
+          <Stack>
+            {label}
+            {sublabels?.map((sublabel, index) => {
+              const hasCopyToClipboard =
+                clipBoardTexts &&
+                subLabelCopyFn &&
+                clipBoardTexts[index] != null;
+
+              return hasCopyToClipboard ? (
+                <Stack
+                  direction="row"
+                  key={`switch-${index}-${Math.random()}`}
+                  alignItems="center"
+                >
+                  <Typography sx={{ wordBreak: "break-all" }}>
+                    {sublabel}
+                  </Typography>
+                  <Button
+                    isIconButton
+                    icon={<CopyAllIcon />}
+                    onClick={() => subLabelCopyFn(clipBoardTexts[index])}
+                  />
+                </Stack>
+              ) : (
+                <Typography key={`switch-${index}-${Math.random()}`}>
+                  {sublabel}
+                </Typography>
+              );
+            })}
+          </Stack>
+        }
+      />
+    </Box>
   );
 }

@@ -4,11 +4,8 @@ import useClient from "@/hook/useClient";
 import { t } from "i18next";
 import { AxiosError } from "axios";
 import { buildQueryStringWithPrefix } from "@/utils/strings";
-import { AXIOS_TIMOUT_ERROR } from "@/utils/constants";
+import { AXIOS_TIMEOUT_ERROR, STATUS_FIELD } from "@/utils/constants";
 import { useAuth } from "@/components/AuthProvider";
-
-export const DEFAULT_SESSION_MODE = "web";
-export const STATUS_FIELD = "_response_status";
 
 export const ApiProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [reload, setReload] = useState();
@@ -77,7 +74,7 @@ export const ApiProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return { ...res.data, [STATUS_FIELD]: res.status };
       })
       .catch((err: AxiosError) => {
-        if (err.code === AXIOS_TIMOUT_ERROR) {
+        if (err.code === AXIOS_TIMEOUT_ERROR) {
           return {
             result: "error",
             message: t("error-timeout"),
@@ -119,7 +116,7 @@ export const ApiProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return { ...res.data, [STATUS_FIELD]: res.status };
       })
       .catch((err: AxiosError) => {
-        if (err.code === AXIOS_TIMOUT_ERROR) {
+        if (err.code === AXIOS_TIMEOUT_ERROR) {
           return {
             result: "error",
             message: t("error-timeout"),

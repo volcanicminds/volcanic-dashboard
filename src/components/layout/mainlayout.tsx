@@ -45,7 +45,9 @@ export const AppContext: Context<AppContextType> =
   });
 
 export const AppDispatchContext: Context<AppDispatchContextType> =
-  createContext<AppDispatchContextType>(() => {});
+  createContext<AppDispatchContextType>(() => {
+    throw new Error("AppDispatchContext has not been initialized.");
+  });
 
 export default function MainLayout({ children, title }: MainLayoutProps) {
   const [state, dispatch] = useReducer<Reducer<any, AppActions>>(appReducer, {

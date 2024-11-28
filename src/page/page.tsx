@@ -2,24 +2,32 @@ import _ from "lodash";
 import ComponentGenerator from "@/components/ComponentGenerator";
 import {
   Context,
+  Dispatch,
   ReactNode,
+  Reducer,
   Suspense,
   createContext,
   lazy,
-  useContext,
+  memo,
   useEffect,
   useMemo,
+  useReducer,
   useRef,
   useState,
 } from "react";
+import { t } from "i18next";
 import useApi from "@/hook/useApi";
 import useToast from "@/hook/useToast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorBoundaryMessage from "@/components/ErrorBoundaryMessage";
 import Loader from "@/components/Loader";
 import { Box } from "@mui/material";
-import { COMMON_DATA_FIELD, DATA_COLUMMS_PROP_NAME } from "@/utils/constants";
+import {
+  COMMON_DATA_FIELD,
+  DATA_COLUMMS_PROP_NAME,
+  STATUS_FIELD,
+} from "@/utils/constants";
 import { Component, PageConfiguration, PageData } from "@/types";
 import {
   deduplicatePageDataFields,
@@ -28,19 +36,35 @@ import {
   getStaticDataFields,
   isPolling,
 } from "@/utils/data";
-import { STATUS_FIELD } from "@/components/ApiWrapper";
-import { AppContext } from "@/components/layout/mainlayout";
+import { useAuth } from "@/components/AuthProvider";
+import { LAST_PAGE_STORAGE_KEY, save } from "@/utils/localStorage";
 
 export type PageDataContextType = { [key: string]: any };
 export interface PageContextInterface {
   data: PageDataContextType;
   setContextData: (data: any) => void;
+  dispatch: Dispatch<PageActions>;
 }
 export const PageContext: Context<PageContextInterface> = createContext(
   {} as PageContextInterface
 );
 
 const EXCLUDE_DATA_FIELDS = [STATUS_FIELD];
+
+interface PageState {
+  canPoll: boolean;
+}
+
+export type PageActions = { type: "can_poll"; payload: boolean };
+
+function pageReducer(state: PageState, action: PageActions) {
+  switch (action.type) {
+    case "can_poll":
+      return { ...state, canPoll: action.payload };
+    default:
+      return state;
+  }
+}
 
 function PageWrapper({
   config,
@@ -49,12 +73,15 @@ function PageWrapper({
   config: PageConfiguration;
   children: ReactNode;
 }) {
-  const { reload, configurableEndpoint } = useApi();
-  const { canPoll } = useContext(AppContext);
+  const { checkAuth, reload, configurableEndpoint } = useApi();
+  const { token, setToken } = useAuth();
   const { addNotification } = useToast();
   const [contextData, setContextData] = useState<PageDataContextType>({});
   const navigate = useNavigate();
   const intervalsRef = useRef<NodeJS.Timeout[]>([]);
+  const [state, dispatch] = useReducer<Reducer<any, PageActions>>(pageReducer, {
+    canPoll: true,
+  });
 
   const Layout = useMemo(
     () => lazy(() => import(`../layouts/${config?.layout}.tsx`)),
@@ -135,21 +162,24 @@ function PageWrapper({
     intervalsRef.current = [];
   }
 
-  function getData(canPollNow: boolean) {
-    const dataItems = config.data || ([] as PageData[]);
-
-    /* start REMOTE data management */
+  function getPollingData() {
     clearCurentIntervals();
-    if (canPollNow) {
-      //Start polling for remote data with config polling interval
-      const intervalsData = dataItems.filter(isPolling).map((data) => {
-        return setInterval(async () => {
-          getRemoteData(data);
-        }, data.config?.polling?.interval);
-      });
-      intervalsRef.current = intervalsData;
-    }
 
+    const dataItems = (config.data as PageData[]) || ([] as PageData[]);
+    //Start polling for remote data with config polling interval
+    const intervalsData = dataItems.filter(isPolling).map((data) => {
+      return setInterval(async () => {
+        getRemoteData(data);
+      }, data.config?.polling?.interval);
+    });
+    intervalsRef.current = intervalsData;
+    return () => {
+      clearCurentIntervals();
+    };
+  }
+
+  function getData(dataItems: PageData[] = []) {
+    /* start REMOTE not polling data management */
     Promise.allSettled(
       dataItems.filter((data) => data.type === "remote").map(getRemoteData)
     );
@@ -183,24 +213,19 @@ function PageWrapper({
       };
     });
     /* end CONTEXT data management */
-
-    //Returns a callback to clear all polling intervals
-    return () => {
-      clearCurentIntervals();
-    };
   }
 
   useEffect(() => {
-    if (canPoll) {
-      const cleanup = getData(canPoll);
+    if (state.canPoll) {
+      const cleanup = getPollingData();
 
       return () => {
         cleanup();
       };
-    } else if (!canPoll) {
+    } else if (!state.canPoll) {
       clearCurentIntervals();
     }
-  }, [canPoll]);
+  }, [state.canPoll]);
 
   const memoizedConfigData = useMemo(() => {
     return config.data || ([] as PageData[]);
@@ -212,23 +237,36 @@ function PageWrapper({
 
   useEffect(() => {
     if (memoizedConfigData) {
-      const cleanup = getData(canPoll);
-
-      return () => {
-        cleanup();
-      };
+      getData(memoizedConfigData);
     } else {
       const newContextData = Object.assign({}, contextData);
       newContextData[COMMON_DATA_FIELD] = null;
 
       setContextData(newContextData);
     }
-  }, [memoizedConfigData, memoizedReload, canPoll]);
+  }, [memoizedConfigData, memoizedReload]);
+
+  useEffect(() => {
+    checkAuth(token)
+      .then((res: any) => {
+        if (res?.result !== "OK") {
+          console.error(res.message);
+          addNotification(t("auth-end-session "), { variant: "error" });
+          setToken(null);
+          navigate("/login");
+        }
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  }, [config]);
 
   return (
     <ErrorBoundary fallback={<ErrorBoundaryMessage />}>
-      <Suspense fallback={<Loader />}>
-        <PageContext.Provider value={{ data: contextData, setContextData }}>
+      <Suspense fallback={<Loader source="page" />}>
+        <PageContext.Provider
+          value={{ data: contextData, setContextData, dispatch }}
+        >
           <Layout {...(config.layoutProps || {})}>{children}</Layout>
         </PageContext.Provider>
       </Suspense>
@@ -236,7 +274,13 @@ function PageWrapper({
   );
 }
 
-export default function Page({ config }: { config: PageConfiguration }) {
+const Page = memo(({ config }: { config: PageConfiguration }) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    save(LAST_PAGE_STORAGE_KEY, location.pathname);
+  }, [location.pathname]);
+
   const components = useMemo(() => config?.components || [], [config]);
   const generatedComponents = useMemo(
     () =>
@@ -259,4 +303,6 @@ export default function Page({ config }: { config: PageConfiguration }) {
   );
 
   return <PageWrapper config={config}>{generatedComponents}</PageWrapper>;
-}
+});
+
+export default Page;

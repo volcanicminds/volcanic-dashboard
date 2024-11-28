@@ -5,9 +5,9 @@ import { Paper } from "@mui/material";
 import CommonForm from "@/components/form/CommonForm";
 import { Dispatch, useMemo } from "react";
 import { DEFAULT_ND } from "@/utils/constants";
-import { FormFooter, TableFormInputs } from "@/types";
-import { AppActions } from "@/components/layout/mainlayout";
+import { FormFooter, TableFormInputs, TableFormValidation } from "@/types";
 import { Location } from "react-router-dom";
+import { AppActions } from "@/components/layout/mainlayout";
 
 export interface TableFormDialogProps {
   open: boolean;
@@ -15,6 +15,7 @@ export interface TableFormDialogProps {
   onConfirm: () => void;
   onDelete?: () => void;
   inputs: TableFormInputs;
+  validation?: TableFormValidation;
   title?: string;
   discardLabel?: string;
   confirmLabel?: string;
@@ -29,6 +30,7 @@ export interface TableFormDialogProps {
   configurableEndpoint: (path: string, args?: any) => Promise<any>;
   location: Location<any>;
   footer?: FormFooter;
+  forceReload: () => void;
 }
 
 export default function TableFormDialog({
@@ -37,6 +39,7 @@ export default function TableFormDialog({
   onConfirm,
   onDelete,
   inputs,
+  validation,
   title,
   discardLabel,
   confirmLabel,
@@ -51,6 +54,7 @@ export default function TableFormDialog({
   configurableEndpoint,
   location,
   footer,
+  forceReload,
 }: TableFormDialogProps) {
   const formId = useMemo(
     () => String((title || DEFAULT_ND) + Math.random()),
@@ -63,9 +67,11 @@ export default function TableFormDialog({
       <DialogContent>
         <CommonForm
           title=""
+          isDisabled={false}
           formId={formId}
           submit="confirm"
           inputs={inputs}
+          validation={validation}
           dataFields={[
             {
               alias: tableName || DEFAULT_ND,
@@ -86,6 +92,7 @@ export default function TableFormDialog({
           configurableEndpoint={configurableEndpoint}
           location={location}
           footer={footer}
+          forceReload={forceReload}
         />
       </DialogContent>
     </>

@@ -7,6 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import _ from "lodash";
 import { DRAWER_WIDTH } from "@/utils/config";
 import { useDrawer } from "@/hook/useDrawer";
 import CloseIcon from "@mui/icons-material/Close";
@@ -86,14 +87,21 @@ const NavigationItem: React.FC<{
       >
         <ListItemText
           disableTypography
-          sx={{ display: "flex", gap: 1 }}
+          sx={{
+            display: "flex",
+            gap: 1,
+            overflow: "hidden",
+          }}
           primary={
             item.icon && (
               <MUIIcon iconName={item.icon as IconNames} size="medium" />
             )
           }
           secondary={
-            <Typography className={isEdited ? "is-edited" : ""}>
+            <Typography
+              className={isEdited ? "is-edited" : ""}
+              sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
+            >
               {t(item.id)}
             </Typography>
           }
@@ -142,8 +150,16 @@ const NavigationItem: React.FC<{
           )
         }
         secondary={
-          <Stack direction="row" alignItems="center" gap={1}>
-            <Typography className={isEdited ? "is-edited" : ""}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            gap={1}
+            sx={{ overflow: "hidden" }}
+          >
+            <Typography
+              className={isEdited ? "is-edited" : ""}
+              sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
+            >
               {t(item.id)}
             </Typography>
             {isEdited && (
@@ -185,7 +201,7 @@ export default function Sidebar({ editedNodes }: { editedNodes: string[] }) {
     return location.pathname.split("/").slice(1);
   }, [location]);
 
-  const handleLogout = (resetLocalStorage: boolean = true) => {
+  const handleLogout = (resetLocalStorage = true) => {
     resetLocalStorage && remove(LAST_PAGE_STORAGE_KEY);
     setConfirmDialogSettings(null);
     setToken(null);
@@ -210,7 +226,7 @@ export default function Sidebar({ editedNodes }: { editedNodes: string[] }) {
       left={0}
       top={0}
       width={{ xs: isOpen ? "100%" : 0, sm: DRAWER_WIDTH }}
-      height="100vh"
+      height="100%"
       bgcolor={(theme) => theme.palette.sidebarBg?.main}
       position="fixed"
       display={{ xs: isOpen ? "flex" : "none", sm: "flex" }}
@@ -270,10 +286,11 @@ export default function Sidebar({ editedNodes }: { editedNodes: string[] }) {
           title={confirmDialogSettings?.title}
           content={confirmDialogSettings?.content}
           onDiscard={() => setConfirmDialogSettings(null)}
-          onConfirm={confirmDialogSettings?.confirm || (() => {})}
+          onConfirm={confirmDialogSettings?.confirm || (() => null)}
         />
       </Stack>
 
+      {/* Action buttons */}
       <Stack spacing={1} px={3}>
         <Button
           onClick={handleLogout}

@@ -11,6 +11,9 @@ import {
   Stack,
   Box,
   InputAdornment,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import Button from "@/components/common/Button";
 import { t } from "i18next";
@@ -29,6 +32,7 @@ import {
   DATETIME_LOCAL_FORMAT,
   DEFAULT_ND,
   DEFAULT_THEME_NAME,
+  STATUS_FIELD,
 } from "@/utils/constants";
 import Switch from "@/components/common/form/inputs/Switch";
 import Select from "@/components/common/form/inputs/Select";
@@ -45,8 +49,6 @@ import dayjs from "dayjs";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import Label from "@/components/common/form/inputs/Label";
 import { ThemesContext } from "@/themes";
-import BulletNumbers from "@/components/common/form/inputs/BulletNumbers";
-import { STATUS_FIELD } from "@/components/ApiWrapper";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import {
   DataField,
@@ -55,9 +57,12 @@ import {
   FormInput,
   FormInputs,
   FormInputValidationMinMaxField,
+  FormOnBlurCollateral,
+  InputOnBlurCollateral,
   SelectOption,
   TableFormInput,
   TableFormInputs,
+  TableFormValidation,
 } from "@/types";
 import { AppActions } from "@/components/layout/mainlayout";
 import { Location } from "react-router-dom";
@@ -65,11 +70,14 @@ import FormFooter from "@/components/common/form/FormFooter";
 import DateTimePicker from "@/components/common/form/inputs/DateTimePicker";
 import DatePicker from "@/components/common/form/inputs/DatePicker";
 import TimePicker from "@/components/common/form/inputs/TimePicker";
+import { ExpandMore } from "@mui/icons-material";
+import BulletNumbers from "../common/form/inputs/BulletNumbers";
 
 const DEFAULT_INPUT_TYPE = "text";
 interface FormProps {
   title: string;
   formId: string;
+  isDisabled: boolean;
   submit: "blur" | "confirm";
   inputs: FormInputs | TableFormInputs;
   dataFields: DataField[];
@@ -79,6 +87,7 @@ interface FormProps {
 }
 //only used for submit confirm
 interface TableFormProps {
+  validation?: TableFormValidation;
   tableName?: string;
   rowId?: string;
   refresh?: () => void;
@@ -97,6 +106,9 @@ interface CommonProps {
     options?: any
   ) => Promise<any>;
   location: Location<any>;
+  forceReload: () => void;
+  formOnBlurCollateral?: FormOnBlurCollateral;
+  isHideable?: boolean;
 }
 
 function getDefaultValueByType(dataType: HTMLInputTypeAttribute) {
@@ -157,11 +169,13 @@ export default function Form({
   formId,
   submit = "blur",
   inputs = [],
+  isHideable,
   tableName,
   rowId,
   dataFields: fields = [],
   refresh,
   formWriteToContext = false,
+  formOnBlurCollateral,
   onConfirm,
   onDiscard,
   onDelete,
@@ -169,8 +183,13 @@ export default function Form({
   confirmLabel,
   deleteLabel,
   commonData,
+  dispatch,
   configurableEndpoint,
+  location,
   footer,
+  isDisabled: isDisabledProp,
+  forceReload,
+  validation,
 }: FormProps & TableFormProps & CommonProps) {
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
@@ -183,6 +202,7 @@ export default function Form({
     useContext<PageContextInterface>(PageContext);
   const themes = useContext(ThemesContext);
   const [isSaving, setIsSaving] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const checkEnabled = (
     defaultValue: boolean,
@@ -193,6 +213,10 @@ export default function Form({
       [x: number]: any;
     }
   ) => {
+    if (isDisabledProp) {
+      return true;
+    }
+
     let isEnabled = defaultValue;
     const enablingField = _.get(item, field) as EnablingFieldType;
     if (enablingField != null) {
@@ -213,10 +237,9 @@ export default function Form({
 
   const fieldsData: any = useMemo(() => {
     return fields.reduce((acc, field) => {
-      const itemData =
-        submit === "confirm" && Array.isArray(field.data)
-          ? (field.data || [])[0]
-          : { [field.alias]: field.data };
+      const itemData = Array.isArray(field.data)
+        ? (field.data || [])[0]
+        : { [field.alias]: field.data };
       acc = { ...acc, ...itemData };
 
       return acc;
@@ -458,7 +481,9 @@ export default function Form({
 
           if (item.validation?.regex) {
             const regex = item.validation.regex;
-            const error = item.validation.error || t("error-regex");
+            const error = item.validation.error
+              ? t(item.validation.error)
+              : t("error-regex");
             acc[item.field] = acc[item.field].test(
               "passes-regex",
               error,
@@ -817,6 +842,18 @@ export default function Form({
         }
       } else if (submit === "confirm") {
         setIsSaving(true);
+        if (validation) {
+          const result = validation(record, {
+            t,
+            commonData,
+          });
+
+          if (typeof result === "string") {
+            addNotification(result, { variant: "error" });
+            setIsSaving(false);
+            return;
+          }
+        }
         executeSave(record)
           .then(() => {
             onConfirm && onConfirm();
@@ -831,7 +868,11 @@ export default function Form({
     }
   }, []);
 
-  const handleChange = (name: string, value: any) => {
+  const handleChange = (
+    name: string,
+    value: any,
+    item: FormInput | TableFormInput
+  ) => {
     if (submit === "confirm") {
       const inputConfig = getInputConfigByFieldName(name);
       const normalizedValue = normalizeValue(value, inputConfig);
@@ -859,7 +900,29 @@ export default function Form({
       }
     } else if (submit === "blur") {
       setValue(name, value, { shouldDirty: true });
-      handleSubmit((record) => onSubmit(record, name))();
+      handleSubmit((record) => onSubmit(record, name))().then(() => {
+        if ((item as FormInput)?.inputOnBlurCollateral != null) {
+          ((item as FormInput).inputOnBlurCollateral as InputOnBlurCollateral)(
+            name,
+            value,
+            {
+              values,
+              t,
+              addNotification,
+              configurableEndpoint,
+              refresh: refresh || (() => null),
+              forceReload,
+            }
+          );
+        }
+        if (formOnBlurCollateral) {
+          formOnBlurCollateral(name, value, {
+            configurableEndpoint,
+            refresh: refresh || (() => null),
+            forceReload,
+          });
+        }
+      });
     }
   };
 
@@ -868,11 +931,7 @@ export default function Form({
       key.includes(submit === "blur" ? "dark" : "light")
     );
 
-    if (themeKey) {
-      return themes[themeKey];
-    }
-
-    return themes[DEFAULT_THEME_NAME];
+    return themeKey ? themes[themeKey] : themes[DEFAULT_THEME_NAME];
   }, [themes, submit]);
 
   const executeConfirm = () => {
@@ -882,7 +941,7 @@ export default function Form({
   const Container = useMemo(
     () =>
       ({ children }: { children: React.ReactNode }) => {
-        return submit === "blur" ? (
+        return submit === "blur" && !isHideable ? (
           <SimpleCard
             id={`common-form-${formId}`}
             fullWidth
@@ -891,11 +950,39 @@ export default function Form({
           >
             {children}
           </SimpleCard>
+        ) : submit === "blur" && isHideable ? (
+          <ThemeProvider theme={formTheme || {}}>
+            <Accordion
+              aria-controls="accordion-content"
+              expanded={isExpanded}
+              onChange={() => setIsExpanded(!isExpanded)}
+              disableGutters
+              sx={{ mb: 1, width: "100%" }}
+            >
+              <AccordionSummary
+                expandIcon={
+                  <ExpandMore
+                    sx={{ color: (theme) => theme.palette.common.white }}
+                  />
+                }
+                aria-controls="accordion-content"
+                id="accordion-header"
+                sx={{ alignItems: "center", gap: 1 }}
+              >
+                <Typography variant="h5" fontWeight={700}>
+                  {t(`${title}`)}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails id={`common-form-${formId}`} sx={{ pt: 4 }}>
+                {children}
+              </AccordionDetails>
+            </Accordion>
+          </ThemeProvider>
         ) : (
           children
         );
       },
-    [submit]
+    [submit, isHideable, isExpanded]
   );
 
   return (
@@ -978,7 +1065,7 @@ export default function Form({
                                   required={isFieldRequired}
                                   defaultValue={field.value}
                                   onChange={(value) =>
-                                    handleChange(field.name, value)
+                                    handleChange(field.name, value, item)
                                   }
                                   color="success"
                                 />
@@ -996,7 +1083,7 @@ export default function Form({
                                   defaultValue={dayjs(value)}
                                   label={t(`${item.label}`)}
                                   onChange={(value) => {
-                                    handleChange(field.name, value);
+                                    handleChange(field.name, value, item);
                                   }}
                                 />
                               );
@@ -1026,7 +1113,7 @@ export default function Form({
                                   defaultValue={defaultValue}
                                   label={t(`${item.label}`)}
                                   onChange={(value) => {
-                                    handleChange(field.name, value);
+                                    handleChange(field.name, value, item);
                                   }}
                                 />
                               );
@@ -1044,7 +1131,7 @@ export default function Form({
                                   value={dayjs(value)}
                                   label={t(`${item.label}`)}
                                   onChange={(value) => {
-                                    handleChange(field.name, value);
+                                    handleChange(field.name, value, item);
                                   }}
                                 />
                               );
@@ -1063,7 +1150,11 @@ export default function Form({
                                   required={isFieldRequired}
                                   defaultValue={field.value}
                                   onChange={(event) =>
-                                    handleChange(field.name, event.target.value)
+                                    handleChange(
+                                      field.name,
+                                      event.target.value,
+                                      item
+                                    )
                                   }
                                   fullWidth
                                   variant="standard"
@@ -1092,7 +1183,11 @@ export default function Form({
                                   required={isFieldRequired}
                                   defaultValue={field.value}
                                   onChange={(event) =>
-                                    handleChange(field.name, event.target.value)
+                                    handleChange(
+                                      field.name,
+                                      event.target.value,
+                                      item
+                                    )
                                   }
                                   fullWidth
                                   variant="standard"
@@ -1117,13 +1212,13 @@ export default function Form({
                                   label={t(`${item.label}`)}
                                 />
                               );
-                            case "bulletNumbers":
+                            case "camera-configure":
                               return (
                                 <BulletNumbers
                                   value={value}
                                   label={t(`${item.label}`)}
                                   onChange={(newValue: string) =>
-                                    handleChange(field.name, newValue)
+                                    handleChange(field.name, newValue, item)
                                   }
                                 />
                               );
@@ -1162,6 +1257,27 @@ export default function Form({
                                 enhancedLabel = `${enhancedLabel} [${min} - ${max}]`;
                               }
 
+                              const max =
+                                item.validation?.max != null
+                                  ? evaluateValidationField(
+                                      item.validation?.max,
+                                      {
+                                        row: values,
+                                        context: commonData,
+                                      }
+                                    )
+                                  : undefined;
+                              const min =
+                                item.validation?.min != null
+                                  ? evaluateValidationField(
+                                      item.validation?.min,
+                                      {
+                                        row: values,
+                                        context: commonData,
+                                      }
+                                    )
+                                  : undefined;
+
                               return (
                                 <BasicInput
                                   id={`basic-input-${item.field}-${index}`}
@@ -1174,13 +1290,29 @@ export default function Form({
                                   defaultValue={value}
                                   label={enhancedLabel}
                                   startAdornment={startAdornment}
+                                  inputProps={
+                                    item.validation
+                                      ? {
+                                          min,
+                                          max,
+                                        }
+                                      : undefined
+                                  }
                                   onChange={(event) =>
                                     submit === "confirm" &&
-                                    handleChange(field.name, event.target.value)
+                                    handleChange(
+                                      field.name,
+                                      event.target.value,
+                                      item
+                                    )
                                   }
                                   onBlur={(event) =>
                                     submit === "blur" &&
-                                    handleChange(field.name, event.target.value)
+                                    handleChange(
+                                      field.name,
+                                      event.target.value,
+                                      item
+                                    )
                                   }
                                 />
                               );

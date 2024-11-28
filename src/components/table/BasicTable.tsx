@@ -13,6 +13,8 @@ import {
   type MRT_Row,
   createMRTColumnHelper,
   MRT_ColumnFiltersState,
+  getMRT_RowSelectionHandler,
+  MRT_RowSelectionState,
 } from "material-react-table";
 import {
   Box,
@@ -65,6 +67,8 @@ import Footer from "@/components/common/Footer";
 import { DEFAULT_THEME_NAME } from "@/utils/constants";
 
 import { ThemesContext } from "@/themes";
+import { PageActions } from "@/page/page";
+import PasteDialog from "../common/table/common/PasteDialog";
 
 dayjs.extend(customParseFormat);
 
@@ -83,10 +87,12 @@ interface BasicTableProps {
   timestamp?: TableTimestamp;
   tableIdField?: string;
   tableName: string;
+  isDisabled?: boolean;
   state?: {
     columnFilters?: MRT_ColumnFiltersState;
   };
   dispatch: Dispatch<AppActions>;
+  dispatchPage: Dispatch<PageActions>;
   configurableEndpoint: (path: string, args?: any) => Promise<any>;
   configurableEndpointPost: (
     url: string,
@@ -97,7 +103,9 @@ interface BasicTableProps {
   forceComponentReload: (id: string) => void;
   forceComponentReloadByName: (name: string) => void;
   location: Location<any>;
+  setToken: (user: any) => void;
   isSubTable?: boolean;
+  subTableCallback?: () => void;
 }
 
 const columnHelper = createMRTColumnHelper<any>();
@@ -129,19 +137,28 @@ const BasicTable = (props: BasicTableProps) => {
     tableIdField = import.meta.env.VITE_DEFAULT_TABLE_FIELD_ID || "id",
     tableName,
     dispatch,
+    dispatchPage,
     state,
     configurableEndpoint,
     forceComponentReload,
     forceComponentReloadByName,
+    configurableEndpointPost,
     location,
+    forceReload,
     isSubTable = false,
+    subTableCallback,
+    isDisabled,
   } = props;
 
+  const [isShowPasteDialog, setShowPasteDialog] = useState(false);
+  const [copyPasteRow, setCopyPasteRow] = useState<any | undefined>();
   const [open, setOpen] = useState(false);
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     []
   );
   const [openForm, setOpenForm] = useState(false);
+  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
+
   const [rowToEdit, setRowToEdit] = useState<MRT_Row<any> | undefined>();
   const [isLoading, setIsLoading] = useState<
     "add" | "delete" | "firmware" | undefined
@@ -150,6 +167,14 @@ const BasicTable = (props: BasicTableProps) => {
   const { addNotification } = useToast();
 
   const [data, setData] = useState<Array<any>>([]);
+
+  const selectedRowsWithFields = useMemo(() => {
+    return Object.keys(rowSelection)
+      .filter((key) => rowSelection[key])
+      .map((key) => data[Number(key)])
+      .filter((d) => d);
+  }, [rowSelection]);
+
   const [tableFeatures, setTableFeatures] = useState<
     TableFeaturesType | undefined
   >(features);
@@ -275,6 +300,7 @@ const BasicTable = (props: BasicTableProps) => {
         id: c.field,
         header: c.headerName ? t(c.headerName) : "",
         size: c.width,
+        enableHiding: c.enableHiding ?? true,
         enableColumnActions: !!c.showMenu,
         enableSorting: !!c.sortable,
         sortingFn: c.sortingFn ?? sortingFnPrimitives,
@@ -285,7 +311,7 @@ const BasicTable = (props: BasicTableProps) => {
         filterSelectOptions: filterSelectOptions,
         Cell: ({ cell, row }) => {
           const cellValue = cell.getValue();
-          let normalizedRenderedCellValue = getFormattedValue({
+          const normalizedRenderedCellValue = getFormattedValue({
             row,
             cellValue,
             column: c,
@@ -323,7 +349,7 @@ const BasicTable = (props: BasicTableProps) => {
 
       setOpenForm(false);
       !isSubTable &&
-        dispatch({
+        dispatchPage({
           type: "can_poll",
           payload: true,
         });
@@ -372,14 +398,14 @@ const BasicTable = (props: BasicTableProps) => {
   };
 
   const isEditable = useMemo(() => {
-    return tableFeatures?.form != null;
+    return tableFeatures?.form != null && !isDisabled;
   }, [tableFeatures]);
 
   const openEditForm = (row: MRT_Row<any>) => {
     setRowToEdit(row);
     setOpenForm(true);
     !isSubTable &&
-      dispatch({
+      dispatchPage({
         type: "can_poll",
         payload: false,
       });
@@ -398,13 +424,19 @@ const BasicTable = (props: BasicTableProps) => {
     return tableFeatures?.actions?.custom != null;
   }, [tableFeatures]);
 
+  const hasCopyPaste = useMemo(() => {
+    return tableFeatures?.actions?.withCopyPaste;
+  }, [tableFeatures]);
+
   const hasActions = useMemo(() => {
-    return isDeletable || hasCustomAction;
-  }, [isDeletable, hasCustomAction]);
+    return isDeletable || hasCustomAction || hasCopyPaste;
+  }, [isDeletable, hasCustomAction, hasCopyPaste]);
 
   const hasActionsMenu = useMemo(() => {
-    return [isDeletable, hasCustomAction].filter((a) => !!a).length > 1;
-  }, [isDeletable, hasCustomAction]);
+    return (
+      [isDeletable, hasCustomAction, hasCopyPaste].filter((a) => !!a).length > 1
+    );
+  }, [isDeletable, hasCustomAction, hasCopyPaste]);
 
   const isFilterable = useMemo(() => {
     return propsColumns.some((c) => c.filterable);
@@ -434,6 +466,28 @@ const BasicTable = (props: BasicTableProps) => {
     [isColumnHidden, commonData]
   );
 
+  const enableRowSelection = useMemo(() => {
+    return copyPasteRow != null
+      ? (row: MRT_Row<any>) => {
+          const normalizedCopiedRow = copyPasteRow || {};
+
+          return (
+            row.original[tableIdField] !== normalizedCopiedRow[tableIdField]
+          );
+        }
+      : false;
+  }, [copyPasteRow]);
+
+  const localization = useMemo(() => {
+    const language = i18next.language;
+    switch (language) {
+      case "it":
+        return MRT_Localization_IT;
+      default:
+        return MRT_Localization_EN;
+    }
+  }, []);
+
   const table = useMaterialReactTable({
     columns,
     data,
@@ -441,16 +495,16 @@ const BasicTable = (props: BasicTableProps) => {
       config?.filtering?.onColumnFiltersChange ?? setColumnFilters,
     enableGlobalFilter: hasGlobalFilter,
     autoResetPageIndex: true,
-    enableRowSelection: false,
+    enableRowSelection,
     enablePagination: config?.pagination?.enabled ?? true,
     paginationDisplayMode: "pages",
-    positionToolbarAlertBanner: "bottom",
+    positionToolbarAlertBanner: "head-overlay",
     enableFullScreenToggle: false,
     enableHiding: config?.hiding?.enabled ?? true,
     enableDensityToggle: false,
     enableBatchRowSelection: false,
-    enableSelectAll: false,
-    enableMultiRowSelection: false,
+    enableSelectAll: true,
+    selectAllMode: "page",
     enableColumnFilters: isFilterable,
     enableRowActions: hasActions,
     positionActionsColumn: features.actions?.positionActionsColumn ?? "last",
@@ -462,6 +516,7 @@ const BasicTable = (props: BasicTableProps) => {
                 <Tooltip title={t("table-delete")}>
                   <span>
                     <Button
+                      disabled={isDisabled || copyPasteRow != null}
                       color="error"
                       onClick={(event) => clickDeleteAction(event, row)}
                       isIconButton
@@ -484,6 +539,7 @@ const BasicTable = (props: BasicTableProps) => {
             actions.push(
               <MenuItem
                 key="delete"
+                disabled={isDisabled || copyPasteRow != null}
                 onClick={(event) => {
                   clickDeleteAction(event, row);
                   closeMenu();
@@ -497,15 +553,17 @@ const BasicTable = (props: BasicTableProps) => {
             );
 
           tableFeatures?.actions?.custom &&
+            !isDisabled &&
             actions.push(tableFeatures.actions.custom({ row }));
 
           return actions;
         }
       : undefined,
+    onRowSelectionChange: setRowSelection,
     state: {
       columnFilters,
       ...(state || {}),
-      columnVisibility: getColumnHidden(propsColumns),
+      rowSelection,
       isLoading: isLoading === "delete",
     },
     initialState: {
@@ -514,23 +572,32 @@ const BasicTable = (props: BasicTableProps) => {
         pageSize: config?.pagination?.pageSize || DEFAULT_PAGE_SIZE,
         pageIndex: config?.pagination?.pageIndex || 0,
       },
+      columnVisibility: getColumnHidden(propsColumns),
       sorting: defaultSorting ? [defaultSorting] : [],
     },
+    displayColumnDefOptions: {
+      "mrt-row-actions": {
+        enableHiding: true,
+      },
+    },
     manualFiltering: !!config?.filtering?.manual,
-    localization: ["it", "it-IT", "ita", "IT"].includes(i18next.language)
-      ? MRT_Localization_IT
-      : MRT_Localization_EN,
+    localization,
     renderTopToolbarCustomActions: ({ table }) =>
-      !!tableFeatures ? (
+      tableFeatures ? (
         <TableFeatures
           id={id}
+          disabled={isDisabled}
           table={table}
           tableFeatures={tableFeatures}
           isLoading={isLoading}
+          copyPasteRow={copyPasteRow}
+          resetCopyPasteMode={resetCopyPasteMode}
           createNewRecord={createNewRecord}
           handleExportRowsCsv={handleExportRowsCsv}
           handleExportRowsPdf={handleExportRowsPdf}
           forceComponentReload={forceComponentReload}
+          setShowPasteDialog={setShowPasteDialog}
+          selectedRowsLength={Object.keys(rowSelection || {}).length}
         />
       ) : null,
     muiTablePaperProps: {
@@ -560,23 +627,50 @@ const BasicTable = (props: BasicTableProps) => {
         border: "none",
       },
     },
-    muiTableBodyRowProps: isEditable
-      ? ({ row }) => ({
-          onClick: (_event) => {
-            openEditForm(row);
-          },
-          component: timestamp ? Tooltip : Box,
-          enterDelay: timestamp?.delay ?? ROW_TOOLTIP_DELAY,
-          title: timestamp
-            ? dayjs(
-                parseDateWithTimezone(row.original[timestamp.field])
-              ).format(timestamp.format || DATETIME_LOCAL_FORMAT)
-            : "",
-          sx: {
-            cursor: "pointer",
-          },
-        })
-      : undefined,
+    muiTableBodyRowProps:
+      isEditable && copyPasteRow == null
+        ? ({ row }) => ({
+            onClick: (_event) => {
+              openEditForm(row);
+            },
+            component: timestamp ? Tooltip : Box,
+            enterDelay: timestamp?.delay ?? ROW_TOOLTIP_DELAY,
+            title: timestamp
+              ? dayjs(
+                  parseDateWithTimezone(row.original[timestamp.field])
+                ).format(timestamp.format || DATETIME_LOCAL_FORMAT)
+              : "",
+            sx: {
+              cursor: "pointer",
+            },
+          })
+        : copyPasteRow != null
+        ? ({ row, staticRowIndex, table }) => {
+            const isTheRowToCopy =
+              copyPasteRow[tableIdField] === row.original[tableIdField];
+            return {
+              onClick: (event) =>
+                getMRT_RowSelectionHandler({ row, staticRowIndex, table })(
+                  event
+                ),
+              sx: {
+                cursor: row.getCanSelect() ? "pointer" : "not-allowed",
+                "& td:first-of-type span.MuiCheckbox-root": {
+                  opacity: row.getCanSelect() ? 1 : 0,
+                },
+                "& td": {
+                  color:
+                    !row.getCanSelect() && !isTheRowToCopy
+                      ? (theme) => theme.palette.text.disabled
+                      : "inherit",
+                  backgroundColor: isTheRowToCopy
+                    ? "rgba(255, 255, 255, 0.25)"
+                    : "inherit",
+                },
+              },
+            };
+          }
+        : undefined,
   });
 
   const editRowModalTitle = useMemo(() => {
@@ -587,8 +681,8 @@ const BasicTable = (props: BasicTableProps) => {
         dialogTitle.type === "translationId"
           ? t(dialogTitle.value)
           : dialogTitle.value && rowToEdit
-            ? rowToEdit.original[dialogTitle.value] || dialogTitle.value
-            : "";
+          ? rowToEdit.original[dialogTitle.value] || dialogTitle.value
+          : "";
 
       title = title === "" ? titleItem : title + " - " + titleItem;
     });
@@ -599,7 +693,7 @@ const BasicTable = (props: BasicTableProps) => {
   const closeEditForm = () => {
     setOpenForm(false);
     !isSubTable &&
-      dispatch({
+      dispatchPage({
         type: "can_poll",
         payload: true,
       });
@@ -611,7 +705,7 @@ const BasicTable = (props: BasicTableProps) => {
       return field.id === tableName;
     });
 
-    const dataToEdit = (fieldToEdit?.data || []).find((d: any) => {
+    const dataToEdit = fieldToEdit?.data.find((d: any) => {
       return d[tableIdField] === rowToEdit?.original[tableIdField];
     });
 
@@ -635,6 +729,32 @@ const BasicTable = (props: BasicTableProps) => {
     return themes[DEFAULT_THEME_NAME];
   }, [themes]);
 
+  const handleSubTableDispatch = (args: any) => {
+    dispatch(args);
+    if (subTableCallback) {
+      subTableCallback();
+    }
+  };
+
+  const resetCopyPasteMode = () => {
+    setCopyPasteRow(undefined);
+    setShowPasteDialog(false);
+    setRowSelection({});
+  };
+
+  const handleOnClosePasteDialog = (reset: boolean) => {
+    if (reset) {
+      resetCopyPasteMode();
+    }
+    setShowPasteDialog(false);
+    forceComponentReload(id);
+  };
+
+  const firstRowId = useMemo(() => {
+    console.log("firstRowId", data, data?.[0]?.[tableIdField]);
+    return data?.[0]?.[tableIdField] || "0";
+  }, [data]);
+
   return (
     <>
       <ConfirmDialog
@@ -654,14 +774,29 @@ const BasicTable = (props: BasicTableProps) => {
         title={editRowModalTitle}
         refresh={refreshComponent}
         inputs={tableFeatures?.form?.inputs || []}
+        validation={tableFeatures?.form?.validation}
         tableName={tableName}
         rowId={rowToEdit?.original[tableIdField]}
         formDataToEdit={formDataToEdit}
         commonData={commonData}
-        dispatch={dispatch}
+        dispatch={isSubTable ? handleSubTableDispatch : dispatch}
         configurableEndpoint={configurableEndpoint}
         location={location}
         footer={tableFeatures?.form?.footer}
+        forceReload={forceReload}
+      />
+      <PasteDialog
+        addNotification={addNotification}
+        copiedRow={copyPasteRow}
+        tableIdField={tableIdField}
+        open={isShowPasteDialog}
+        rowsToPaste={selectedRowsWithFields}
+        tableName={tableName}
+        onClose={handleOnClosePasteDialog}
+        copyPasteFields={tableFeatures?.copyPasteFields || []}
+        configurableEndpoint={configurableEndpoint}
+        dispatch={dispatch}
+        location={location}
       />
       <SimpleCard title={t(title)} fullWidth id="table-container">
         <ThemeProvider theme={tableTheme || {}}>
