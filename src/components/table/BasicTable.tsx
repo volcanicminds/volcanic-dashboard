@@ -142,7 +142,6 @@ const BasicTable = (props: BasicTableProps) => {
     configurableEndpoint,
     forceComponentReload,
     forceComponentReloadByName,
-    configurableEndpointPost,
     location,
     forceReload,
     isSubTable = false,
@@ -749,11 +748,6 @@ const BasicTable = (props: BasicTableProps) => {
     setShowPasteDialog(false);
     forceComponentReload(id);
   };
-
-  const firstRowId = useMemo(() => {
-    console.log("firstRowId", data, data?.[0]?.[tableIdField]);
-    return data?.[0]?.[tableIdField] || "0";
-  }, [data]);
 
   return (
     <>

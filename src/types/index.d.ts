@@ -30,6 +30,7 @@ export interface PageConfiguration {
   title: string;
   layout: string; //it can be "Columns" or "Grid" or "Stack"
   layoutProps?: any;
+  alias?: string;
   data?: PageData[];
   components: Component[];
 }
@@ -98,6 +99,8 @@ export type ColumnCellFormatter = {
     | "scenarios"
     | "context"
     | "translationLabel"
+    | "image"
+    | "bulletNumbers"
     | "fromList"
     | "custom";
   list?: SelectOption[];
@@ -454,6 +457,7 @@ export type FormOnBlurCollateral = (
   }
 ) => void;
 export interface Component {
+  stepId?: number;
   componentType: string;
   componentName: string;
   formWriteToContext?: boolean; //For the form, data from the form will be stored in the page context

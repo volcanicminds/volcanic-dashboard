@@ -1,6 +1,6 @@
 import { DataField } from "@/types";
 import { t } from "i18next";
-import { Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useMemo, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 import OptionsCard, { Option } from "@/components/common/OptionsCard";

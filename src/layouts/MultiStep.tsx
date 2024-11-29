@@ -20,7 +20,6 @@ const drawerWidth = 240;
 export default function MultiStepLayout({
   children,
   title,
-  path,
   steps,
 }: {
   children: ReactNode;
@@ -28,7 +27,6 @@ export default function MultiStepLayout({
     id: number;
     title: string;
   }[];
-  path: string;
   title?: string;
 }) {
   const navigate = useNavigate();
@@ -36,10 +34,6 @@ export default function MultiStepLayout({
 
   function manageExit() {
     navigate("/");
-  }
-
-  function goToStep(code: string) {
-    navigate(`${path}/${code}`);
   }
 
   return (
