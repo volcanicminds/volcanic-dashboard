@@ -13,7 +13,7 @@ import Waiting from "@/page/waiting";
 export default function AppRouter() {
   const renderNavigationNodeRoutes = (
     node: NavigationNode,
-    parentPath: string = "/"
+    parentPath = "/"
   ): JSX.Element[] => {
     const routes: JSX.Element[] = [];
     node.subItems.forEach((item) => {

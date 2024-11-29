@@ -76,9 +76,6 @@ export default function Login() {
         <Typography variant="h3" fontWeight={100} sx={{ opacity: 0.68 }}>
           {t("login-welcome")}
         </Typography>
-        <Typography variant="h3" fontWeight={700}>
-          {t("login-back")}
-        </Typography>
       </Stack>
       <Stack spacing={2}>
         <BasicInput

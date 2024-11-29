@@ -6,7 +6,7 @@ import { Theme } from "@mui/material";
 import componentsList from "@/configuration/themes/componentsIndex";
 
 const defaultComponent = {
-  default: (_theme: Theme) => {},
+  default: (_theme: Theme) => null,
 };
 
 const componentsCustomization = (themeName: string, theme: Theme) => {
