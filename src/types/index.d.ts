@@ -418,17 +418,6 @@ export type TableFeatures = {
   actions?: {
     positionActionsColumn?: "first" | "last";
     withDelete?: boolean;
-    withLocate?: boolean;
-    withStopLocate?: boolean;
-    withSearch?: boolean;
-    withReset?: boolean;
-    withReplace?: boolean;
-    withUpdateVoiceMessages?: boolean;
-    withTouchScreenFirmwareUpdate?: boolean;
-    withLearnKeys?: boolean;
-    withBatteryTest?: boolean;
-    withResetCodes?: boolean;
-    withCopyPaste?: boolean;
     custom?: (args: any) => any;
   };
   //By default the DT_RowId (or the default row id) is ignored during the copy
