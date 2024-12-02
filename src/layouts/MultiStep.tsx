@@ -1,16 +1,16 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { t } from "i18next";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Box, Drawer, Step, StepLabel, Stepper } from "@mui/material";
+import { Box, Stack, Step, StepLabel, Stepper } from "@mui/material";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-
-const drawerWidth = 240;
+import Button from "@/components/common/Button";
+import SimpleCard from "@/components/common/SimpleCard";
 
 export default function MultiStepLayout({
-  children,
+  children = [],
   steps,
 }: {
-  children: ReactNode;
+  children: ReactNode[];
   steps: {
     id: number;
     title: string;
@@ -30,34 +30,54 @@ export default function MultiStepLayout({
     }
   }, [navigate, step, location?.pathname]);
 
+  const currentStep = useMemo(() => Number(step), [step]);
+
+  const handleNext = () => {
+    const newPath = location.pathname.replace(
+      `${currentStep}`,
+      `${currentStep + 1}`
+    );
+    navigate(newPath);
+  };
+
+  const handleBack = () => {
+    const newPath = location.pathname.replace(
+      `${currentStep}`,
+      `${currentStep - 1}`
+    );
+    navigate(newPath);
+  };
+
   return (
     <Box sx={{ display: "flex", position: "relative" }}>
       <CssBaseline />
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Box sx={{ overflow: "auto", padding: 5 }}>
-          <Stepper activeStep={Number(step)} orientation="vertical">
-            {steps.map((_step, index) => (
-              <Step key={`multistep.stepper-step-${index}`}>
-                <StepLabel>
-                  {t("multistep.stepLabel", { step: index + 1 })}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Box>
-      </Drawer>
+      <Box sx={{ overflow: "auto", padding: 5 }}>
+        <Stepper activeStep={currentStep} orientation="vertical">
+          {steps.map((_step, indexSteps) => (
+            <Step key={`multistep.stepper-step-${indexSteps}`}>
+              <StepLabel>
+                {t("multistep.stepLabel", { step: indexSteps + 1 })}
+              </StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      </Box>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        {children}
+        {(children as any[])[currentStep]}
+        <SimpleCard width="100%">
+          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+            {currentStep > 0 && (
+              <Button variant="text" onClick={handleBack}>
+                {t("multistep.back")}
+              </Button>
+            )}
+            {currentStep < steps?.length - 1 && (
+              <Button variant="contained" onClick={handleNext}>
+                {t("multistep.next")}
+              </Button>
+            )}
+          </Stack>
+        </SimpleCard>
       </Box>
     </Box>
   );

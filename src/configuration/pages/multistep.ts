@@ -45,7 +45,7 @@ const MultiStep = {
           type: "input",
           field: "first_name",
           source: "first_name",
-          label: "first_name-label",
+          label: "first-name-label",
           binding: "reqres-users",
           validation: {
             maxLength: 32,
@@ -77,7 +77,7 @@ const MultiStep = {
           type: "input",
           field: "last_name",
           source: "last_name",
-          label: "last_name-label",
+          label: "last-name-label",
           binding: "reqres-users",
           validation: {
             maxLength: 32,

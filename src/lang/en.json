@@ -10,5 +10,7 @@
   "option.selected": "Selected",
   "option.suggested": "Suggested",
   "general.exit": "Exit",
-  "multistep.stepLabel": "Step {step}"
+  "multistep.stepLabel": "Step {{step}}",
+  "multistep.next": "Next",
+  "multistep.back": "Back"
 }
