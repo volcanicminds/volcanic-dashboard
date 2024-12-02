@@ -301,10 +301,10 @@ function ComponentGenerator({ component }: { component: Component }) {
 
   return (
     <ErrorBoundary fallback={<ErrorBoundaryMessage />}>
-      <Suspense fallback={<Loader source="contentGenerator1" />}>
+      <Suspense fallback={<Loader />}>
         {ComponentModule && isVisible ? (
           isLoading ? (
-            <Loader skeleton justifyContent="left" source="contentGenerator2" />
+            <Loader skeleton justifyContent="left" />
           ) : (
             <ComponentModule
               dataFields={dataFields}

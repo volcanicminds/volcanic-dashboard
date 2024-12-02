@@ -1,7 +1,7 @@
 import { Component } from "@/types";
 
-const home = {
-  title: "home-title",
+const MultiStep = {
+  title: "multistep-title",
   layout: "MultiStep",
   layoutProps: {
     path: "/multistep",
@@ -117,4 +117,4 @@ const home = {
   ] as Component[],
 };
 
-export default home;
+export default MultiStep;

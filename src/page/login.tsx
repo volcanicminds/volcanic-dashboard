@@ -10,9 +10,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useAuth } from "@/components/AuthProvider";
-import Loader from "@/components/Loader";
 import BasicInput from "@/components/common/form/inputs/BasicInput";
-import useI18nEvents from "@/hook/use18nextEvents";
 
 interface IFormInputs {
   email: string;
@@ -36,7 +34,6 @@ export default function Login() {
   const { setToken } = useAuth();
   const { login } = useApi();
   const { addNotification } = useToast();
-  const isI18nInitialized = useI18nEvents();
 
   const {
     register,
@@ -74,43 +71,38 @@ export default function Login() {
   //password: cityslicka
 
   return (
-    <>
-      {!isI18nInitialized && <Loader />}
-      {isI18nInitialized && (
-        <Stack spacing={5} component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={-1} className="welcome-title">
-            <Typography variant="h3" fontWeight={100} sx={{ opacity: 0.68 }}>
-              {t("login-welcome")}
-            </Typography>
-          </Stack>
-          <Stack spacing={2}>
-            <BasicInput
-              label={t("login-email")}
-              variant="standard"
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              onChange={(event) => handleChange("email", event.target.value)}
-            />
-            <BasicInput
-              label={t("login-password")}
-              type="password"
-              {...register("password")}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              onChange={(event) => handleChange("password", event.target.value)}
-            />
-          </Stack>
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={!!errors.email || !!errors.password || isLoading}
-            isLoading={isLoading}
-          >
-            {t("login-submit")}
-          </Button>
-        </Stack>
-      )}
-    </>
+    <Stack spacing={5} component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing={-1} className="welcome-title">
+        <Typography variant="h3" fontWeight={100} sx={{ opacity: 0.68 }}>
+          {t("login-welcome")}
+        </Typography>
+      </Stack>
+      <Stack spacing={2}>
+        <BasicInput
+          label={t("login-email")}
+          variant="standard"
+          {...register("email")}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          onChange={(event) => handleChange("email", event.target.value)}
+        />
+        <BasicInput
+          label={t("login-password")}
+          type="password"
+          {...register("password")}
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          onChange={(event) => handleChange("password", event.target.value)}
+        />
+      </Stack>
+      <Button
+        type="submit"
+        variant="contained"
+        disabled={!!errors.email || !!errors.password || isLoading}
+        isLoading={isLoading}
+      >
+        {t("login-submit")}
+      </Button>
+    </Stack>
   );
 }

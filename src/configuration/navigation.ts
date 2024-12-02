@@ -33,8 +33,8 @@ const navigation: Array<NavigationNode | NavigationLeaf> = [
         config: tablePage,
       },
       {
-        id: "multisptep",
-        path: "/multistep/:step",
+        id: "multistep",
+        path: "multistep/:step",
         config: multistepPage,
       },
     ],

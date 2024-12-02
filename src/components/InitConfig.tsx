@@ -1,19 +1,11 @@
 import dayjs from "dayjs";
-import { FC, ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Loader from "@/components/Loader";
 import { init } from "@/configuration";
 import { FALLBACK_LANGUAGE } from "@/utils/constants";
-import Button from "@/components/common/Button";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
-import { t } from "i18next";
 import Italian from "@/lang/it.json";
 import English from "@/lang/en.json";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -25,12 +17,10 @@ type TranslationType = {
 };
 
 export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
-  const [is18nInitialized, setIs18nInitialized] = useState(false);
-  const [open, setOpen] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<string | undefined>(
     i18next.language
   );
-  const schedulerDialogAlreadyOpened = useRef(false);
+  const [isI18nInitialized, setIsI18nInitialized] = useState(false);
   const core: TranslationType = useMemo(
     () => ({
       it: Italian,
@@ -81,15 +71,13 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
           },
         } as any)
         .then(() => {
-          setIs18nInitialized(true);
+          setIsI18nInitialized(i18next.isInitialized);
         });
     }
-  }, [currentLanguage]);
+  }, [currentLanguage, isI18nInitialized]);
 
   useEffect(() => {
-    console.log("is18nInitialized", is18nInitialized);
-    console.log("lang core", core);
-    if (is18nInitialized) {
+    if (i18next.isInitialized) {
       const language = currentLanguage || i18next.language || FALLBACK_LANGUAGE;
 
       i18next.addResourceBundle(
@@ -109,7 +97,7 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
           true
         );
     }
-  }, [core, config, is18nInitialized, currentLanguage]);
+  }, [core, config, currentLanguage]);
 
   useEffect(() => {
     setCurrentLanguage(i18next.language || FALLBACK_LANGUAGE);
@@ -141,21 +129,6 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
     [currentLanguage]
   );
 
-  useEffect(() => {
-    if (is18nInitialized && !schedulerDialogAlreadyOpened.current) {
-      schedulerDialogAlreadyOpened.current = true;
-      setOpen(true);
-    }
-  }, [is18nInitialized]);
-
-  const handleCloseDialog = () => {
-    setOpen(false);
-  };
-
-  const isLanguageInitialized = useMemo(() => {
-    return is18nInitialized && core && config;
-  }, [is18nInitialized, core, config]);
-
   const { adapterLocale, localeText } = useMemo(() => {
     const adapterLocale = isIta ? "it" : isEn ? "en" : FALLBACK_LANGUAGE;
 
@@ -177,9 +150,8 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
       adapterLocale={adapterLocale}
       localeText={localeText}
     >
-      {!is18nInitialized && <Loader page source="init-config" />}
-      {isLanguageInitialized && children}
-      {!isLanguageInitialized && children}
+      {!isI18nInitialized && <Loader page />}
+      {isI18nInitialized && children}
     </LocalizationProvider>
   );
 };

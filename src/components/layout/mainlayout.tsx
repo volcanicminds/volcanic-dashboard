@@ -13,6 +13,8 @@ import { t } from "i18next";
 import { DrawerProvider } from "@/hook/useDrawer";
 import { DRAWER_WIDTH } from "@/utils/config";
 import FullScreenLoaderWrapper from "@/components/FullScreenLoaderWrapper";
+import useI18nEvents from "@/hook/use18nextEvents";
+import Loader from "../Loader";
 
 export interface MainLayoutProps {
   children: ReactNode;
@@ -53,44 +55,50 @@ export default function MainLayout({ children, title }: MainLayoutProps) {
   const [state, dispatch] = useReducer<Reducer<any, AppActions>>(appReducer, {
     canPoll: true,
   });
+  const isI18nInitialized = useI18nEvents();
 
   return (
-    <DrawerProvider>
-      <FullScreenLoaderWrapper>
-        <AppContext.Provider value={{ canPoll: state.canPoll }}>
-          <AppDispatchContext.Provider value={dispatch}>
-            <Stack
-              direction="row"
-              pl={{ sm: DRAWER_WIDTH }}
-              className="global-container"
-            >
-              <Sidebar editedNodes={[]} />
-              <Stack
-                minHeight="100vh"
-                flex={1}
-                minWidth={0}
-                position="relative"
-                className="body-container"
-                color={(theme) => theme.palette.bodyText?.main}
-              >
-                <Box
-                  position="fixed"
-                  width="100%"
-                  top={0}
-                  left={0}
-                  zIndex={0}
-                  className="background"
-                />
+    <>
+      {!isI18nInitialized && <Loader />}
+      {isI18nInitialized && (
+        <DrawerProvider>
+          <FullScreenLoaderWrapper>
+            <AppContext.Provider value={{ canPoll: state.canPoll }}>
+              <AppDispatchContext.Provider value={dispatch}>
+                <Stack
+                  direction="row"
+                  pl={{ sm: DRAWER_WIDTH }}
+                  className="global-container"
+                >
+                  <Sidebar editedNodes={[]} />
+                  <Stack
+                    minHeight="100vh"
+                    flex={1}
+                    minWidth={0}
+                    position="relative"
+                    className="body-container"
+                    color={(theme) => theme.palette.bodyText?.main}
+                  >
+                    <Box
+                      position="fixed"
+                      width="100%"
+                      top={0}
+                      left={0}
+                      zIndex={0}
+                      className="background"
+                    />
 
-                <Header title={t(title || "")} />
-                <Box component="main" p={3} zIndex={1}>
-                  {children}
-                </Box>
-              </Stack>
-            </Stack>
-          </AppDispatchContext.Provider>
-        </AppContext.Provider>
-      </FullScreenLoaderWrapper>
-    </DrawerProvider>
+                    <Header title={t(title || "")} />
+                    <Box component="main" p={3} zIndex={1}>
+                      {children}
+                    </Box>
+                  </Stack>
+                </Stack>
+              </AppDispatchContext.Provider>
+            </AppContext.Provider>
+          </FullScreenLoaderWrapper>
+        </DrawerProvider>
+      )}
+    </>
   );
 }

@@ -17,7 +17,6 @@ export default function Loader({
   page?: boolean;
   skeleton?: boolean;
   justifyContent?: string;
-  source?: string;
 }) {
   const [show, setShow] = useState(false);
   useEffect(() => {

@@ -1,25 +1,13 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { t } from "i18next";
 import CssBaseline from "@mui/material/CssBaseline";
-import {
-  AppBar,
-  Box,
-  Button,
-  Drawer,
-  Step,
-  StepLabel,
-  Stepper,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { Clear } from "@mui/icons-material";
-import { useNavigate, useParams } from "react-router-dom";
+import { Box, Drawer, Step, StepLabel, Stepper } from "@mui/material";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const drawerWidth = 240;
 
 export default function MultiStepLayout({
   children,
-  title,
   steps,
 }: {
   children: ReactNode;
@@ -27,42 +15,24 @@ export default function MultiStepLayout({
     id: number;
     title: string;
   }[];
-  title?: string;
 }) {
-  const navigate = useNavigate();
   const { step } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  function manageExit() {
-    navigate("/");
-  }
+  useEffect(() => {
+    const currentPath = location.pathname;
+    if (step?.includes(":")) {
+      const newPath = currentPath.replace(step, "0");
+      navigate(newPath);
+    } else if (!step) {
+      navigate(`${currentPath}/0`);
+    }
+  }, [navigate, step, location?.pathname]);
 
   return (
     <Box sx={{ display: "flex", position: "relative" }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
-        <Toolbar
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography variant="h3" noWrap component="div">
-            {title}
-          </Typography>
-          <Button
-            onClick={() => manageExit()}
-            variant="text"
-            color="primary"
-            startIcon={<Clear />}
-          >
-            {t("general.exit")}
-          </Button>
-        </Toolbar>
-      </AppBar>
       <Drawer
         variant="permanent"
         sx={{
@@ -74,7 +44,6 @@ export default function MultiStepLayout({
           },
         }}
       >
-        <Toolbar />
         <Box sx={{ overflow: "auto", padding: 5 }}>
           <Stepper activeStep={Number(step)} orientation="vertical">
             {steps.map((_step, index) => (
@@ -88,7 +57,6 @@ export default function MultiStepLayout({
         </Box>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
         {children}
       </Box>
     </Box>
