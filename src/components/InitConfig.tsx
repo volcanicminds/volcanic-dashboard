@@ -27,7 +27,6 @@ type TranslationType = {
 export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
   const [is18nInitialized, setIs18nInitialized] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isLoadingGeneral, setIsLoadingGeneral] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<string | undefined>(
     i18next.language
   );
@@ -88,6 +87,8 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
   }, [currentLanguage]);
 
   useEffect(() => {
+    console.log("is18nInitialized", is18nInitialized);
+    console.log("lang core", core);
     if (is18nInitialized) {
       const language = currentLanguage || i18next.language || FALLBACK_LANGUAGE;
 
@@ -112,14 +113,11 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     setCurrentLanguage(i18next.language || FALLBACK_LANGUAGE);
-    setIsLoadingGeneral(true);
     try {
       const translations = init();
       setConfig(translations);
     } catch (error) {
       console.error("Cannot init the general configuration", error);
-    } finally {
-      setIsLoadingGeneral(false);
     }
   }, []);
 
@@ -179,28 +177,9 @@ export const InitConfig: FC<{ children: ReactNode }> = ({ children }) => {
       adapterLocale={adapterLocale}
       localeText={localeText}
     >
-      {(!is18nInitialized || isLoadingGeneral) && (
-        <Loader page source="init-config" />
-      )}
-      {isLanguageInitialized && children}
+      {!is18nInitialized && <Loader page source="init-config" />}
       {isLanguageInitialized && children}
       {!isLanguageInitialized && children}
-      {!isLanguageInitialized && children}
-      <Dialog onClose={handleCloseDialog} open={open}>
-        <DialogTitle
-          sx={{
-            fontSize: "1.2rem",
-          }}
-        >
-          {t("warning")}
-        </DialogTitle>
-        <DialogContent>{t("prg-active-warning")}</DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleCloseDialog}>
-            {t("ok")}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </LocalizationProvider>
   );
 };
