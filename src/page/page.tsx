@@ -15,7 +15,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { t } from "i18next";
 import useApi from "@/hook/useApi";
 import useToast from "@/hook/useToast";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -36,7 +35,6 @@ import {
   getStaticDataFields,
   isPolling,
 } from "@/utils/data";
-import { useAuth } from "@/components/AuthProvider";
 import { LAST_PAGE_STORAGE_KEY, save } from "@/utils/localStorage";
 
 export type PageDataContextType = { [key: string]: any };
@@ -73,8 +71,7 @@ function PageWrapper({
   config: PageConfiguration;
   children: ReactNode;
 }) {
-  const { checkAuth, reload, configurableEndpoint } = useApi();
-  const { token, setToken } = useAuth();
+  const { reload, configurableEndpoint } = useApi();
   const { addNotification } = useToast();
   const [contextData, setContextData] = useState<PageDataContextType>({});
   const navigate = useNavigate();
@@ -245,21 +242,6 @@ function PageWrapper({
       setContextData(newContextData);
     }
   }, [memoizedConfigData, memoizedReload]);
-
-  useEffect(() => {
-    checkAuth(token)
-      .then((res: any) => {
-        if (res?.result !== "OK") {
-          console.error(res.message);
-          addNotification(t("auth-end-session "), { variant: "error" });
-          setToken(null);
-          navigate("/login");
-        }
-      })
-      .catch((err: any) => {
-        console.error(err);
-      });
-  }, [config]);
 
   return (
     <ErrorBoundary fallback={<ErrorBoundaryMessage />}>
