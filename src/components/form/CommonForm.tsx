@@ -1210,7 +1210,7 @@ export default function Form({
                                   label={t(`${item.label}`)}
                                 />
                               );
-                            case "camera-configure":
+                            case "bulletNumbers":
                               return (
                                 <BulletNumbers
                                   value={value}
