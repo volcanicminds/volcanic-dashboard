@@ -245,7 +245,7 @@ function PageWrapper({
 
   return (
     <ErrorBoundary fallback={<ErrorBoundaryMessage />}>
-      <Suspense fallback={<Loader source="page" />}>
+      <Suspense fallback={<Loader />}>
         <PageContext.Provider
           value={{ data: contextData, setContextData, dispatch }}
         >

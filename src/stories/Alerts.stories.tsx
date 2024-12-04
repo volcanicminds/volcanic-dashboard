@@ -15,6 +15,7 @@ export const Basic: Story = {
     title: "Vari alert",
     dataFields: [
       {
+        id: "1",
         alias: "Events",
         data: [
           {
@@ -32,6 +33,7 @@ export const Basic: Story = {
         ],
       },
       {
+        id: "2",
         alias: "isMaintenanceModeActive",
         data: "TRUE",
       },
