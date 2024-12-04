@@ -304,7 +304,6 @@ const BasicTable = (props: BasicTableProps) => {
         enableSorting: !!c.sortable,
         sortingFn: c.sortingFn ?? sortingFnPrimitives,
         enableColumnFilter: !!c.filterable,
-        visibleInShowHideMenu: true,
         filterVariant: c.filterVariant,
         filterFn: c.filterFn,
         filterSelectOptions: filterSelectOptions,
@@ -468,11 +467,16 @@ const BasicTable = (props: BasicTableProps) => {
   const enableRowSelection = useMemo(() => {
     return copyPasteRow != null
       ? (row: MRT_Row<any>) => {
-          const normalizedCopiedRow = copyPasteRow || {};
+          const isSelectable =
+            features.selectablePasteRowsFn == null ||
+            (features.selectablePasteRowsFn != null &&
+              features.selectablePasteRowsFn(copyPasteRow, row.original));
 
-          return (
-            row.original[tableIdField] !== normalizedCopiedRow[tableIdField]
-          );
+          const normalizedCopiedRow = copyPasteRow || {};
+          const isTheCopyRow =
+            row.original[tableIdField] === normalizedCopiedRow[tableIdField];
+
+          return !isTheCopyRow && isSelectable;
         }
       : false;
   }, [copyPasteRow]);

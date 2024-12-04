@@ -5,7 +5,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@/components/common/Button";
 import { t } from "i18next";
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import { TableCopyPasteField } from "@/types";
+import { TableCopyPastePropertyFn, TableCopyPasteField } from "@/types";
 import { Dispatch, useCallback, useEffect, useMemo, useState } from "react";
 import { Location } from "react-router-dom";
 import { useInterval } from "usehooks-ts";
@@ -32,6 +32,18 @@ export interface UpdateVocalsDialoggProps {
 const LOOP_TIMER = 1000; // 1 second
 const STOPPING_TIMER = 1500; // 1,5 seconds
 
+const evaulatePropertyField = (
+  copiedRow: any,
+  copyPasteFields: any[],
+  property: boolean | TableCopyPastePropertyFn | undefined
+) => {
+  if (typeof property === "function") {
+    return property(copiedRow, copyPasteFields);
+  }
+
+  return property;
+};
+
 export default function PasteDialog({
   copiedRow,
   tableIdField,
@@ -47,10 +59,23 @@ export default function PasteDialog({
   location,
 }: UpdateVocalsDialoggProps) {
   const [selectedFields, setSelectedFields] = useState<TableCopyPasteField[]>(
-    copyPasteFields.filter(
-      (field) => (field.selected && !field.disabled) || field.readOnly
-    )
+    []
   );
+
+  useEffect(() => {
+    setSelectedFields(
+      copyPasteFields.filter(
+        (field) =>
+          (evaulatePropertyField(copiedRow, copyPasteFields, field.selected) &&
+            !evaulatePropertyField(
+              copiedRow,
+              copyPasteFields,
+              field.disabled
+            )) ||
+          field.readOnly
+      )
+    );
+  }, [copiedRow, copyPasteFields]);
 
   const [internalState, setInternalState] = useState<{
     copyingRow: number | null;
@@ -100,7 +125,14 @@ export default function PasteDialog({
   const resetStates = () => {
     setSelectedFields(
       copyPasteFields.filter(
-        (field) => (field.selected && !field.disabled) || field.readOnly
+        (field) =>
+          (evaulatePropertyField(copiedRow, copyPasteFields, field.selected) &&
+            !evaulatePropertyField(
+              copiedRow,
+              copyPasteFields,
+              field.disabled
+            )) ||
+          field.readOnly
       )
     );
 
@@ -135,22 +167,31 @@ export default function PasteDialog({
     }
   }
 
-  function selectAll() {
-    setSelectedFields(copyPasteFields.filter((field) => !field.disabled));
-  }
+  const selectAll = useCallback(() => {
+    setSelectedFields(
+      copyPasteFields.filter(
+        (field) =>
+          !evaulatePropertyField(copiedRow, copyPasteFields, field.disabled)
+      )
+    );
+  }, [copiedRow, copyPasteFields]);
 
-  function deselectAll() {
+  const deselectAll = useCallback(() => {
     //deselect all the fields in the selectedFields array and also the selected fields on copyPasteFields, but keeo the readOnly fields
     const newSelectedFields = selectedFields.filter((field) => field.readOnly);
     const newCopyPasteFields = newSelectedFields.map((field) => {
-      if (field.selected && !field.disabled && !field.readOnly) {
+      if (
+        evaulatePropertyField(copiedRow, copyPasteFields, field.selected) &&
+        !evaulatePropertyField(copiedRow, copyPasteFields, field.disabled) &&
+        !field.readOnly
+      ) {
         return { ...field, selected: false };
       }
       return field;
     });
 
     setSelectedFields(newCopyPasteFields);
-  }
+  }, [selectedFields, copyPasteFields, copiedRow]);
 
   useEffect(() => {
     const { isStopped, completed } = internalState || {};
@@ -161,7 +202,8 @@ export default function PasteDialog({
         handleOnClose(undefined, undefined, false, false);
       }, STOPPING_TIMER);
     }
-  }, [internalState?.completed, internalState?.isStopped]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [internalState, internalState.completed, internalState.isStopped]);
 
   async function executeEdit() {
     const index = internalState?.copyingRow ?? 1;
@@ -284,7 +326,8 @@ export default function PasteDialog({
         </Button>
       </DialogActions>
     ),
-    [isCopying, internalState?.completed, internalState?.isStopped]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isCopying, internalState?.completed, internalState?.isStopped, pasteFields]
   );
 
   const Content = useCallback(
@@ -325,53 +368,72 @@ export default function PasteDialog({
                 </Button>
               </Stack>
               <Grid sx={{ mt: 2 }} container spacing={1}>
-                {copyPasteFields?.map((field, index) => {
-                  const isSelected = selectedFields.includes(field);
+                {(copyPasteFields || [])
+                  .filter((field) => {
+                    const visible =
+                      field.visible != null ? field.visible : true;
 
-                  return (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={6}
-                      key={`PasteDialogSwitches-${index}-${Math.random()}`}
-                      alignItems="center"
-                      display="flex"
-                      flexDirection="row"
-                      gap={1}
-                    >
-                      <Switch
-                        id={`PasteDialogSwitches-${index}-${Math.random()}`}
-                        disabled={field.disabled || field.readOnly}
-                        label={t(field.label)}
-                        value={isSelected}
-                        onChange={(checked: any) => {
-                          if (checked) {
-                            setSelectedFields([...selectedFields, field]);
-                          } else {
-                            setSelectedFields(
-                              selectedFields.filter(
-                                (selectedField) => selectedField !== field
-                              )
-                            );
+                    return evaulatePropertyField(
+                      copiedRow,
+                      copyPasteFields,
+                      visible
+                    );
+                  })
+                  .map((field, index) => {
+                    const isSelected = selectedFields.includes(field);
+
+                    return (
+                      <Grid
+                        item
+                        xs={12}
+                        sm={6}
+                        key={`PasteDialogSwitches-${index}-${Math.random()}`}
+                        alignItems="center"
+                        display="flex"
+                        flexDirection="row"
+                        gap={1}
+                      >
+                        <Switch
+                          id={`PasteDialogSwitches-${index}-${Math.random()}`}
+                          disabled={
+                            evaulatePropertyField(
+                              copiedRow,
+                              copyPasteFields,
+                              field.disabled
+                            ) || field.readOnly
                           }
-                        }}
-                        sx={{ width: "100%" }}
-                      />
-                    </Grid>
-                  );
-                })}
+                          label={t(field.label)}
+                          value={isSelected}
+                          onChange={(checked) => {
+                            if (checked) {
+                              setSelectedFields([...selectedFields, field]);
+                            } else {
+                              setSelectedFields(
+                                selectedFields.filter(
+                                  (selectedField) => selectedField !== field
+                                )
+                              );
+                            }
+                          }}
+                          sx={{ width: "100%" }}
+                        />
+                      </Grid>
+                    );
+                  })}
               </Grid>
             </>
           )}
         </DialogContent>
       </>
     ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       isCopying,
       internalState?.copyingRow,
       rowsToPaste.length,
+      selectAll,
+      deselectAll,
       copyPasteFields,
+      copiedRow,
       selectedFields,
     ]
   );

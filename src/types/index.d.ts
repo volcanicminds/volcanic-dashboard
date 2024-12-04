@@ -402,12 +402,18 @@ export type TableCopyPasteBindingFunction = (arg: {
   configurableEndpoint: (path: string, args?: any) => Promise<any>;
 }) => void;
 
+export type TableCopyPastePropertyFn = (
+  rowToCopy: any,
+  rowsToPaste: any[]
+) => boolean;
+
 export type TableCopyPasteField = {
   field: string;
   label: string;
-  selected?: boolean;
+  selected?: boolean | TableCopyPastePropertyFn;
   readOnly?: boolean;
-  disabled?: boolean;
+  visible?: boolean | TableCopyPastePropertyFn;
+  disabled?: boolean | TableCopyPastePropertyFn;
   remapper?: {
     field?: TableCopyPasteFieldRemapper;
     value?: TableCopyPasteRemapperFunction;
@@ -418,10 +424,12 @@ export type TableFeatures = {
   actions?: {
     positionActionsColumn?: "first" | "last";
     withDelete?: boolean;
+    withCopyPaste?: boolean;
     custom?: (args: any) => any;
   };
   //By default the DT_RowId (or the default row id) is ignored during the copy
   copyPasteFields?: TableCopyPasteField[];
+  selectablePasteRowsFn?: (copyRow: any, actualRow: any) => boolean;
   add?: boolean;
   form?: TableForm;
   exportCsv?: boolean;
